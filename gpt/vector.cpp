@@ -29,11 +29,6 @@ public:
         return *this;
     }
 
-    // Destructeur
-    ~Vector() {
-        delete[] data;
-    }
-
     // Accesseur pour l'élément à l'index spécifié
     T& operator[](size_t index) {
         return data[index];
