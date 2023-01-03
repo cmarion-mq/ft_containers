@@ -5,24 +5,19 @@
 #include <stdlib.h>
 
 int main() {
+  ft::vector<int> first;                                // empty vector of ints
+  std::vector<int> second (4,100);                       // four ints with value 100
+  ft::vector<int> third (second.begin(), second.end());  // iterating through second
+  ft::vector<int> fourth (third);                       // a copy of third
 
-	// ft::vector<std::string> vector_str;
-	// ft::vector<int> vector_int(2305843009213693952, 100);
-	ft::vector<int> vector_int(4, 100);
-	vector_int.reserve(100);
-	vector_int[99] = 3;
-	ft::vector<int> cpy_int(vector_int);
-	// for (int i = 0; i < 10; i++) {
-	// 	vector_buffer.push_back(Buffer());
-	// }
+  // the iterator constructor can also be used to construct from arrays:
+  int myints[] = {16,2,77,29};
+  ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
 
-	// for (int i = 0; i < COUNT; i++) {
-	// 	const int idx = rand() % COUNT;
-	// 	vector_buffer[idx].idx = 5;
-	// }
-	std::cout << vector_int[99] << std::endl;
-	std::cout << vector_int.size() << std::endl;
-	// for (size_t i = 0; i < 5; i ++)
-	// 	std::cout << cpy_int[i] << std::endl;
-	return (0);
+  std::cout << "The contents of fifth are:";
+  for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
+
+  return 0;
 }

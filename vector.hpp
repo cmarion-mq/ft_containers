@@ -4,6 +4,7 @@
 #include <iostream>
 #include "utils/is_integral.hpp"
 #include "utils/enable_if.hpp"
+#include "iterators/iterators_traits.hpp"
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T>>
@@ -11,13 +12,17 @@ namespace ft {
 	{
 		public:
 			/*--- TYPES ---*/
-			typedef T									value_type;
-			typedef Allocator							allocator_type;
-			typedef typename Allocator::reference		reference;
-			typedef typename Allocator::const_reference	const_reference;
-			typedef typename Allocator::pointer			pointer;
-			typedef typename Allocator::const_pointer	const_pointer;
-			typedef size_t								size_type; 
+			typedef T										value_type;
+			typedef Allocator								allocator_type;
+			typedef typename Allocator::reference			reference;
+			typedef typename Allocator::const_reference		const_reference;
+			typedef typename Allocator::pointer				pointer;
+			typedef typename Allocator::const_pointer		const_pointer;
+			typedef T*										iterator;
+			typedef const T*								const_iterator;
+			typedef std::reverse_iterator<iterator>			reverse_iterator;
+			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef size_t									size_type; 
 
 			/*--- CON/DE_STRUCTORS ---*/
 			explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0) {};
@@ -30,14 +35,13 @@ namespace ft {
 					_alloc.construct(_data + i, val);
 			};
 			
-			// template <class InputIterator>
-			// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral< InputIterator >::value, void* >::type* = NULL): _alloc(alloc) {
-				
-
-			// 	for (InputIterator it = first; it != last; ++it)
-			// 		_alloc.construct(_data + _size, *it);
-			// 	_size ++;
-			// };
+			template <class InputIterator>
+			vector (typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc), _capacity(last - first) {
+				for (InputIterator it = first; it != last; ++it) {
+					_alloc.construct(_data + _n, *it);
+					_n ++;
+				}
+			};
 			
 			vector (const vector& x) {
 				*this = x;
@@ -53,6 +57,16 @@ namespace ft {
 				_capacity = 0;
 			};
 
+			/*---    ITERATORS    ---*/
+			iterator				begin()			{ return _data; };
+			const_iterator			begin() const	{ return _data; };
+			iterator 				end()			{ return _data + _n; };
+			const_iterator			end() const		{ return _data + _n; };
+			reverse_iterator		rbegin()		{ return reverse_iterator(_data + _n); };
+			const_reverse_iterator 	rbegin() const	{ return const_reverse_iterator(_data + _n); };
+			reverse_iterator		rend()			{ return reverse_iterator(_data);};
+			const_reverse_iterator	rend() const	{ return const_reverse_iterator(_data);};
+
 			/*---    OPERATORS    ---*/
 			vector &operator= (const vector &x) {
 				if (this != &x) {
@@ -66,14 +80,14 @@ namespace ft {
 				return (*this);
 			};
 			
-			reference operator[] (size_type n) { return (_data[n]); };
-			const_reference operator[] (size_type n) const { return (_data[n]); };
+			reference		operator[] (size_type n)		{ return (_data[n]); };
+			const_reference operator[] (size_type n) const	{ return (_data[n]); };
 
 			/*---    CAPACITY    ---*/
-			size_type	size() const { return (_n); };
-			size_type	max_size() const { return (_alloc.max_size()); };
-			size_type	capacity() const { return (_capacity); };
-			bool		empty() const { return (_n == 0); };
+			size_type	size() const		{ return (_n); };
+			size_type	max_size() const	{ return (_alloc.max_size()); };
+			size_type	capacity() const	{ return (_capacity); };
+			bool		empty() const		{ return (_n == 0); };
 
 			// void 		resize (size_type n, value_type val = value_type()) {
 			// 	if (n < _n) {
@@ -111,8 +125,12 @@ namespace ft {
 			void assign (size_type n, const value_type& val) {
 				if (_n + n > _capacity)
 					reserve(_n + 1);
-				size_type i = 
-				if (n > _n)
+				for (size_type i = 0; i < n; i ++) {
+					if (i < _n)
+						_alloc.destroy(_data + i);
+					_alloc.construct(_data + i, val);
+				}
+				_n = n;
 			};
 
 			void pop_back() {
