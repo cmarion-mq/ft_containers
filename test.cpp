@@ -12,16 +12,18 @@ int main() {
   int myints[] = {16,2,77,29};
   std::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
 
+  // second.assign(3, 20);
+
   std::cout << "The contents of fifth are:";
-  for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+  for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
     std::cout << ' ' << *it;
-  std::cout << '\n';
-	std::cout << "thrid " << third.capacity() << std::endl;
-	std::cout << "thrid " << third.size() << std::endl;
-	third.pop_back();
-	std::cout << "thrid " << third.capacity() << std::endl;
-	std::cout << "thrid " << third.size() << std::endl;
-  std::cout << "fourth " << third.capacity() << std::endl;
-	std::cout << "fourth " << third.size() << std::endl;
+  // std::cout << '\n';
+	// std::cout << "thrid " << third.capacity() << std::endl;
+	// std::cout << "thrid " << third.size() << std::endl;
+	// third.pop_back();
+	// std::cout << "thrid " << third.capacity() << std::endl;
+	// std::cout << "thrid " << third.size() << std::endl;
+  // std::cout << "fourth " << third.capacity() << std::endl;
+	// std::cout << "fourth " << third.size() << std::endl;
   return 0;
 }

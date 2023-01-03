@@ -23,7 +23,6 @@ namespace ft {
 			explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0) {};
 			
 			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _n(n), _capacity(n) {
-				std::cout << _alloc.max_size() << std::endl;
 				if (_n > _alloc.max_size())
 					throw std::length_error("cannot create std::vector larger than max_size()");
 				_data = _alloc.allocate(_n);
@@ -43,21 +42,11 @@ namespace ft {
 			vector (const vector& x) {
 				*this = x;
 			};
-			
-
-			// template <class InputIterator>
-			// void assign(InputIterator first, InputIterator last);
-			
-			// void assign(size_type n, const T& u);
-			// allocator_type get_allocator() const;
-
 	
 			~vector(void) {
-				std::cout << "in destructor" << std::endl;
 			    for (size_type i = 0; i < _n; i ++) {
 			        _alloc.destroy(_data + i);
 					_n --;
-					_capacity --;
 				}
 				if (_capacity > 0)
 					_alloc.deallocate(_data, _capacity);
@@ -72,7 +61,7 @@ namespace ft {
 					_alloc = x._alloc;
 					_data = _alloc.allocate(_n);
 					for (size_type i = 0; i < _n; i ++)
-						_alloc.construct(&_data[i], x._data[i]);
+						_alloc.construct(_data + i, x._data[i]);
 				}
 				return (*this);
 			};
@@ -81,8 +70,64 @@ namespace ft {
 			const_reference operator[] (size_type n) const { return (_data[n]); };
 
 			/*---    CAPACITY    ---*/
-			size_type size() const { return (_n); };
-			size_type capacity() const { return (_capacity); };
+			size_type	size() const { return (_n); };
+			size_type	max_size() const { return (_alloc.max_size()); };
+			size_type	capacity() const { return (_capacity); };
+			bool		empty() const { return (_n == 0); };
+
+			// void 		resize (size_type n, value_type val = value_type()) {
+			// 	if (n < _n) {
+			// 		while (n != _n)
+			// 			pop_back();
+			// 	}
+			// 	else if (n > _n) {
+			// 		if (n > max_size())
+			// 			throw std::length_error("cannot create std::vector larger than max_size()");
+					//try to not push_back as many time as the delta is
+			// 	}
+
+			// };
+
+			void 		reserve (size_type n) {
+				if (n > _capacity) {
+					if (n > max_size())
+						throw std::length_error("cannot create std::vector larger than max_size()");
+					pointer newp = _alloc.allocate(n);
+					for (size_type i = 0; i < _n; i ++) {
+						_alloc.construct(newp + i, _data[i]);
+						_alloc.destroy(_data + i);
+					}
+					if (_capacity > 0)
+						_alloc.deallocate(_data, _capacity);
+					_data = newp;
+					_capacity = n;
+				}
+			};
+
+			/*---    MODIFIERS    ---*/
+			// template <class InputIterator>
+			// void assign(InputIterator first, InputIterator last);
+			
+			void assign (size_type n, const value_type& val) {
+				if (_n + n > _capacity)
+					reserve(_n + 1);
+				size_type i = 
+				if (n > _n)
+			};
+
+			void pop_back() {
+				_alloc.destroy(_data + _n - 1);
+				_n --;
+			};
+
+			void push_back (const value_type& val) {
+				if (_n + 1 > _capacity)
+					reserve(_n + 1);
+				_alloc.construct(_data + _n + 1, val);
+				_n ++;
+			};
+
+			// allocator_type get_allocator() const;
 
 		private:
 		    pointer			_data;
