@@ -7,8 +7,9 @@
 int main() {
 
 	// ft::vector<std::string> vector_str;
+	// ft::vector<int> vector_int(2305843009213693952, 100);
 	ft::vector<int> vector_int(4, 100);
-	ft::vector<int> cpy_int(&vector_int);
+	ft::vector<int> cpy_int(vector_int);
 
 	// for (int i = 0; i < 10; i++) {
 	// 	vector_buffer.push_back(Buffer());
@@ -20,6 +21,6 @@ int main() {
 	// }
 	std::cout << vector_int[0] << std::endl;
 	for (size_t i = 0; i < 4; i ++)
-		std::cout << vector_int[i] << std::endl;
+		std::cout << cpy_int[i] << std::endl;
 	return (0);
 }

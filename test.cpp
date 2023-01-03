@@ -6,7 +6,7 @@ int main() {
   std::vector<int> first;                                // empty vector of ints
   std::vector<int> second (5,100);                       // four ints with value 100
   std::vector<int> third (second.begin(),second.end()-1);  // iterating through second
-  std::vector<int> fourth (third);                       // a copy of third
+  std::vector<int> fourth (second);                       // a copy of third
 
   // the iterator constructor can also be used to construct from arrays:
   int myints[] = {16,2,77,29};
@@ -16,10 +16,12 @@ int main() {
   for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
     std::cout << ' ' << *it;
   std::cout << '\n';
-	std::cout <<third.capacity() << std::endl;
-	std::cout <<third.size() << std::endl;
+	std::cout << "thrid " << third.capacity() << std::endl;
+	std::cout << "thrid " << third.size() << std::endl;
 	third.pop_back();
-	std::cout <<third.capacity() << std::endl;
-	std::cout <<third.size() << std::endl;
+	std::cout << "thrid " << third.capacity() << std::endl;
+	std::cout << "thrid " << third.size() << std::endl;
+  std::cout << "fourth " << third.capacity() << std::endl;
+	std::cout << "fourth " << third.size() << std::endl;
   return 0;
 }
