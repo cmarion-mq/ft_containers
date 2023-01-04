@@ -70,6 +70,7 @@ int main() {
     	std::cout << ' ' << second[i];
 	std::cout << std::endl;
 
+// ###############  MODIFIERS  ###############
 	{
 		std::vector<int> first (3,100);
 		std::vector<int>::iterator it = first.begin();
@@ -100,19 +101,36 @@ int main() {
 			std::cout << ' ' << *it;
 		std::cout << std::endl;
 	}
-
 	{
-		std::vector<int> myvector;
+		ft::vector<int> myvector;
 		
 		for (int i=1; i<=10; i++) myvector.push_back(i);// set some values (from 1 to 10)
+		
 		myvector.erase (myvector.begin()+5);// erase the 6th element
-		myvector.erase (myvector.begin(),myvector.begin()+3);// erase the first 3 elements:
-
 		std::cout << "myvector contains:";
 		for (unsigned i=0; i<myvector.size(); ++i)
 			std::cout << ' ' << myvector[i];
-		std::cout << '\n';
+		std::cout << std::endl;
+
+		myvector.erase (myvector.begin(),myvector.begin()+3);// erase the first 3 elements:
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); ++i)
+			std::cout << ' ' << myvector[i];
+		std::cout << std::endl;
 	}
 
+// ###############  ELEMENT ACCESS  ###############
+	{
+		std::vector<int> myvector (10);   // 10 zero-initialized ints
+
+		for (unsigned i=0; i<myvector.size(); i++)
+    		myvector.at(i)=i; // assign some values
+
+		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<myvector.size(); i++)
+    		std::cout << ' ' << myvector.at(i);
+  		std::cout << std::endl;
+		myvector.at(12);
+	}
 	return 0;
 }

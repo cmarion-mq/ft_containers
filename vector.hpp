@@ -99,7 +99,7 @@ namespace ft {
 			void 		reserve (size_type n) {
 				if (n > _capacity) {
 					if (n > max_size())
-						throw std::length_error("cannot create std::vector larger than max_size()");
+						throw std::length_error("vector::reserve");
 					pointer newp = _alloc.allocate(n);
 					for (size_type i = 0; i < _n; i ++) {
 						_alloc.construct(newp + i, _data[i]);
@@ -116,12 +116,30 @@ namespace ft {
 			
 			reference		operator[] (size_type n)		{ return (_data[n]); };
 			const_reference operator[] (size_type n) const	{ return (_data[n]); };
+			reference		front()							{ return (*_data); };
+			const_reference	front() const 					{ return (*_data); };
+			reference		back() 							{ return (*(_data + _n - 1)); };
+			const_reference	back() const 					{ return (*(_data + _n - 1)); };
+			
+			reference		at (size_type n) {
+				if (n >= _n) {
+					throw std::out_of_range("vector::at");
+				}
+				return (_data[n]);
+			};
 
+			const_reference	at (size_type n) const {
+				if (n >= _n) {
+					throw std::out_of_range("vector::at");
+				}
+				return (_data[n]);
+			};
+			
 			/*---     MODIFIERS    ---*/
 			// template <class InputIterator>
 			// void assign(InputIterator first, InputIterator last);
 			
-			void assign (size_type n, const value_type& val) {
+			void assign(size_type n, const value_type& val) {
 				if (_n + n > _capacity)
 					reserve(_n + 1);
 				for (size_type i = 0; i < n; i ++) {
@@ -132,21 +150,21 @@ namespace ft {
 				_n = n;
 			};
 
-			void push_back (const value_type& val) {
+			void push_back(const value_type& val) {
 				if (_capacity == 0)
 					reserve(1);
 				if (_n + 1 > _capacity)
 					reserve(_capacity * 2);
-				_alloc.construct(_data + _n + 1, val);
+				_alloc.construct(_data + _n, val);
 				_n ++;
 			};
 
-			void pop_back() {
+			void pop_back(){
 				_alloc.destroy(_data + _n - 1);
 				_n --;
 			};
 
-			iterator insert (iterator position, const value_type& val) {
+			iterator insert(iterator position, const value_type& val) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				if (_n + 1 > _capacity) {
 					if (_capacity == 0)
@@ -164,7 +182,7 @@ namespace ft {
 				return(position);
 			};
 
-			void insert (iterator position, size_type n, const value_type& val) {
+			void insert(iterator position, size_type n, const value_type& val) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				if (_n + n > _capacity) {
 					if (_capacity == 0)
@@ -189,7 +207,7 @@ namespace ft {
 			};
 			
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last) {
+			void insert(iterator position, InputIterator first, InputIterator last) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				size_type n = std::distance(first, last); //tot insert
 				if (_n + n > _capacity) {
@@ -215,27 +233,32 @@ namespace ft {
 				_n += n;
 			};
 
-			iterator erase (iterator position) {
-				for (size_type i = position; i < _n - 1; i ++) {
+			iterator erase(iterator position) {
+				size_type tot_between_begin_position = std::distance(begin(), position);
+				for (size_type i = tot_between_begin_position; i < _n; i ++) {
 					_alloc.destroy(_data + i);
 					_alloc.construct(_data + i, _data[i + 1]);
 				}
+				_alloc.destroy(_data + _n);
 				_n --;
 				return (position);
 			};
 			
-			iterator erase (iterator first, iterator last) {
-				std::cout << "test";
+			iterator erase(iterator first, iterator last) {
 				size_type n = std::distance(first, last); //tot erase
-				for (size_type i = first; i < _n - 1; i ++) {
-					_alloc.destroy(first + i);
-					_alloc.construct(first + i, last + i);
-					_alloc.destroy(last + i);
+				size_type tot_between_begin_position = std::distance(begin(), first);
+				for (size_type i = tot_between_begin_position; i < _n - 1; i ++) {
+					_alloc.destroy(_data + i);
+					_alloc.construct(_data + i, _data[i + n]);
+					_alloc.destroy(_data + i + n);
 				}
 				_n -= n;
 				return (first);
 			};
 
+			void swap(vector& x) {
+
+			};
 			// allocator_type get_allocator() const;
 
 		private:
