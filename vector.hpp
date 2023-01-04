@@ -212,8 +212,29 @@ namespace ft {
 					_alloc.construct(_data + i, _data[i - 1]);
 					_alloc.destroy(_data + i - 1);
 				}
+				_n += n;
 			};
 
+			iterator erase (iterator position) {
+				for (size_type i = position; i < _n - 1; i ++) {
+					_alloc.destroy(_data + i);
+					_alloc.construct(_data + i, _data[i + 1]);
+				}
+				_n --;
+				return (position);
+			};
+			
+			iterator erase (iterator first, iterator last) {
+				std::cout << "test";
+				size_type n = std::distance(first, last); //tot erase
+				for (size_type i = first; i < _n - 1; i ++) {
+					_alloc.destroy(first + i);
+					_alloc.construct(first + i, last + i);
+					_alloc.destroy(last + i);
+				}
+				_n -= n;
+				return (first);
+			};
 
 			// allocator_type get_allocator() const;
 
