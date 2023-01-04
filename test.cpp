@@ -2,28 +2,28 @@
 #include <iostream>
 
 int main() {
-      // constructors used in the same order as described above:
-  std::vector<int> first;                                // empty vector of ints
-  std::vector<int> second (5,100);                       // four ints with value 100
-  std::vector<int> third (second.begin(),second.end()-1);  // iterating through second
-  std::vector<int> fourth (second);                       // a copy of third
+// ###############  CONSTRUCTORS  ###############
+	std::vector<int> second (4,100);       
+                  // four ints with value 10
 
-  // the iterator constructor can also be used to construct from arrays:
-  int myints[] = {16,2,77,29};
-  std::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+	std::cout << "The contents of SECOND are:";
+	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << std::endl;
 
-  // second.assign(3, 20);
+// ###############  CAPACITY  ###############
 
-  std::cout << "The contents of fifth are:";
-  for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-    std::cout << ' ' << *it;
-  // std::cout << '\n';
-	// std::cout << "thrid " << third.capacity() << std::endl;
-	// std::cout << "thrid " << third.size() << std::endl;
-	// third.pop_back();
-	// std::cout << "thrid " << third.capacity() << std::endl;
-	// std::cout << "thrid " << third.size() << std::endl;
-  // std::cout << "fourth " << third.capacity() << std::endl;
-	// std::cout << "fourth " << third.size() << std::endl;
-  return 0;
+	second.resize(10);
+	std::cout << "SECOND contains:";
+	for (int i=0;i<second.size();i++)
+    	std::cout << ' ' << second[i];
+	std::cout << std::endl;
+
+  	second.resize(8,100);
+	std::cout << "SECOND contains:";
+	for (int i=0;i<second.size();i++)
+    	std::cout << ' ' << second[i];
+	std::cout << std::endl;
+	
+	return 0;
 }
