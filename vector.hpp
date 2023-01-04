@@ -92,11 +92,8 @@ namespace ft {
 					while (n != _n)
 						pop_back();
 				}
-				else if (n > _n) {
-					reserve(n);
-					for (size_type i = _n; i < n; i ++)
-						_alloc.construct(_data + i, val);
-				}
+				else if (n > _n)
+					insert(end(), n - _n, val);
 			};
 
 			void 		reserve (size_type n) {
@@ -150,22 +147,72 @@ namespace ft {
 			};
 
 			iterator insert (iterator position, const value_type& val) {
-				if (_capacity == 0)
-					reserve(1);
-				if (_n + 1 > _capacity)
-					reserve(_capacity * 2);
-				size_type insert_pos = begin() + position;
-				size_type dista = std::distance(position, end()-1);
-				std::cout << dist << std::endl;
-				std::cout << dista << std::endl;
-				// pointer newp = _alloc.allocate(_capacity - );
+				size_type tot_between_begin_position = std::distance(begin(), position);
+				if (_n + 1 > _capacity) {
+					if (_capacity == 0)
+						reserve(1);
+					else
+						reserve(_capacity * 2);
+					position = begin() + tot_between_begin_position;
+				}
+				for (size_type i = _n + 1; i > tot_between_begin_position; i --) {
+					_alloc.construct(_data + i, _data[i - 1]);
+					_alloc.destroy(_data + i - 1);
+				}
+				_alloc.construct(position, val);
+				_n ++;
 				return(position);
 			};
 
-			// void insert (iterator position, size_type n, const value_type& val);
+			void insert (iterator position, size_type n, const value_type& val) {
+				size_type tot_between_begin_position = std::distance(begin(), position);
+				if (_n + n > _capacity) {
+					if (_capacity == 0)
+						reserve(1);
+					else if ( _n + n <= _capacity * 2)
+						reserve(_capacity * 2);
+					else
+						reserve(_n + n);
+					position = begin() + tot_between_begin_position;
+				}
+				size_type i = _n + 1;
+				for (; i > tot_between_begin_position + n; i --) {
+					_alloc.construct(_data + i, _data[i - 1]);
+					_alloc.destroy(_data + i - 1);
+				}
+				_alloc.construct(_data + i - 1, val);
+				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++) {
+					_alloc.destroy(_data + i);
+					_alloc.construct(_data + i, val);
+				}
+				_n += n;
+			};
 			
-			// template <class InputIterator>
-			// void insert (iterator position, InputIterator first, InputIterator last);
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last) {
+				size_type tot_between_begin_position = std::distance(begin(), position);
+				size_type n = std::distance(first, last); //tot insert
+				if (_n + n > _capacity) {
+					if (_capacity == 0)
+						reserve(1);
+					else if ( _n + n <= _capacity * 2)
+						reserve(_capacity * 2);
+					else
+						reserve(_n + n);
+					position = begin() + tot_between_begin_position;
+				}
+				size_type i = _n + 1;
+				for (; i > tot_between_begin_position + n; i --) {
+					_alloc.construct(_data + i, _data[i - 1]);
+					_alloc.destroy(_data + i - 1);
+				}
+				_alloc.construct(_data + i - 1, *last);
+				i = tot_between_begin_position;
+				for (iterator it = first; it != last - 1; ++ it, i ++) {
+					_alloc.construct(_data + i, _data[i - 1]);
+					_alloc.destroy(_data + i - 1);
+				}
+			};
 
 
 			// allocator_type get_allocator() const;

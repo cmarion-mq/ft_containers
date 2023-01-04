@@ -52,11 +52,8 @@ int main() {
 	std::cout << "myvector max_size: " << myvector.max_size() << std::endl;
 	std::cout << "first empty?: " << first.empty() << std::endl;
 	std::cout << "myvector empty?: " << myvector.empty() << std::endl;
-
-	second.insert(second.begin() + 2, 3);
-
 	second.resize(10);
-	std::cout << "SECOND contains:";
+	std::cout << "Resize 10 SECOND contains:";
 	for (int i=0;i<second.size();i++)
     	std::cout << ' ' << second[i];
 	std::cout << std::endl;
@@ -66,6 +63,43 @@ int main() {
 	for (int i=0;i<second.size();i++)
     	std::cout << ' ' << second[i];
 	std::cout << std::endl;
+
+  	second.resize(15,5);
+	std::cout << "SECOND contains:";
+	for (int i=0;i<second.size();i++)
+    	std::cout << ' ' << second[i];
+	std::cout << std::endl;
+
+	{
+		std::vector<int> first (3,100);
+		std::vector<int>::iterator it = first.begin();
+		it = first.insert ( it , 200 );
+		std::cout << "myvector contains:";
+		for (it = first.begin(); it < first.end(); it++)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+
+		first.insert (it,2,300);
+		std::cout << "myvector contains:";
+		for (it = first.begin(); it < first.end(); it++)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+
+		it = first.begin(); // "it" no longer valid, get a new one
+		std::vector<int> anothervector (2,400);
+		first.insert (it+2,anothervector.begin(),anothervector.end());
+		std::cout << "myvector contains:";
+		for (it = first.begin(); it < first.end(); it++)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+
+		int myarray [] = { 501,502,503 };
+		first.insert (first.begin(), myarray, myarray+3);
+		std::cout << "myvector contains:";
+		for (it = first.begin(); it < first.end(); it++)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+	}
 
 	return 0;
 }

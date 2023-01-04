@@ -1,29 +1,38 @@
 #include <vector>
 #include <iostream>
 
-int main() {
-// ###############  CONSTRUCTORS  ###############
-	std::vector<int> second (4,100);       
-                  // four ints with value 10
+int main ()
+{
+  std::vector<int> myvector (3,100);
+  std::vector<int>::iterator it;
 
-	std::cout << "The contents of SECOND are:";
-	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
+  it = myvector.begin();
+  it = myvector.insert ( it , 200 );
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it<myvector.end(); it++)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
 
-// ###############  CAPACITY  ###############
+  myvector.insert (it,2,300);
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it<myvector.end(); it++)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
 
-	second.resize(10);
-	std::cout << "SECOND contains:";
-	for (int i=0;i<second.size();i++)
-    	std::cout << ' ' << second[i];
-	std::cout << std::endl;
+  it = myvector.begin(); // "it" no longer valid, get a new one:
+  std::vector<int> anothervector (2,400);
+  myvector.insert (it+2,anothervector.begin(),anothervector.end());
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it<myvector.end(); it++)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
 
-  	second.resize(8,100);
-	std::cout << "SECOND contains:";
-	for (int i=0;i<second.size();i++)
-    	std::cout << ' ' << second[i];
-	std::cout << std::endl;
-	
-	return 0;
+  int myarray [] = { 501,502,503 };
+  myvector.insert (myvector.begin(), myarray, myarray+3);
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it<myvector.end(); it++)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
+
+  return 0;
 }
