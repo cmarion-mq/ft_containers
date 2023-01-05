@@ -58,19 +58,19 @@ int main() {
 	std::cout << "myvector empty?: " << myvector.empty() << std::endl;
 	second.resize(10);
 	std::cout << "Resize 10 SECOND contains:";
-	for (int i=0;i<second.size();i++)
+	for (size_t i = 0; i < second.size(); i++)
     	std::cout << ' ' << second[i];
 	std::cout << std::endl;
 
   	second.resize(8,100);
 	std::cout << "SECOND contains:";
-	for (int i=0;i<second.size();i++)
+	for (size_t i = 0;i < second.size(); i++)
     	std::cout << ' ' << second[i];
 	std::cout << std::endl;
 
   	second.resize(15,5);
 	std::cout << "SECOND contains:";
-	for (int i=0;i<second.size();i++)
+	for (size_t i=0;i<second.size(); i++)
     	std::cout << ' ' << second[i];
 	std::cout << std::endl;
 
@@ -134,7 +134,7 @@ int main() {
   		for (unsigned i=0; i<myvector.size(); i++)
     		std::cout << ' ' << myvector.at(i);
   		std::cout << std::endl;
-		myvector.at(12);
+		//myvector.at(12);
 	}
 	return 0;
 }

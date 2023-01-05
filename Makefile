@@ -13,6 +13,8 @@ OBJS_FT			=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_ft.o))
 OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))
 OBJS_42			=	$(addprefix $(OBJ_PATH),$(SRCS_42:.cpp=.o))
 
+DEPS			=	$(OBJS_STD:.o=.d) $(OBJS_FT:.o=.d)
+
 all: 				$(NAME_FT) $(NAME_STD)
 
 $(OBJ_PATH)%_ft.o:	%.cpp
@@ -29,13 +31,21 @@ $(NAME_FT): 		$(OBJS_FT)
 $(NAME_STD): 		$(OBJS_STD)
 					$(CXX) $(CXXFLAGS) $(OBJS_STD) -o $(NAME_STD)
 
+diff:
+					time ./$(NAME_FT) > ft.out
+					time ./$(NAME_STD) > std.out
+					diff ft.out std.out
+
 clean:
 					rm -rf $(OBJ_PATH)
 
 fclean: 			clean
-					rm -f $(NAME)
+					rm -f $(NAME_FT)
+					rm -f $(NAME_STD)
 
 re: 				fclean 
 					make
 
 .PHONY: 			all clean fclean re
+
+-include $(DEPS)

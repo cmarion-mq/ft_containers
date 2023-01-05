@@ -121,7 +121,7 @@ namespace ft {
 			const_reference	front() const 					{ return (*_data); };
 			reference		back() 							{ return (*(_data + _n - 1)); };
 			const_reference	back() const 					{ return (*(_data + _n - 1)); };
-			
+
 			reference		at (size_type n) {
 				if (n >= _n) {
 					throw std::out_of_range("vector::at");
@@ -220,16 +220,17 @@ namespace ft {
 						reserve(_n + n);
 					position = begin() + tot_between_begin_position;
 				}
-				size_type i = _n + 1;
-				for (; i > tot_between_begin_position + n; i --) {
-					_alloc.construct(_data + i, _data[i - 1]);
-					_alloc.destroy(_data + i - 1);
+				size_type i = _n + n - 1;
+				for (; i > tot_between_begin_position + n - 1; i --) {
+					_alloc.construct(_data + i, _data[i - n]);
+					_alloc.destroy(_data + i - n);
 				}
-				_alloc.construct(_data + i - 1, *last);
+				_alloc.construct(_data + i, *(last - 1));
 				i = tot_between_begin_position;
-				for (iterator it = first; it != last - 1; ++ it, i ++) {
-					_alloc.construct(_data + i, _data[i - 1]);
-					_alloc.destroy(_data + i - 1);
+				size_type j = 0;
+				for (iterator it = first; it != last - 1; ++ it, i ++, j ++) {
+					_alloc.destroy(_data + i);
+					_alloc.construct(_data + i, *(first + j));
 				}
 				_n += n;
 			};
@@ -257,16 +258,16 @@ namespace ft {
 				return (first);
 			};
 
-			void swap(vector& x) {
+			/*void swap(vector& x) {
 
-			};
+			};*/
 			// allocator_type get_allocator() const;
 
 		private:
+			allocator_type	_alloc;
 		    pointer			_data;
 		    size_type		_n;
 		    size_type		_capacity;
-			allocator_type	_alloc;
 	};
 }
 
