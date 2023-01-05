@@ -1,51 +1,55 @@
 #include <iostream>
 #include <string>
+#include <stdlib.h>
 #include <vector>
 #include "vector.hpp"
-#include <stdlib.h>
+
+#ifndef NS
+# define NS ft
+#endif
 
 int main() {
 // ###############  CONSTRUCTORS  ###############
-	ft::vector<int> first;                                // empty vector of ints
-	ft::vector<int> second (4,100);                       // four ints with value 100
-	ft::vector<int> third (second.begin(), second.end());  // iterating through second
-	ft::vector<int> fourth (second);                       // a copy of third
+	NS::vector<int> first;                                // empty vector of ints
+	NS::vector<int> second (4,100);                       // four ints with value 100
+	NS::vector<int> third (second.begin(), second.end());  // iterating through second
+	NS::vector<int> fourth (second);                       // a copy of third
 	int myints[] = {16,2,77,29};
-	ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) ); // the iterator constructor can also be used to construct from arrays:
-	ft::vector<int> sixth = fifth; // operator =
+	NS::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) ); // the iterator constructor can also be used to construct from arrays:
+	NS::vector<int> sixth = fifth; // operator =
 
 	std::cout << "The contents of FIRST are:";
-	for (ft::vector<int>::iterator it = first.begin(); it != first.end(); ++it)
+	for (NS::vector<int>::iterator it = first.begin(); it != first.end(); ++it)
 		std::cout << ' ' << *it;
   	std::cout << std::endl;
 
 	std::cout << "The contents of SECOND are:";
-	for (ft::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
+	for (NS::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
 
 	std::cout << "The contents of THIRD are:";
-	for (ft::vector<int>::iterator it = third.begin(); it != third.end(); ++it)
+	for (NS::vector<int>::iterator it = third.begin(); it != third.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
 
 	std::cout << "The contents of FOURTH are:";
-	for (ft::vector<int>::iterator it = fourth.begin(); it != fourth.end(); ++it)
+	for (NS::vector<int>::iterator it = fourth.begin(); it != fourth.end(); ++it)
 		std::cout << ' ' << *it;	
 	std::cout << std::endl;
 
 	std::cout << "The contents of FIFTH are:";
-	for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)	
+	for (NS::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)	
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
 
 	std::cout << "The contents of XIXTH are:";
-	for (ft::vector<int>::iterator it = sixth.begin(); it != sixth.end(); ++it)
+	for (NS::vector<int>::iterator it = sixth.begin(); it != sixth.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
 
 // ###############  CAPACITY  ###############
-	ft::vector<int> myvector;
+	NS::vector<int> myvector;
 	for (int i=0; i<100; i++) myvector.push_back(i); // set some content in the vector
 	std::cout << "myvector size: " << myvector.size() << std::endl;
 	std::cout << "myvector capacity: " << myvector.capacity() << std::endl;
@@ -72,8 +76,8 @@ int main() {
 
 // ###############  MODIFIERS  ###############
 	{
-		std::vector<int> first (3,100);
-		std::vector<int>::iterator it = first.begin();
+		NS::vector<int> first (3,100);
+		NS::vector<int>::iterator it = first.begin();
 		it = first.insert ( it , 200 );
 		std::cout << "myvector contains:";
 		for (it = first.begin(); it < first.end(); it++)
@@ -87,7 +91,7 @@ int main() {
 		std::cout << std::endl;
 
 		it = first.begin(); // "it" no longer valid, get a new one
-		std::vector<int> anothervector (2,400);
+		NS::vector<int> anothervector (2,400);
 		first.insert (it+2,anothervector.begin(),anothervector.end());
 		std::cout << "myvector contains:";
 		for (it = first.begin(); it < first.end(); it++)
@@ -102,7 +106,7 @@ int main() {
 		std::cout << std::endl;
 	}
 	{
-		ft::vector<int> myvector;
+		NS::vector<int> myvector;
 		
 		for (int i=1; i<=10; i++) myvector.push_back(i);// set some values (from 1 to 10)
 		
@@ -121,7 +125,7 @@ int main() {
 
 // ###############  ELEMENT ACCESS  ###############
 	{
-		std::vector<int> myvector (10);   // 10 zero-initialized ints
+		NS::vector<int> myvector (10);   // 10 zero-initialized ints
 
 		for (unsigned i=0; i<myvector.size(); i++)
     		myvector.at(i)=i; // assign some values

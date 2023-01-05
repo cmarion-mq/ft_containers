@@ -7,7 +7,7 @@
 #include "iterators/iterators_traits.hpp"
 
 namespace ft {
-	template < class T, class Allocator = std::allocator<T>>
+	template < class T, class Allocator = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -22,6 +22,7 @@ namespace ft {
 			typedef const T*								const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
 			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef std::ptrdiff_t 							difference_type;
 			typedef size_t									size_type; 
 
 			/*--- CON/DE_STRUCTORS ---*/
@@ -207,7 +208,7 @@ namespace ft {
 			};
 			
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last) {
+			void insert(iterator position, typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				size_type n = std::distance(first, last); //tot insert
 				if (_n + n > _capacity) {
