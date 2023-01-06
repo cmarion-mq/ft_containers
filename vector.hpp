@@ -33,19 +33,14 @@ namespace ft {
 			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _n(n), _capacity(n) {
 				if (_n > _alloc.max_size())
 					throw std::length_error("cannot create std::vector larger than max_size()");
-				_data = _alloc.allocate(_n);
+				_data = _alloc.allocate(n);
 				for (size_type i = 0; i < _n; i ++)
 					_alloc.construct(_data + i, val);
 			};
 			
 			template <class InputIterator>
-			vector (typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc) {
-				_n = std::distance(first,last);
-				_capacity = _n;
-				_data = _alloc.allocate(_n);
-				int i = 0;
-				for (InputIterator it = first; it != last; ++ it, i ++)
-					_alloc.construct(_data + i, *it);
+			vector (typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0) {
+				insert_helper(begin(), first, last, typename iterator_traits<InputIterator>::iterator_category());
 			};
 			
 			vector (const vector& x) {
@@ -53,10 +48,7 @@ namespace ft {
 			};
 	
 			~vector(void) {
-			    for (size_type i = 0; i < _n; i ++) {
-			        _alloc.destroy(_data + i);
-					_n --;
-				}
+				clear();
 				if (_capacity > 0)
 					_alloc.deallocate(_data, _capacity);
 				_capacity = 0;
@@ -64,10 +56,10 @@ namespace ft {
 
 			vector &operator= (const vector &x) {
 				if (this != &x) {
-					_n = x._n;
-					_capacity = x._capacity;
 					_alloc = x._alloc;
-					_data = _alloc.allocate(_n);
+					clear();
+					reserve(x._n);
+					_n = x._n;
 					for (size_type i = 0; i < _n; i ++)
 						_alloc.construct(_data + i, x._data[i]);
 				}
@@ -176,7 +168,7 @@ namespace ft {
 					if (_capacity == 0)
 						reserve(1);
 					else
-						reserve(_capacity * 2);
+						reserve(_n * 2);
 					position = begin() + tot_between_begin_position;
 				}
 				for (size_type i = _n + 1; i > tot_between_begin_position; i --) {
@@ -192,9 +184,9 @@ namespace ft {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				if (_n + n > _capacity) {
 					if (_capacity == 0)
-						reserve(1);
-					else if ( _n + n <= _capacity * 2)
-						reserve(_capacity * 2);
+						reserve(n);
+					else if ( _n + n <= _n * 2)
+						reserve(_n * 2);
 					else
 						reserve(_n + n);
 				}
@@ -268,17 +260,19 @@ namespace ft {
 				size_type n = std::distance(first, last); //tot insert
 				if (_n + n > _capacity) {
 					if (_capacity == 0)
-						reserve(1);
-					else if ( _n + n <= _capacity * 2)
-						reserve(_capacity * 2);
+						reserve(n);
+					else if ( _n + n <= _n * 2)
+						reserve(_n * 2);
 					else
 						reserve(_n + n);
 				}
 				size_type i = _n + n - 1;
 				for (; i > tot_between_begin_position + n - 1; i --) {
+		// std::cout << "in for i: " << i << std::endl;
 					_alloc.construct(_data + i, _data[i - n]);
 					_alloc.destroy(_data + i - n);
 				}
+		// std::cout << "i: " << i << std::endl;
 				_alloc.construct(_data + i, *(-- last));
 				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n - 1; i ++, first ++) {
 					_alloc.destroy(_data + i);

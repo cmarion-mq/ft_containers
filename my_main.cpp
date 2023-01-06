@@ -15,15 +15,18 @@ static void display(NS::vector<T, Allocator>& vect)
     std::cout << "max_size: " << vect.max_size() << std::endl;
     std::cout << "capacity: " << vect.capacity() << std::endl;
     std::cout << "empty: " << vect.empty() << std::endl;
-    std::cout <<  std::endl;
+    for (size_t i = 0; i < vect.size(); i++) {
+    	std::cout << ' ' << vect[i];}
+	std::cout << std::endl;
 }
 
 int main() {
 // ###############  CONSTRUCTORS  ###############
-	NS::vector<int> first;                                // empty vector of ints
-	NS::vector<int> second (4,100);                       // four ints with value 100
-	NS::vector<int> third (second.begin(), second.end());  // iterating through second
-	NS::vector<int> fourth (second);                       // a copy of third
+	NS::vector<int> first; 									// empty vector of ints
+	NS::vector<int> second (4,100);							// four ints with value 100
+	display(second);
+	NS::vector<int> third (second.begin(), second.end());	// iterating through second
+	NS::vector<int> fourth (second);						// a copy of third
 	int myints[] = {16,2,77,29};
 	NS::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) ); // the iterator constructor can also be used to construct from arrays:
 	NS::vector<int> sixth = fifth; // operator =
