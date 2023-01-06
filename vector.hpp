@@ -84,7 +84,7 @@ namespace ft {
 			reverse_iterator		rend()			{ return reverse_iterator(_data);};
 			const_reverse_iterator	rend() const	{ return const_reverse_iterator(_data);};
 
-			/*---     CAPACITY     ---*/
+/*---     CAPACITY     ---*/
 			size_type	size() const		{ return (_n); };
 			size_type	max_size() const	{ return (_alloc.max_size()); };
 			size_type	capacity() const	{ return (_capacity); };
@@ -197,7 +197,6 @@ namespace ft {
 						reserve(_capacity * 2);
 					else
 						reserve(_n + n);
-					position = begin() + tot_between_begin_position;
 				}
 				size_type i = _n + 1;
 				for (; i > tot_between_begin_position + n; i --) {
@@ -256,6 +255,7 @@ namespace ft {
 /*---     ALLOCATOR    ---*/
 			allocator_type get_allocator() const { return _alloc; };
 
+
 		private:
 			allocator_type	_alloc;
 		    pointer			_data;
@@ -273,19 +273,16 @@ namespace ft {
 						reserve(_capacity * 2);
 					else
 						reserve(_n + n);
-					position = begin() + tot_between_begin_position;
 				}
 				size_type i = _n + n - 1;
 				for (; i > tot_between_begin_position + n - 1; i --) {
 					_alloc.construct(_data + i, _data[i - n]);
 					_alloc.destroy(_data + i - n);
 				}
-				_alloc.construct(_data + i, *(last - 1));
-				i = tot_between_begin_position;
-				size_type j = 0;
-				for (iterator it = first; it != last - 1; ++ it, i ++, j ++) {
+				_alloc.construct(_data + i, *(-- last));
+				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n - 1; i ++, first ++) {
 					_alloc.destroy(_data + i);
-					_alloc.construct(_data + i, *(first + j));
+					_alloc.construct(_data + i, *first);
 				}
 				_n += n;
 			};
@@ -329,8 +326,9 @@ namespace ft {
 	};
 
 	template <class T, class Alloc>
-	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {
+		x.swap(y);
+	};
 }
-
 
 #endif

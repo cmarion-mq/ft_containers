@@ -8,6 +8,16 @@
 # define NS ft
 #endif
 
+template <typename T, typename Allocator>
+static void display(NS::vector<T, Allocator>& vect)
+{
+    std::cout << "size: " << vect.size() << std::endl;
+    std::cout << "max_size: " << vect.max_size() << std::endl;
+    std::cout << "capacity: " << vect.capacity() << std::endl;
+    std::cout << "empty: " << vect.empty() << std::endl;
+    std::cout <<  std::endl;
+}
+
 int main() {
 // ###############  CONSTRUCTORS  ###############
 	NS::vector<int> first;                                // empty vector of ints
@@ -153,5 +163,5 @@ int main() {
   		std::cout << std::endl;
 		//myvector.at(12);
 	}
-	return 0;
+    return (0);
 }
