@@ -44,6 +44,9 @@ namespace ft {
 			};
 			
 			vector (const vector& x) {
+				_n = 0;
+				_data = NULL;
+				_capacity = 0;
 				*this = x;
 			};
 	
