@@ -120,7 +120,7 @@ namespace ft {
 
 			reference		at (size_type n) {
 				if (n >= _n) {
-					throw std::out_of_range("vector::at");
+					throw std::out_of_range("vector::_M_range_check: __n (which is " + n.c_str() + ") >= this->size() (which is 10)");
 				}
 				return (_data[n]);
 			};
