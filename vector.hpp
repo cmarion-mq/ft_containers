@@ -70,14 +70,14 @@ namespace ft {
 			};
 
 /*---     ITERATORS    ---*/
-			iterator				begin()			{ return _data; };
+			iterator				begin()			{ return _data;	};
 			const_iterator			begin() const	{ return _data; };
 			iterator 				end()			{ return _data + _n; };
 			const_iterator			end() const		{ return _data + _n; };
 			reverse_iterator		rbegin()		{ return reverse_iterator(_data + _n); };
 			const_reverse_iterator 	rbegin() const	{ return const_reverse_iterator(_data + _n); };
-			reverse_iterator		rend()			{ return reverse_iterator(_data);};
-			const_reverse_iterator	rend() const	{ return const_reverse_iterator(_data);};
+			reverse_iterator		rend()			{ return reverse_iterator(_data); };
+			const_reverse_iterator	rend() const	{ return const_reverse_iterator(_data); };
 
 /*---     CAPACITY     ---*/
 			size_type	size() const		{ return (_n); };
@@ -111,7 +111,6 @@ namespace ft {
 			};
 
 /*---  ELEMENT ACCESS  ---*/
-			
 			reference		operator[] (size_type n)		{ return (_data[n]); };
 			const_reference operator[] (size_type n) const	{ return (_data[n]); };
 			reference		front()							{ return (*_data); };
@@ -142,7 +141,7 @@ namespace ft {
 			
 			void assign(size_type n, const value_type& val) {
 				if (_n + n > _capacity)
-					reserve(_n + 1);
+					reserve(n);
 				for (size_type i = 0; i < n; i ++) {
 					if (i < _n)
 						_alloc.destroy(_data + i);
@@ -174,7 +173,7 @@ namespace ft {
 						reserve(_n * 2);
 					position = begin() + tot_between_begin_position;
 				}
-				for (size_type i = _n + 1; i > tot_between_begin_position; i --) {
+				for (size_type i = _n; i > tot_between_begin_position; i --) {
 					_alloc.construct(_data + i, _data[i - 1]);
 					_alloc.destroy(_data + i - 1);
 				}
@@ -193,12 +192,12 @@ namespace ft {
 					else
 						reserve(_n + n);
 				}
-				size_type i = _n + 1;
-				for (; i > tot_between_begin_position + n; i --) {
-					_alloc.construct(_data + i, _data[i - 1]);
+				size_type i = _n + n - 1;
+				for (; i > tot_between_begin_position + n - 1; i --) {
+					_alloc.construct(_data + i, _data[i - n]);
 					_alloc.destroy(_data + i - 1);
 				}
-				_alloc.construct(_data + i - 1, val);
+				_alloc.construct(_data + i , val);
 				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++) {
 					_alloc.destroy(_data + i);
 					_alloc.construct(_data + i, val);
@@ -271,11 +270,9 @@ namespace ft {
 				}
 				size_type i = _n + n - 1;
 				for (; i > tot_between_begin_position + n - 1; i --) {
-		// std::cout << "in for i: " << i << std::endl;
 					_alloc.construct(_data + i, _data[i - n]);
 					_alloc.destroy(_data + i - n);
 				}
-		// std::cout << "i: " << i << std::endl;
 				_alloc.construct(_data + i, *(-- last));
 				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n - 1; i ++, first ++) {
 					_alloc.destroy(_data + i);
