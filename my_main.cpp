@@ -22,6 +22,8 @@ static void display(NS::vector<T, Allocator>& vect)
 
 int main() {
 // ###############  CONSTRUCTORS  ###############
+std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
+{
 	NS::vector<int> first; 									// empty vector of ints
 	NS::vector<int> second (4,100);							// four ints with value 100
 	display(second);
@@ -60,8 +62,47 @@ int main() {
 	for (NS::vector<int>::iterator it = sixth.begin(); it != sixth.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
+}
+std::cout << "\e[7m$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\e[0m" << std::endl;
+std::cout << std::endl;
+// ################  ITERATORS   ################
+std::cout << "\e[7m===============ITERATORS=============\e[0m" << std::endl;
+{
+	std::vector<int> myvector;
+	for (int i=1; i<=5; i++) myvector.push_back(i);
 
+	std::cout << "myvector contains:";
+	for (std::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << std::endl;
+}{
+	std::vector<int> myvector (5);  // 5 default-constructed ints
+	int i=0;
+	std::vector<int>::reverse_iterator rit = myvector.rbegin();
+	for (; rit!= myvector.rend(); ++rit)
+	*rit = ++i;
+
+	std::cout << "myvector reverse contains:";
+	for (std::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+    	std::cout << ' ' << *it;
+	std::cout << std::endl;
+}
+std::cout << "\e[7m$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\e[0m" << std::endl;
+std::cout << std::endl;
 // ###############  CAPACITY  ###############
+std::cout << "\e[7m=============CAPACITY============\e[0m" << std::endl;
+{
+	std::vector<int> myvector;
+	for (int i=1;i<10;i++) myvector.push_back(i);
+	myvector.resize(5);
+	myvector.resize(8,100);
+	myvector.resize(12);
+	std::cout << "myvector contains:";
+	for (int i=0;i<myvector.size();i++)
+		std::cout << ' ' << myvector[i];
+	std::cout << std::endl;
+}
+
 	NS::vector<int> myvector;
 	for (int i=0; i<100; i++) myvector.push_back(i); // set some content in the vector
 	std::cout << "myvector size: " << myvector.size() << std::endl;
