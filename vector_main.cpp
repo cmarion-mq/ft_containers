@@ -48,7 +48,7 @@ int		main(void)
 	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
 	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
 
-	printSize(vct, true);
+	display(vct);
 	return (0);
 }
 
