@@ -23,7 +23,7 @@ static void display(NS::vector<T, Allocator>& vect) {
 	std::cout << std::endl;
 }
 
-int main() {
+/*int main() {
 	// NS::vector<int> first(42);
 	// std::cout << first.max_size() << std::endl;
 	// NS::vector<int> second(first.max_size() + 1);
@@ -33,9 +33,8 @@ int main() {
 
 	NS::vector<int> myvector (10);   // 10 zero-initialized ints
 	myvector.at(11);
-}
+}*/
 
-/*
 int main() {
 	// ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
@@ -347,4 +346,3 @@ int main() {
 	}
 		return (0);
 }
-*/

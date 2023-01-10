@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 #include <iostream>
+#include <sstream>
 #include "utils/is_integral.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/equal.hpp"
@@ -119,8 +120,14 @@ namespace ft {
 			const_reference	back() const 					{ return (*(_data + _n - 1)); };
 
 			reference		at (size_type n) {
+
 				if (n >= _n) {
-					throw std::out_of_range("vector::_M_range_check: __n (which is " + n.c_str() + ") >= this->size() (which is 10)");
+					std::string			str;
+					std::stringstream	stn, st_n;
+					stn << n;
+					st_n << _n;
+					str = "vector::_M_range_check: __n (which is " + stn.str() + ") >= this->size() (which is " + st_n.str() + ")";
+					throw std::out_of_range(str);
 				}
 				return (_data[n]);
 			};

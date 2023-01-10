@@ -3,7 +3,7 @@ NAME_STD		= 	std_containers
 
 OBJ_PATH		=	./obj/
 
-SRCS			=	my_main.cpp
+SRCS			=	vector_main.cpp
 SRCS_42			=	main.cpp
 
 CXX	 			=	c++
