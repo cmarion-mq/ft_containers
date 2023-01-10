@@ -23,6 +23,35 @@ static void display(NS::vector<T, Allocator>& vect) {
 	std::cout << std::endl;
 }
 
+int		main(void)
+{
+	const int size = 5;
+	NS::vector<int> vct(size);
+	NS::vector<int>::reverse_iterator it = vct.rbegin();
+	NS::vector<int>::const_reverse_iterator ite = vct.rbegin();
+
+	for (int i = 0; i < size; ++i)
+		it[i] = (size - i) * 5;
+
+	it = it + 5;
+	it = 1 + it;
+	it = it - 4;
+	std::cout << *(it += 2) << std::endl;
+	std::cout << *(it -= 1) << std::endl;
+
+	*(it -= 2) = 42;
+	*(it += 2) = 21;
+
+	std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+	std::cout << "(it == const_it): " << (ite == it) << std::endl;
+	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+	printSize(vct, true);
+	return (0);
+}
+
 /*int main() {
 	// NS::vector<int> first(42);
 	// std::cout << first.max_size() << std::endl;
@@ -35,7 +64,7 @@ static void display(NS::vector<T, Allocator>& vect) {
 	myvector.at(11);
 }*/
 
-int main() {
+/*int main() {
 	// ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
 	{
@@ -345,4 +374,4 @@ int main() {
 		display(bar);
 	}
 		return (0);
-}
+}*/

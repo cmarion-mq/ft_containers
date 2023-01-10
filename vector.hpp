@@ -8,6 +8,7 @@
 #include "utils/equal.hpp"
 #include "utils/lexicographical_compare.hpp"
 #include "iterators/iterators_traits.hpp"
+#include "iterators/reverse_iterator.hpp"
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
@@ -23,8 +24,8 @@ namespace ft {
 			typedef typename Allocator::const_pointer		const_pointer;
 			typedef T*										iterator;
 			typedef const T*								const_iterator;
-			typedef std::reverse_iterator<iterator>			reverse_iterator;
-			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef std::ptrdiff_t 							difference_type;
 			typedef size_t									size_type; 
 
