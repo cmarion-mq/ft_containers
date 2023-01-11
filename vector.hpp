@@ -3,6 +3,12 @@
 
 #include <iostream>
 #include <sstream>
+// #include "is_integral.hpp"
+// #include "enable_if.hpp"
+// #include "equal.hpp"
+// #include "lexicographical_compare.hpp"
+// #include "iterators_traits.hpp"
+// #include "reverse_iterator.hpp"
 #include "utils/is_integral.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/equal.hpp"
@@ -192,25 +198,23 @@ namespace ft {
 
 			void insert(iterator position, size_type n, const value_type& val) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
-				if (_n + n > _capacity) {
-					if (_capacity == 0)
-						reserve(n);
-					else if ( _n + n <= _n * 2)
-						reserve(_n * 2);
-					else
-						reserve(_n + n);
+				if (n > 0) {
+					if (_n + n > _capacity) {
+						if (_capacity == 0)
+							reserve(n);
+						else if ( _n + n <= _n * 2)
+							reserve(_n * 2);
+						else
+							reserve(_n + n);
+					}
+					for (size_type i = _n + n - 1; i > tot_between_begin_position + n - 1; i --) {
+						_alloc.construct(_data + i, _data[i - n]);
+						_alloc.destroy(_data + i - n);
+					}
+					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++) 
+						_alloc.construct(_data + i, val);
+					_n += n;
 				}
-				size_type i = _n + n - 1;
-				for (; i > tot_between_begin_position + n - 1; i --) {
-					_alloc.construct(_data + i, _data[i - n]);
-					_alloc.destroy(_data + i - 1);
-				}
-				_alloc.construct(_data + i , val);
-				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++) {
-					_alloc.destroy(_data + i);
-					_alloc.construct(_data + i, val);
-				}
-				_n += n;
 			};
 			
 			template <class InputIterator>
@@ -220,11 +224,11 @@ namespace ft {
 
 			iterator erase(iterator position) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
-				for (size_type i = tot_between_begin_position; i < _n; i ++) {
+				for (size_type i = tot_between_begin_position; i < _n - 1; i ++) {
 					_alloc.destroy(_data + i);
 					_alloc.construct(_data + i, _data[i + 1]);
 				}
-				_alloc.destroy(_data + _n);
+				_alloc.destroy(_data + _n - 1);
 				_n --;
 				return (position);
 			};
@@ -232,10 +236,14 @@ namespace ft {
 			iterator erase(iterator first, iterator last) {
 				size_type n = std::distance(first, last); //tot erase
 				size_type tot_between_begin_position = std::distance(begin(), first);
-				for (size_type i = tot_between_begin_position; i < _n - 1; i ++) {
+				size_type i = tot_between_begin_position;
+				for (; i < _n && i + n < _n; i ++) {
 					_alloc.destroy(_data + i);
 					_alloc.construct(_data + i, _data[i + n]);
 					_alloc.destroy(_data + i + n);
+				}
+				for (; i < _n - 1; i ++){
+					_alloc.destroy(_data + i);
 				}
 				_n -= n;
 				return (first);
@@ -268,7 +276,8 @@ namespace ft {
 			void insert_helper(iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				size_type n = std::distance(first, last); //tot insert
-				if (_n + n > _capacity) {
+				if (n > 0) { 
+									if (_n + n > _capacity) {
 					if (_capacity == 0)
 						reserve(n);
 					else if ( _n + n <= _n * 2)
@@ -283,10 +292,11 @@ namespace ft {
 				}
 				_alloc.construct(_data + i, *(-- last));
 				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n - 1; i ++, first ++) {
-					_alloc.destroy(_data + i);
 					_alloc.construct(_data + i, *first);
 				}
 				_n += n;
+			}
+
 			};
 
 			template <class InputIterator>
