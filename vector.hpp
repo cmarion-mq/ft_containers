@@ -36,9 +36,11 @@ namespace ft {
 			typedef size_t									size_type; 
 
 /*--- CON/DE_STRUCTORS ---*/
-			explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0) {};
+			explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0)
+			{};
 			
-			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _n(n), _capacity(n) {
+			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _n(n), _capacity(n)
+			{
 				if (_n > _alloc.max_size())
 					throw std::length_error("cannot create std::vector larger than max_size()");
 				_data = _alloc.allocate(n);
@@ -47,7 +49,8 @@ namespace ft {
 			};
 			
 			template <class InputIterator>
-			vector (typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0) {
+			vector (typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0)
+			{
 				insert_helper(begin(), first, last, typename iterator_traits<InputIterator>::iterator_category());
 			};
 			
