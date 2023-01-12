@@ -242,9 +242,6 @@ namespace ft {
 					_alloc.construct(_data + i, _data[i + n]);
 					_alloc.destroy(_data + i + n);
 				}
-				for (; i < _n - 1; i ++){
-					_alloc.destroy(_data + i);
-				}
 				_n -= n;
 				return (first);
 			};
@@ -299,7 +296,7 @@ namespace ft {
 			void insert_helper(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag) {
 			size_type tot_between_begin_position = std::distance(begin(), position);
 				for (InputIterator it = first; it != last; ++ it, tot_between_begin_position ++)
-					insert(iterator(tot_between_begin_position), *it);
+					insert(iterator(begin() + tot_between_begin_position), *it);
 			};
 	};
 
