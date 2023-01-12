@@ -39,8 +39,8 @@ int main() {
 	// ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
 	{
-		NS::vector<int> first; 									// empty vector of ints
-		NS::vector<int> second (4,100);							// four ints with value 100
+		NS::vector<int> first; 			
+		NS::vector<int> second;								// empty vector of ints
 		NS::vector<int> third (second.begin(), second.end());	// iterating through second
 		NS::vector<int> fourth (second);						// a copy of third
 		int myints[] = {16,2,77,29};

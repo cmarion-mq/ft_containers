@@ -218,7 +218,7 @@ namespace ft {
 			};
 			
 			template <class InputIterator>
-			void insert(iterator position, typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last) {
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type insert(iterator position, InputIterator first, InputIterator last) {
 				insert_helper(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
 			};
 
@@ -289,16 +289,15 @@ namespace ft {
 						_alloc.construct(_data + i, _data[i - n]);
 						_alloc.destroy(_data + i - n);
 					}
-					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++, first ++) {
+					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++, first ++)
 						_alloc.construct(_data + i, *first);
-					}
 					_n += n;
 				}
 			};
 
 			template <class InputIterator>
 			void insert_helper(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag) {
-				size_type tot_between_begin_position = std::distance(begin(), position);
+			size_type tot_between_begin_position = std::distance(begin(), position);
 				for (InputIterator it = first; it != last; ++ it, tot_between_begin_position ++)
 					insert(iterator(tot_between_begin_position), *it);
 			};

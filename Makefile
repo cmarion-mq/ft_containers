@@ -7,7 +7,7 @@ SRCS			=	vector_main.cpp
 SRCS_42			=	main.cpp
 
 CXX	 			=	c++
-CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address
 
 OBJS_FT			=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_ft.o))
 OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))
@@ -49,3 +49,5 @@ re: 				fclean
 .PHONY: 			all clean fclean re
 
 -include $(DEPS)
+
+#./tester/string_main.cpp

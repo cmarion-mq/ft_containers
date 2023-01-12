@@ -41,8 +41,8 @@ compile () {
 	macro_name=$(echo "USING_${2}" | awk '{ print toupper($0) }')
 	compile_cmd="$CC $CFLAGS -o ${3} -g3 -fsanitize=address -I./$include_path -D ${macro_name} ${1}"
 	if [ -n "$4" ]; then
-		compile_cmd+=" &>/dev/null"
-		# compile_cmd+=" &>/dev/stdout"
+		compile_cmd+=" &>/dev/stdout"
+		# compile_cmd+=" &>/dev/null"
 	fi
 	eval "${compile_cmd}"
 	return $?
