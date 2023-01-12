@@ -277,33 +277,30 @@ namespace ft {
 				size_type tot_between_begin_position = std::distance(begin(), position);
 				size_type n = std::distance(first, last); //tot insert
 				if (n > 0) { 
-									if (_n + n > _capacity) {
-					if (_capacity == 0)
-						reserve(n);
-					else if ( _n + n <= _n * 2)
-						reserve(_n * 2);
-					else
-						reserve(_n + n);
+					if (_n + n > _capacity) {
+						if (_capacity == 0)
+							reserve(n);
+						else if ( _n + n <= _n * 2)
+							reserve(_n * 2);
+						else
+							reserve(_n + n);
+					}		
+					for (size_type i = _n + n - 1; i > tot_between_begin_position + n - 1; i --) {
+						_alloc.construct(_data + i, _data[i - n]);
+						_alloc.destroy(_data + i - n);
+					}
+					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++, first ++) {
+						_alloc.construct(_data + i, *first);
+					}
+					_n += n;
 				}
-				size_type i = _n + n - 1;
-				for (; i > tot_between_begin_position + n - 1; i --) {
-					_alloc.construct(_data + i, _data[i - n]);
-					_alloc.destroy(_data + i - n);
-				}
-				_alloc.construct(_data + i, *(-- last));
-				for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n - 1; i ++, first ++) {
-					_alloc.construct(_data + i, *first);
-				}
-				_n += n;
-			}
-
 			};
 
 			template <class InputIterator>
 			void insert_helper(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
-				for (iterator it = first; it != last - 1; ++ it, tot_between_begin_position ++)
-					insert(tot_between_begin_position, *it);
+				for (InputIterator it = first; it != last; ++ it, tot_between_begin_position ++)
+					insert(iterator(tot_between_begin_position), *it);
 			};
 	};
 
