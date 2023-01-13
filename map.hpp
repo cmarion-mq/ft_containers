@@ -40,17 +40,23 @@ namespace ft {
 
 			class value_compare : public binary_function<value_type,value_type,bool> {
 				friend class map;
-				protected:
-					Compare comp;
-					value_compare(Compare c) : comp(c) {}
-				
 				public:
 					bool operator()(const value_type& x, const value_type& y) const {
 						return comp(x.first, y.first);
 					}
+					
+				protected:
+					Compare comp;
+					value_compare(Compare c) : comp(c) {}
 			};
 
 /*--- CON/DE_STRUCTORS ---*/
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+
+			template <class InputIterator>
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+
+			map (const map& x);
 
 /*---     ITERATORS    ---*/
 

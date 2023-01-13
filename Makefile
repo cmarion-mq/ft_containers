@@ -24,7 +24,7 @@ $(OBJ_PATH)%_std.o:	%.cpp
 					@mkdir -p $(dir $@)
 					$(CXX) $(CXXFLAGS) -D NS=std -MMD -c $< -o $@ -I.		
 
-vector:				
+vector:				all
 					@mkdir -p $(VECTOR_PATH) 
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)vector_ft.o -o $(VECTOR_PATH)ft_vector
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)vector_std.o -o $(VECTOR_PATH)std_vector
@@ -32,7 +32,7 @@ vector:
 					time $(VECTOR_PATH)std_vector > $(VECTOR_PATH)std.out
 					diff $(VECTOR_PATH)ft.out $(VECTOR_PATH)std.out
 
-stack:				
+stack:				all
 					@mkdir -p $(STACK_PATH) 
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)stack_ft.o -o $(STACK_PATH)ft_stack
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)stack_std.o -o $(STACK_PATH)std_stack
