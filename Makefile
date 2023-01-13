@@ -1,21 +1,20 @@
-NAME_FT			= 	ft_containers
-NAME_STD		= 	std_containers
-
 OBJ_PATH		=	./obj/
+VECTOR_PATH		=	./vector/
+STACK_PATH		=	./stack/
 
-SRCS			=	vector_main.cpp
-SRCS_42			=	main.cpp
+SRCS			=	main_42.cpp \
+					vector.cpp \
+					stack.cpp
 
 CXX	 			=	c++
 CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address
 
 OBJS_FT			=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_ft.o))
 OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))
-OBJS_42			=	$(addprefix $(OBJ_PATH),$(SRCS_42:.cpp=.o))
 
 DEPS			=	$(OBJS_STD:.o=.d) $(OBJS_FT:.o=.d)
 
-all: 				$(NAME_FT) $(NAME_STD)
+all: 				$(OBJS_FT) $(OBJS_STD)
 
 $(OBJ_PATH)%_ft.o:	%.cpp
 					@mkdir -p $(dir $@)
@@ -23,25 +22,30 @@ $(OBJ_PATH)%_ft.o:	%.cpp
 
 $(OBJ_PATH)%_std.o:	%.cpp
 					@mkdir -p $(dir $@)
-					$(CXX) $(CXXFLAGS) -D NS=std -MMD -c $< -o $@ -I.
+					$(CXX) $(CXXFLAGS) -D NS=std -MMD -c $< -o $@ -I.		
 
-$(NAME_FT): 		$(OBJS_FT)
-					$(CXX) $(CXXFLAGS) $(OBJS_FT) -o $(NAME_FT)
+vector:				
+					@mkdir -p $(VECTOR_PATH) 
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)vector_ft.o -o $(VECTOR_PATH)ft_vector
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)vector_std.o -o $(VECTOR_PATH)std_vector
+					time $(VECTOR_PATH)ft_vector > $(VECTOR_PATH)ft.out
+					time $(VECTOR_PATH)std_vector > $(VECTOR_PATH)std.out
+					diff $(VECTOR_PATH)ft.out $(VECTOR_PATH)std.out
 
-$(NAME_STD): 		$(OBJS_STD)
-					$(CXX) $(CXXFLAGS) $(OBJS_STD) -o $(NAME_STD)
-
-diff:
-					time ./$(NAME_FT) > ft.out
-					time ./$(NAME_STD) > std.out
-					diff ft.out std.out
+stack:				
+					@mkdir -p $(STACK_PATH) 
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)stack_ft.o -o $(STACK_PATH)ft_stack
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)stack_std.o -o $(STACK_PATH)std_stack
+					time $(STACK_PATH)ft_stack > $(STACK_PATH)ft.out
+					time $(STACK_PATH)std_stack > $(STACK_PATH)std.out
+					diff vector/ft.out vector/std.out				
 
 clean:
 					rm -rf $(OBJ_PATH)
 
 fclean: 			clean
-					rm -f $(NAME_FT)
-					rm -f $(NAME_STD)
+					rm -rf $(VECTOR_PATH)
+					rm -rf $(STACK_PATH)
 
 re: 				fclean 
 					make
@@ -49,5 +53,3 @@ re: 				fclean
 .PHONY: 			all clean fclean re
 
 -include $(DEPS)
-
-#./tester/string_main.cpp
