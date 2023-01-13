@@ -38,7 +38,7 @@ stack:
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)stack_std.o -o $(STACK_PATH)std_stack
 					time $(STACK_PATH)ft_stack > $(STACK_PATH)ft.out
 					time $(STACK_PATH)std_stack > $(STACK_PATH)std.out
-					diff vector/ft.out vector/std.out				
+					diff $(STACK_PATH)ft.out $(STACK_PATH)std.out				
 
 clean:
 					rm -rf $(OBJ_PATH)
