@@ -11,6 +11,7 @@ namespace ft {
 		typedef Node *	NodePtr;
 
 		public :
+/*--- CON/DE_STRUCTORS ---*/
 			RBT(const Allocator &alloc = Allocator()): _alloc(alloc) {
 				_leaf = new Node();
 				_root = _leaf;
@@ -18,7 +19,18 @@ namespace ft {
 
 			~RBT() {};
 	
+/*--- INSERT ---*/
+			insert(T new_key) {
+				NodePtr	temp = _root;
 
+				while (temp != _leaf) {
+					if (new_key > temp->_key)
+						temp = temp->_right;
+					else
+						temp = temp->_left;
+				}
+				Node	new_node(new_key, BLACK, temp, _leaf, _leaf);
+			}
 
 		private:
 			Allocator	_alloc;
