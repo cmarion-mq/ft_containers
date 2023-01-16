@@ -25,7 +25,6 @@ namespace ft {
 			nodePtr	insert(T new_key) {
 				nodePtr	temp = _root;
 				while (temp != _leaf) {
-					std::cout << "TEST" << std::endl;
 					if (temp->_right == _leaf || temp->_left == _leaf)
 						break;
 					if (new_key > temp->_key)
@@ -37,19 +36,18 @@ namespace ft {
 				if (temp == _leaf) 
 					_root = new_node;
 				else if (new_key > temp->_key)
-						temp->_right = new_node;
+					temp->_right = new_node;
 				else
 					temp->_left = new_node;
+				if (new_node->_parent == _leaf)
+					new_node->_color = BLACK;
+				insert_balancing(new_node);
 				return (new_node);
 			}
 
-			void	print(nodePtr nd) const
-			{
-				if (nd == _leaf)
-					return;
-				this->print(nd->_left);
-				std::cout << "{ " << nd->_key << " }" << std::endl;
-				this->print(nd->_right);
+			void printTree() {
+    			if (_root != _leaf)
+      				printHelper(_root, "", true);
 			}
 
 		private:
@@ -57,6 +55,107 @@ namespace ft {
 			nodePtr 	_root;
 			nodePtr 	_leaf;
 			comp		_comp;
+
+			void	insert_balancing(nodePtr node){
+	// std::cout << "out while" << node->_key << std::endl;
+				while (node->_parent->_color == RED) {
+					if (node->_parent == node->_parent->_parent->_left) {
+	// std::cout << "node->_parent->_parent->_left" << std::endl;
+						if (node->_parent->_parent->_right->_color == RED) {
+	// std::cout << "node->_parent->_parent->_right" << std::endl;
+							node->_parent->_parent->_right->_color = BLACK;
+							node->_parent->_parent->_left->_color = BLACK;
+							node->_parent->_parent->_color = RED;
+							node = node->_parent->_parent;
+						}
+						else if (node == node->_parent->_right) {
+							node = node->_parent;
+	// std::cout << "node = node->_parent;" << std::endl;
+							left_rotate(node);
+						}
+						else {
+							node->_parent->_color = BLACK;
+							node->_parent->_parent->_color = RED;
+							right_rotate(node);
+						}
+					}
+					else {
+	// std::cout << "node->_parent->_parent->_right" << std::endl;
+						if (node->_parent->_parent->_left->_color == RED) {
+	// std::cout << "node->_parent->_parent->_right / in if" << std::endl;
+							node->_parent->_color = BLACK;
+							node->_parent->_parent->_left->_color = BLACK;
+							node->_parent->_parent->_color = RED;
+							node = node->_parent->_parent;
+						}
+						else {
+							if (node == node->_parent->_left) {
+	// std::cout << "node->_parent->_parent->_right / in else if" << std::endl;
+								node = node->_parent;
+								right_rotate(node);
+							}
+							node->_parent->_color = BLACK;
+							node->_parent->_parent->_color = RED;
+	// std::cout << "node->_parent->_parent->_right / before left_rotate" << std::endl;
+							left_rotate(node->_parent->_parent);
+						}
+					}
+	// std::cout << "just bore break" << std::endl;
+					if (node == _root)
+						break;
+				}
+				_root->_color = BLACK;
+			}
+
+			void	left_rotate(nodePtr x){
+				nodePtr	y = x->_right;
+				x->_right = y->_left;
+				if (y->_left != _leaf)
+					y->_left->_parent = x;
+				y->_parent = x->_parent;
+				if (y->_parent == _leaf)
+					_root = y;
+				else if (x == x->_parent->_left)
+					x->_parent->_left = y;
+				else
+					x->_parent->_right = y;
+				y->_left = x;
+				x->_parent = y;
+			}
+
+			void	right_rotate(nodePtr y){
+				nodePtr	x = y->_right;
+				y->_right = x->_left;
+				if (x->_right != _leaf)
+					x->_right->_parent = x;
+				y->_parent = x->_parent;
+				if (y->_parent == _leaf)
+					_root = y;
+				else if (y == y->_parent->_right)
+					y->_parent->_right = x;
+				else
+					y->_parent->_left = x;
+				x->_right = y;
+				y->_parent = x;
+			}
+
+		void printHelper(nodePtr root, std::string indent, bool last) {
+			if (_root != _leaf) {
+			std::cout << indent;
+			if (last) {
+				std::cout << "R----";
+				indent += "   ";
+			} else {
+				std::cout << "L----";
+				indent += "|  ";
+			}
+
+			std::string sColor = _root->_color ? "RED" : "BLACK";
+			std::cout << _root->_key << "(" << sColor << ")" << std::endl;
+			printHelper(_root->_left, indent, false);
+			printHelper(_root->_right, indent, true);
+			}
+		}
 	};
 /*	void initializeNULLNode(NodePtr node, NodePtr parent) {
 		node->data = 0;
