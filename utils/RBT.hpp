@@ -5,37 +5,58 @@
 #include "RBT_node.hpp"
 
 namespace ft {
-	template < class T, class Allocator = std::allocator<T> >
+	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class RBT
 	{
-		typedef Node *	NodePtr;
+		typedef Compare		comp;
+		typedef Node<T> 	node;
+		typedef Node<T> *	nodePtr;
 
 		public :
 /*--- CON/DE_STRUCTORS ---*/
 			RBT(const Allocator &alloc = Allocator()): _alloc(alloc) {
-				_leaf = new Node();
+				_leaf = new node();
 				_root = _leaf;
 			};
 
 			~RBT() {};
 	
 /*--- INSERT ---*/
-			insert(T new_key) {
-				NodePtr	temp = _root;
-
+			nodePtr	insert(T new_key) {
+				nodePtr	temp = _root;
 				while (temp != _leaf) {
+					std::cout << "TEST" << std::endl;
+					if (temp->_right == _leaf || temp->_left == _leaf)
+						break;
 					if (new_key > temp->_key)
 						temp = temp->_right;
 					else
 						temp = temp->_left;
 				}
-				Node	new_node(new_key, BLACK, temp, _leaf, _leaf);
+				nodePtr new_node = new node(new_key, RED, temp, _leaf, _leaf);
+				if (temp == _leaf) 
+					_root = new_node;
+				else if (new_key > temp->_key)
+						temp->_right = new_node;
+				else
+					temp->_left = new_node;
+				return (new_node);
+			}
+
+			void	print(nodePtr nd) const
+			{
+				if (nd == _leaf)
+					return;
+				this->print(nd->_left);
+				std::cout << "{ " << nd->_key << " }" << std::endl;
+				this->print(nd->_right);
 			}
 
 		private:
 			Allocator	_alloc;
-			NodePtr 	_root;
-			NodePtr 	_leaf;
+			nodePtr 	_root;
+			nodePtr 	_leaf;
+			comp		_comp;
 	};
 /*	void initializeNULLNode(NodePtr node, NodePtr parent) {
 		node->data = 0;
@@ -402,24 +423,6 @@ namespace ft {
 	void deleteNode(int data) {
 		deleteNodeHelper(this->root, data);
 	}*/
-
 }
-
-
-int main() {
-  RedBlackTree bst;
-  bst.insert(55);
-  bst.insert(40);
-  bst.insert(65);
-  bst.insert(60);
-  bst.insert(75);
-  bst.insert(57);
-
-  bst.printTree();
-  cout << endl
-     << "After deleting" << endl;
-  bst.deleteNode(40);
-  bst.printTree();
-
 
 #endif

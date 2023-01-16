@@ -15,11 +15,11 @@ namespace ft {
 		Node		*_left;
 		Node		*_right;
 	
-		Node(const Allocator &alloc = Allocator()): _key(T()), _alloc(alloc), _color(BLACK), *_parent(NULL), *_left(NULL), *_right(NULL)
+		Node(const Allocator &alloc = Allocator()): _key(T()), _alloc(alloc), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
 		{};
 
-		Node(T key, color color, Node parent, Node left, Node right, const Allocator &alloc = Allocator()): _alloc(alloc), _color(color), *_parent(parent), *_left(left), *_right(right) {
-			_key = _alloc.construct(&_key, key);
+		Node(T key, color color, Node *parent, Node *left, Node *right, const Allocator &alloc = Allocator()): _alloc(alloc), _color(color), _parent(parent), _left(left), _right(right) {
+			_alloc.construct(&_key, key);
 		};
 	};
 }
