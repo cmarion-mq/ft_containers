@@ -48,9 +48,41 @@ namespace ft {
 			};
 
 	/*--- DELETE ---*/
-			nodePtr	del(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
-
-				return (new_node);
+			void	del(T new_key) {
+				nodePtr	del_node = find_node(new_key);
+				if (del_node == _leaf)
+					std::cout << "Key not found in the tree" << std::endl;
+				else {		
+					color	del_color = del_node->_color;
+					nodePtr x;
+					if (del_node->_left == _leaf) {
+						x = del_node->_right;
+						transplant(del_node, x);
+					}
+					else if (del_node->_right == _leaf) {
+						x = del_node->_left;
+						transplant(del_node, x);
+					}
+					else {
+						nodePtr y = min(del_node->_right);
+						del_color = y->_color;
+						x = y->_right;
+						if (y->_parent == del_node)
+							x->_parent = y;
+						else {
+							transplant(y, y->_right);
+							y->_right = del_node->_right;
+							y->_right->_parent = y;
+						}
+						transplant(del_node, y);
+						y->_left = del_node->_left;
+						y->_left->_parent = y;
+						y->_color = del_color;
+					}
+					// if (del_color == BLACK)
+					// 	delete_balancing(x);
+				}
+				// std::cout << std::endl << "adress: " << node << std::endl;
 			};
 
 	/*--- DIVERS ---*/
@@ -143,10 +175,35 @@ namespace ft {
 			};
 
 	/*--- DELETE HELPERS ---*/
-			node	find_node(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
+			nodePtr	find_node(T key) { // A AMELIORER
 				nodePtr	temp = _root;
+				while (temp != _leaf) {
+					if (temp->_key == key)
+						return (temp);
+					if (temp->_left != _leaf && !_comp(key, temp->_key))
+						temp = temp->_right;
+					else if (temp->_left != _leaf && _comp(key, temp->_key))
+						temp = temp->_left;
+					else
+						break;
+				}
+				return (_leaf);
+			};
 
-				return (new_node);
+			void	transplant(nodePtr x, nodePtr y) {
+				if (x->_parent == _leaf)
+					_root = y;
+				else if (x == x->_parent->_left)
+					y->_parent->_left = x;
+				else
+					y->_parent->_right = x;
+				y->_parent = x->_parent;
+			}
+
+			nodePtr	min(nodePtr node) {
+				while (node->_left != _leaf)
+					node = node->_left;
+				return (node);
 			};
 
 	/*--- PRINT HELPER ---*/
@@ -277,68 +334,6 @@ namespace ft {
 		x->color = 0;
 	}
 
-	void rbTransplant(NodePtr u, NodePtr v) {
-		if (u->parent == nullptr) {
-		root = v;
-		} else if (u == u->parent->left) {
-		u->parent->left = v;
-		} else {
-		u->parent->right = v;
-		}
-		v->parent = u->parent;
-	}
-
-	void deleteNodeHelper(NodePtr node, int key) {
-		NodePtr z = TNULL;
-		NodePtr x, y;
-		while (node != TNULL) {
-		if (node->data == key) {
-			z = node;
-		}
-
-		if (node->data <= key) {
-			node = node->right;
-		} else {
-			node = node->left;
-		}
-		}
-
-		if (z == TNULL) {
-		cout << "Key not found in the tree" << endl;
-		return;
-		}
-
-		y = z;
-		int y_original_color = y->color;
-		if (z->left == TNULL) {
-		x = z->right;
-		rbTransplant(z, z->right);
-		} else if (z->right == TNULL) {
-		x = z->left;
-		rbTransplant(z, z->left);
-		} else {
-		y = minimum(z->right);
-		y_original_color = y->color;
-		x = y->right;
-		if (y->parent == z) {
-			x->parent = y;
-		} else {
-			rbTransplant(y, y->right);
-			y->right = z->right;
-			y->right->parent = y;
-		}
-
-		rbTransplant(z, y);
-		y->left = z->left;
-		y->left->parent = y;
-		y->color = z->color;
-		}
-		delete z;
-		if (y_original_color == 0) {
-		deleteFix(x);
-		}
-	}
-
 	public:
 	RedBlackTree() {
 		TNULL = new Node;
@@ -364,12 +359,6 @@ namespace ft {
 		return searchTreeHelper(this->root, k);
 	}
 
-	NodePtr minimum(NodePtr node) {
-		while (node->left != TNULL) {
-		node = node->left;
-		}
-		return node;
-	}
 
 	NodePtr maximum(NodePtr node) {
 		while (node->right != TNULL) {

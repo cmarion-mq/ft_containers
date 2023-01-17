@@ -24,8 +24,10 @@ int main() {
 	ft::Node<int> *thour = bst.insert(60);
 	ft::Node<int> *five = bst.insert(75);
 	ft::Node<int> *six = bst.insert(57);
-std::cout << "after 57" << std::endl;
+// std::cout << "after 57" << std::endl;
 	ft::Node<int> *seven = bst.insert(56);
+
+	bst.del(57);
 
 	print_node(one);
 	print_node(two);
