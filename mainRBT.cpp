@@ -5,11 +5,15 @@
 
 template < class T>
 void print_node(ft::Node<T> *node) {
-	std::cout << std::endl << "key: " << node->_key << std::endl;
-	std::cout << std::endl << "color: " << node->_color << std::endl;
-	std::cout << "parent: " << node->_parent->_key << std::endl;
-	std::cout << "left: " << node->_left->_key << std::endl;
-	std::cout << "right: " << node->_right->_key << std::endl;
+	std::cout << "*************NODE: " << node->_key << std::endl;
+	std::cout << std::endl << "adress: " << node << std::endl;
+	std::cout << "color: " << node->_color << std::endl;
+	std::cout << std::endl << "parent adsress: " << node->_parent << std::endl;
+	std::cout << "parent key: " << node->_parent->_key << std::endl;
+	std::cout << std::endl << "left address: " << node->_left << std::endl;
+	std::cout << "left key: " << node->_left->_key << std::endl;
+	std::cout << std::endl << "right adsress: " << node->_right << std::endl;
+	std::cout << "right key: " << node->_right->_key << std::endl << std::endl;
 }
 
 int main() {

@@ -8,13 +8,13 @@ namespace ft {
 	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class RBT
 	{
-		typedef Compare		comp;
+		typedef Compare		key_compare;
 		typedef Node<T> 	node;
 		typedef Node<T> *	nodePtr;
 
 		public :
 /*--- CON/DE_STRUCTORS ---*/
-			RBT(const Allocator &alloc = Allocator()): _alloc(alloc) {
+			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp){
 				_leaf = new node();
 				_root = _leaf;
 			};
@@ -22,25 +22,53 @@ namespace ft {
 			~RBT() {};
 	
 /*--- INSERT ---*/
-			nodePtr	insert(T new_key) {
+			nodePtr	insert(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
 				nodePtr	temp = _root;
 				while (temp != _leaf) {
-					if (temp->_right == _leaf || temp->_left == _leaf)
-						break;
-					if (new_key > temp->_key)
+					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
 						temp = temp->_right;
-					else
+					else if (temp->_left != _leaf && _comp(new_key, temp->_key))
 						temp = temp->_left;
+					else
+						break;
 				}
 				nodePtr new_node = new node(new_key, RED, temp, _leaf, _leaf);
-				if (temp == _leaf) 
+				if (temp == _leaf) { 
 					_root = new_node;
-				else if (new_key > temp->_key)
+					new_node->_color = BLACK;
+				}
+				else if (!_comp(new_key, temp->_key))
 					temp->_right = new_node;
 				else
 					temp->_left = new_node;
-				if (new_node->_parent == _leaf)
+				insert_balancing(new_node);
+				return (new_node);
+			}
+
+			void printTree() {
+    			if (_root != _leaf)
+      				printHelper(_root, "", true);
+			}
+
+			nodePtr	delete(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
+				nodePtr	temp = _root;
+				while (temp != _leaf) {
+					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
+						temp = temp->_right;
+					else if (temp->_left != _leaf && _comp(new_key, temp->_key))
+						temp = temp->_left;
+					else
+						break;
+				}
+				nodePtr new_node = new node(new_key, RED, temp, _leaf, _leaf);
+				if (temp == _leaf) { 
+					_root = new_node;
 					new_node->_color = BLACK;
+				}
+				else if (!_comp(new_key, temp->_key))
+					temp->_right = new_node;
+				else
+					temp->_left = new_node;
 				insert_balancing(new_node);
 				return (new_node);
 			}
@@ -51,38 +79,32 @@ namespace ft {
 			}
 
 		private:
-			Allocator	_alloc;
-			nodePtr 	_root;
-			nodePtr 	_leaf;
-			comp		_comp;
+			Allocator		_alloc;
+			nodePtr 		_root;
+			nodePtr 		_leaf;
+			key_compare		_comp;
 
 			void	insert_balancing(nodePtr node){
-	// std::cout << "out while" << node->_key << std::endl;
 				while (node->_parent->_color == RED) {
 					if (node->_parent == node->_parent->_parent->_left) {
-	// std::cout << "node->_parent->_parent->_left" << std::endl;
 						if (node->_parent->_parent->_right->_color == RED) {
-	// std::cout << "node->_parent->_parent->_right" << std::endl;
 							node->_parent->_parent->_right->_color = BLACK;
-							node->_parent->_parent->_left->_color = BLACK;
+							node->_parent->_color = BLACK;
 							node->_parent->_parent->_color = RED;
 							node = node->_parent->_parent;
 						}
-						else if (node == node->_parent->_right) {
-							node = node->_parent;
-	// std::cout << "node = node->_parent;" << std::endl;
-							left_rotate(node);
-						}
 						else {
+							if (node == node->_parent->_right) {
+							node = node->_parent;
+							left_rotate(node);
+							}
 							node->_parent->_color = BLACK;
 							node->_parent->_parent->_color = RED;
-							right_rotate(node);
+							right_rotate(node->_parent->_parent);
 						}
 					}
 					else {
-	// std::cout << "node->_parent->_parent->_right" << std::endl;
 						if (node->_parent->_parent->_left->_color == RED) {
-	// std::cout << "node->_parent->_parent->_right / in if" << std::endl;
 							node->_parent->_color = BLACK;
 							node->_parent->_parent->_left->_color = BLACK;
 							node->_parent->_parent->_color = RED;
@@ -90,17 +112,14 @@ namespace ft {
 						}
 						else {
 							if (node == node->_parent->_left) {
-	// std::cout << "node->_parent->_parent->_right / in else if" << std::endl;
 								node = node->_parent;
 								right_rotate(node);
 							}
 							node->_parent->_color = BLACK;
 							node->_parent->_parent->_color = RED;
-	// std::cout << "node->_parent->_parent->_right / before left_rotate" << std::endl;
 							left_rotate(node->_parent->_parent);
 						}
 					}
-	// std::cout << "just bore break" << std::endl;
 					if (node == _root)
 						break;
 				}
@@ -113,7 +132,7 @@ namespace ft {
 				if (y->_left != _leaf)
 					y->_left->_parent = x;
 				y->_parent = x->_parent;
-				if (y->_parent == _leaf)
+				if (x->_parent == _leaf)
 					_root = y;
 				else if (x == x->_parent->_left)
 					x->_parent->_left = y;
@@ -123,37 +142,37 @@ namespace ft {
 				x->_parent = y;
 			}
 
-			void	right_rotate(nodePtr y){
-				nodePtr	x = y->_right;
-				y->_right = x->_left;
-				if (x->_right != _leaf)
-					x->_right->_parent = x;
+			void	right_rotate(nodePtr x){
+				nodePtr	y = x->_left;
+				x->_left = y->_right;
+				if (y->_right != _leaf)
+					y->_right->_parent = x;
 				y->_parent = x->_parent;
-				if (y->_parent == _leaf)
+				if (x->_parent == _leaf)
 					_root = y;
-				else if (y == y->_parent->_right)
-					y->_parent->_right = x;
+				else if (x == x->_parent->_right)
+					x->_parent->_right = y;
 				else
-					y->_parent->_left = x;
-				x->_right = y;
-				y->_parent = x;
+					x->_parent->_left = y;
+				y->_right = x;
+				x->_parent = y;
 			}
 
-		void printHelper(nodePtr root, std::string indent, bool last) {
-			if (_root != _leaf) {
-			std::cout << indent;
-			if (last) {
-				std::cout << "R----";
-				indent += "   ";
-			} else {
-				std::cout << "L----";
-				indent += "|  ";
-			}
-
-			std::string sColor = _root->_color ? "RED" : "BLACK";
-			std::cout << _root->_key << "(" << sColor << ")" << std::endl;
-			printHelper(_root->_left, indent, false);
-			printHelper(_root->_right, indent, true);
+		void printHelper(nodePtr node, std::string indent, bool last) {
+			if (node != _leaf) {
+				std::cout << indent;
+				if (last) {
+					std::cout << "R----";
+					indent += "   ";
+				} 
+				else {
+					std::cout << "L----";
+					indent += "|  ";
+				}
+				std::string sColor = node->_color ? "RED" : "BLACK";
+				std::cout << node->_key << "(" << sColor << ")" << std::endl;
+				printHelper(node->_left, indent, false);
+				printHelper(node->_right, indent, true);
 			}
 		}
 	};
@@ -326,51 +345,6 @@ namespace ft {
 		}
 	}
 
-	// For balancing the tree after insertion
-	void insertFix(NodePtr k) {
-		NodePtr u;
-		while (k->parent->color == 1) {
-		if (k->parent == k->parent->parent->right) {
-			u = k->parent->parent->left;
-			if (u->color == 1) {
-			u->color = 0;
-			k->parent->color = 0;
-			k->parent->parent->color = 1;
-			k = k->parent->parent;
-			} else {
-			if (k == k->parent->left) {
-				k = k->parent;
-				rightRotate(k);
-			}
-			k->parent->color = 0;
-			k->parent->parent->color = 1;
-			leftRotate(k->parent->parent);
-			}
-		} else {
-			u = k->parent->parent->right;
-
-			if (u->color == 1) {
-			u->color = 0;
-			k->parent->color = 0;
-			k->parent->parent->color = 1;
-			k = k->parent->parent;
-			} else {
-			if (k == k->parent->right) {
-				k = k->parent;
-				leftRotate(k);
-			}
-			k->parent->color = 0;
-			k->parent->parent->color = 1;
-			rightRotate(k->parent->parent);
-			}
-		}
-		if (k == root) {
-			break;
-		}
-		}
-		root->color = 0;
-	}
-
 	public:
 	RedBlackTree() {
 		TNULL = new Node;
@@ -437,83 +411,6 @@ namespace ft {
 		return y;
 	}
 
-	void leftRotate(NodePtr x) {
-		NodePtr y = x->right;
-		x->right = y->left;
-		if (y->left != TNULL) {
-		y->left->parent = x;
-		}
-		y->parent = x->parent;
-		if (x->parent == nullptr) {
-		this->root = y;
-		} else if (x == x->parent->left) {
-		x->parent->left = y;
-		} else {
-		x->parent->right = y;
-		}
-		y->left = x;
-		x->parent = y;
-	}
-
-	void rightRotate(NodePtr x) {
-		NodePtr y = x->left;
-		x->left = y->right;
-		if (y->right != TNULL) {
-		y->right->parent = x;
-		}
-		y->parent = x->parent;
-		if (x->parent == nullptr) {
-		this->root = y;
-		} else if (x == x->parent->right) {
-		x->parent->right = y;
-		} else {
-		x->parent->left = y;
-		}
-		y->right = x;
-		x->parent = y;
-	}
-
-	// Inserting a node
-	void insert(int key) {
-		NodePtr node = new Node;
-		node->parent = nullptr;
-		node->data = key;
-		node->left = TNULL;
-		node->right = TNULL;
-		node->color = 1;
-
-		NodePtr y = nullptr;
-		NodePtr x = this->root;
-
-		while (x != TNULL) {
-		y = x;
-		if (node->data < x->data) {
-			x = x->left;
-		} else {
-			x = x->right;
-		}
-		}
-
-		node->parent = y;
-		if (y == nullptr) {
-		root = node;
-		} else if (node->data < y->data) {
-		y->left = node;
-		} else {
-		y->right = node;
-		}
-
-		if (node->parent == nullptr) {
-		node->color = 0;
-		return;
-		}
-
-		if (node->parent->parent == nullptr) {
-		return;
-		}
-
-		insertFix(node);
-	}
 
 	NodePtr getRoot() {
 		return this->root;
