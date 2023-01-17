@@ -12,8 +12,10 @@ namespace ft {
 		typedef Node<T> 	node;
 		typedef Node<T> *	nodePtr;
 
+
+/* ####################   PUBLIC  #################### */
 		public :
-/*--- CON/DE_STRUCTORS ---*/
+	/*--- CON/DE_STRUCTORS ---*/
 			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp){
 				_leaf = new node();
 				_root = _leaf;
@@ -21,7 +23,7 @@ namespace ft {
 
 			~RBT() {};
 	
-/*--- INSERT ---*/
+	/*--- INSERT ---*/
 			nodePtr	insert(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
 				nodePtr	temp = _root;
 				while (temp != _leaf) {
@@ -43,40 +45,21 @@ namespace ft {
 					temp->_left = new_node;
 				insert_balancing(new_node);
 				return (new_node);
-			}
+			};
 
-			void printTree() {
-    			if (_root != _leaf)
-      				printHelper(_root, "", true);
-			}
+	/*--- DELETE ---*/
+			nodePtr	del(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
 
-			nodePtr	delete(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
-				nodePtr	temp = _root;
-				while (temp != _leaf) {
-					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
-						temp = temp->_right;
-					else if (temp->_left != _leaf && _comp(new_key, temp->_key))
-						temp = temp->_left;
-					else
-						break;
-				}
-				nodePtr new_node = new node(new_key, RED, temp, _leaf, _leaf);
-				if (temp == _leaf) { 
-					_root = new_node;
-					new_node->_color = BLACK;
-				}
-				else if (!_comp(new_key, temp->_key))
-					temp->_right = new_node;
-				else
-					temp->_left = new_node;
-				insert_balancing(new_node);
 				return (new_node);
-			}
+			};
 
+	/*--- DIVERS ---*/
 			void printTree() {
     			if (_root != _leaf)
       				printHelper(_root, "", true);
-			}
+			};
+
+/* ####################   PRIVATE   #################### */
 
 		private:
 			Allocator		_alloc;
@@ -84,6 +67,7 @@ namespace ft {
 			nodePtr 		_leaf;
 			key_compare		_comp;
 
+	/*--- INSERT HELPERS ---*/
 			void	insert_balancing(nodePtr node){
 				while (node->_parent->_color == RED) {
 					if (node->_parent == node->_parent->_parent->_left) {
@@ -95,8 +79,8 @@ namespace ft {
 						}
 						else {
 							if (node == node->_parent->_right) {
-							node = node->_parent;
-							left_rotate(node);
+								node = node->_parent;
+								left_rotate(node);
 							}
 							node->_parent->_color = BLACK;
 							node->_parent->_parent->_color = RED;
@@ -124,7 +108,7 @@ namespace ft {
 						break;
 				}
 				_root->_color = BLACK;
-			}
+			};
 
 			void	left_rotate(nodePtr x){
 				nodePtr	y = x->_right;
@@ -140,7 +124,7 @@ namespace ft {
 					x->_parent->_right = y;
 				y->_left = x;
 				x->_parent = y;
-			}
+			};
 
 			void	right_rotate(nodePtr x){
 				nodePtr	y = x->_left;
@@ -156,26 +140,36 @@ namespace ft {
 					x->_parent->_left = y;
 				y->_right = x;
 				x->_parent = y;
-			}
+			};
 
-		void printHelper(nodePtr node, std::string indent, bool last) {
-			if (node != _leaf) {
-				std::cout << indent;
-				if (last) {
-					std::cout << "R----";
-					indent += "   ";
-				} 
-				else {
-					std::cout << "L----";
-					indent += "|  ";
-				}
-				std::string sColor = node->_color ? "RED" : "BLACK";
-				std::cout << node->_key << "(" << sColor << ")" << std::endl;
-				printHelper(node->_left, indent, false);
-				printHelper(node->_right, indent, true);
+	/*--- DELETE HELPERS ---*/
+			node	find_node(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
+				nodePtr	temp = _root;
+
+				return (new_node);
+			};
+
+	/*--- PRINT HELPER ---*/
+			void printHelper(nodePtr node, std::string indent, bool last) {
+				if (node != _leaf) {
+					std::cout << indent;
+					if (last) {
+						std::cout << "R----";
+						indent += "   ";
+					} 
+					else {
+						std::cout << "L----";
+						indent += "|  ";
+					}
+					std::string sColor = node->_color ? "RED" : "BLACK";
+					std::cout << node->_key << "(" << sColor << ")" << std::endl;
+					printHelper(node->_left, indent, false);
+					printHelper(node->_right, indent, true);
+				};
 			}
-		}
 	};
+
+
 /*	void initializeNULLNode(NodePtr node, NodePtr parent) {
 		node->data = 0;
 		node->parent = parent;
