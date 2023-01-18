@@ -57,11 +57,11 @@ namespace ft {
 					nodePtr x;
 					if (del_node->_left == _leaf) {
 						x = del_node->_right;
-						transplant(del_node, x);
+						replace(del_node, del_node->_right);
 					}
 					else if (del_node->_right == _leaf) {
 						x = del_node->_left;
-						transplant(del_node, x);
+						replace(del_node, del_node->_left);
 					}
 					else {
 						nodePtr y = min(del_node->_right);
@@ -70,17 +70,18 @@ namespace ft {
 						if (y->_parent == del_node)
 							x->_parent = y;
 						else {
-							transplant(y, y->_right);
+							replace(y, y->_right);
 							y->_right = del_node->_right;
 							y->_right->_parent = y;
 						}
-						transplant(del_node, y);
+						replace(del_node, y);
 						y->_left = del_node->_left;
 						y->_left->_parent = y;
-						y->_color = del_color;
+						y->_color = del_node->_color;
 					}
-					// if (del_color == BLACK)
-					// 	delete_balancing(x);
+					delete del_node;
+					if (del_color == BLACK)
+						del_balancing(x);
 				}
 				// std::cout << std::endl << "adress: " << node << std::endl;
 			};
@@ -190,7 +191,7 @@ namespace ft {
 				return (_leaf);
 			};
 
-			void	transplant(nodePtr x, nodePtr y) {
+			void	replace(nodePtr x, nodePtr y) {
 				if (x->_parent == _leaf)
 					_root = y;
 				else if (x == x->_parent->_left)
@@ -205,6 +206,65 @@ namespace ft {
 					node = node->_left;
 				return (node);
 			};
+
+			void	del_balancing(nodePtr node){
+				nodePtr temp;
+				while (node != _root && node->_color == BLACK) {
+					if (node == node->_parent->_left) {
+						temp = node->_parent->_right;
+						if (temp->_color == RED) {
+							temp->_color = BLACK;
+							node->_parent->_color = RED;
+							left_rotate(node->_parent);
+							temp = node->_parent->_right;
+						}
+						if (temp->_right->_color == BLACK && temp->_left->_color == BLACK) {
+							temp->_color = RED;
+							node = node->_parent;
+						}
+						else if (temp->_right->_color == BLACK) {
+							temp->_left->_color = BLACK;
+							temp->_color = RED;
+							right_rotate(temp);
+							temp = node->_parent->_right;
+						}
+						else {
+							temp->_color = node->_parent->_color;
+							node->_parent->_color = BLACK;
+							temp->_right->_color = BLACK;
+							left_rotate(node->_parent);
+							node = _root;
+						}
+					}
+					else {
+						temp = node->_parent->_left;
+						if (temp->_color == RED) {
+							temp->_color = BLACK;
+							node->_parent->_color = RED;
+							right_rotate(node->_parent);
+							temp = node->_parent->_left;
+						}
+						if (temp->_right->_color == BLACK && temp->_left->_color == BLACK) {
+							temp->_color = RED;
+							node = node->_parent;
+						}
+						else if (temp->_left->_color == BLACK) {
+							temp->_right->_color = BLACK;
+							temp->_color = RED;
+							left_rotate(temp);
+							temp = node->_parent->_left;
+						}
+						else {
+							temp->_color = node->_parent->_color;
+							node->_parent->_color = BLACK;
+							temp->_left->_color = BLACK;
+							right_rotate(node->_parent);
+							node = _root;
+						}
+					}
+				}
+				node->_color = BLACK;
+			}
 
 	/*--- PRINT HELPER ---*/
 			void printHelper(nodePtr node, std::string indent, bool last) {
@@ -274,65 +334,6 @@ namespace ft {
 	}
 
 	// For balancing the tree after deletion
-	void deleteFix(NodePtr x) {
-		NodePtr s;
-		while (x != root && x->color == 0) {
-		if (x == x->parent->left) {
-			s = x->parent->right;
-			if (s->color == 1) {
-			s->color = 0;
-			x->parent->color = 1;
-			leftRotate(x->parent);
-			s = x->parent->right;
-			}
-
-			if (s->left->color == 0 && s->right->color == 0) {
-			s->color = 1;
-			x = x->parent;
-			} else {
-			if (s->right->color == 0) {
-				s->left->color = 0;
-				s->color = 1;
-				rightRotate(s);
-				s = x->parent->right;
-			}
-
-			s->color = x->parent->color;
-			x->parent->color = 0;
-			s->right->color = 0;
-			leftRotate(x->parent);
-			x = root;
-			}
-		} else {
-			s = x->parent->left;
-			if (s->color == 1) {
-			s->color = 0;
-			x->parent->color = 1;
-			rightRotate(x->parent);
-			s = x->parent->left;
-			}
-
-			if (s->right->color == 0 && s->right->color == 0) {
-			s->color = 1;
-			x = x->parent;
-			} else {
-			if (s->left->color == 0) {
-				s->right->color = 0;
-				s->color = 1;
-				leftRotate(s);
-				s = x->parent->left;
-			}
-
-			s->color = x->parent->color;
-			x->parent->color = 0;
-			s->left->color = 0;
-			rightRotate(x->parent);
-			x = root;
-			}
-		}
-		}
-		x->color = 0;
-	}
 
 	public:
 	RedBlackTree() {
