@@ -21,7 +21,26 @@ namespace ft {
 				_root = _leaf;
 			};
 
-			~RBT() {};
+			~RBT() {
+				nodePtr	temp = _root;
+				nodePtr del = _leaf;
+				while (temp != _leaf) {
+					if (temp->_right != _leaf)
+						temp = temp->_right;
+					else if (temp->_left != _leaf) 
+						temp = temp->_left;
+					else {
+						del = temp;
+						if (temp->_parent->_left == temp)
+							temp->_parent->_left = _leaf;
+						else
+							temp->_parent->_right = _leaf;
+						temp = temp->_parent;
+						delete del;
+					}
+				}
+				delete _leaf;
+			};
 	
 	/*--- INSERT ---*/
 			nodePtr	insert(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
@@ -67,8 +86,9 @@ namespace ft {
 						nodePtr y = min(del_node->_right);
 						del_color = y->_color;
 						x = y->_right;
-						if (y->_parent == del_node)
+						if (y->_parent == del_node) {
 							x->_parent = y;
+						}
 						else {
 							replace(y, y->_right);
 							y->_right = del_node->_right;
@@ -83,7 +103,6 @@ namespace ft {
 					if (del_color == BLACK)
 						del_balancing(x);
 				}
-				// std::cout << std::endl << "adress: " << node << std::endl;
 			};
 
 	/*--- DIVERS ---*/
@@ -143,50 +162,16 @@ namespace ft {
 				_root->_color = BLACK;
 			};
 
-			void	left_rotate(nodePtr x){
-				nodePtr	y = x->_right;
-				x->_right = y->_left;
-				if (y->_left != _leaf)
-					y->_left->_parent = x;
-				y->_parent = x->_parent;
-				if (x->_parent == _leaf)
-					_root = y;
-				else if (x == x->_parent->_left)
-					x->_parent->_left = y;
-				else
-					x->_parent->_right = y;
-				y->_left = x;
-				x->_parent = y;
-			};
-
-			void	right_rotate(nodePtr x){
-				nodePtr	y = x->_left;
-				x->_left = y->_right;
-				if (y->_right != _leaf)
-					y->_right->_parent = x;
-				y->_parent = x->_parent;
-				if (x->_parent == _leaf)
-					_root = y;
-				else if (x == x->_parent->_right)
-					x->_parent->_right = y;
-				else
-					x->_parent->_left = y;
-				y->_right = x;
-				x->_parent = y;
-			};
-
 	/*--- DELETE HELPERS ---*/
-			nodePtr	find_node(T key) { // A AMELIORER
+			nodePtr	find_node(T key) {
 				nodePtr	temp = _root;
 				while (temp != _leaf) {
-					if (temp->_key == key)
-						return (temp);
 					if (temp->_left != _leaf && !_comp(key, temp->_key))
 						temp = temp->_right;
 					else if (temp->_left != _leaf && _comp(key, temp->_key))
 						temp = temp->_left;
-					else
-						break;
+					if (temp->_key == key)
+						return (temp);
 				}
 				return (_leaf);
 			};
@@ -195,9 +180,9 @@ namespace ft {
 				if (x->_parent == _leaf)
 					_root = y;
 				else if (x == x->_parent->_left)
-					y->_parent->_left = x;
+					x->_parent->_left = y;
 				else
-					y->_parent->_right = x;
+					x->_parent->_right = y;
 				y->_parent = x->_parent;
 			}
 
@@ -264,6 +249,43 @@ namespace ft {
 					}
 				}
 				node->_color = BLACK;
+			}
+
+	/*--- OTHER HELPERS ---*/
+			void	left_rotate(nodePtr x){
+				nodePtr	y = x->_right;
+				x->_right = y->_left;
+				if (y->_left != _leaf)
+					y->_left->_parent = x;
+				y->_parent = x->_parent;
+				if (x->_parent == _leaf)
+					_root = y;
+				else if (x == x->_parent->_left)
+					x->_parent->_left = y;
+				else
+					x->_parent->_right = y;
+				y->_left = x;
+				x->_parent = y;
+			};
+
+			void	right_rotate(nodePtr x){
+				nodePtr	y = x->_left;
+				x->_left = y->_right;
+				if (y->_right != _leaf)
+					y->_right->_parent = x;
+				y->_parent = x->_parent;
+				if (x->_parent == _leaf)
+					_root = y;
+				else if (x == x->_parent->_right)
+					x->_parent->_right = y;
+				else
+					x->_parent->_left = y;
+				y->_right = x;
+				x->_parent = y;
+			};
+
+	/*--- DESTRUCT HELPERS ---*/
+			void	destruc_helper(nodePtr x){
 			}
 
 	/*--- PRINT HELPER ---*/
