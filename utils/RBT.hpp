@@ -23,14 +23,13 @@ namespace ft {
 
 			~RBT() {
 				nodePtr	temp = _root;
-				nodePtr del = _leaf;
 				while (temp != _leaf) {
 					if (temp->_right != _leaf)
 						temp = temp->_right;
 					else if (temp->_left != _leaf) 
 						temp = temp->_left;
 					else {
-						del = temp;
+						nodePtr del = temp;
 						if (temp->_parent->_left == temp)
 							temp->_parent->_left = _leaf;
 						else
@@ -43,7 +42,7 @@ namespace ft {
 			};
 	
 	/*--- INSERT ---*/
-			nodePtr	insert(T new_key) { // PENSER A SUPPRIMER LE RETURN QUI NE SERT A RIEN
+			void	insert(T new_key) {
 				nodePtr	temp = _root;
 				while (temp != _leaf) {
 					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
@@ -63,7 +62,6 @@ namespace ft {
 				else
 					temp->_left = new_node;
 				insert_balancing(new_node);
-				return (new_node);
 			};
 
 	/*--- DELETE ---*/
@@ -207,13 +205,13 @@ namespace ft {
 							temp->_color = RED;
 							node = node->_parent;
 						}
-						else if (temp->_right->_color == BLACK) {
-							temp->_left->_color = BLACK;
-							temp->_color = RED;
-							right_rotate(temp);
-							temp = node->_parent->_right;
-						}
 						else {
+							if (temp->_right->_color == BLACK) {
+								temp->_left->_color = BLACK;
+								temp->_color = RED;
+								right_rotate(temp);
+								temp = node->_parent->_right;
+							}
 							temp->_color = node->_parent->_color;
 							node->_parent->_color = BLACK;
 							temp->_right->_color = BLACK;
@@ -233,13 +231,13 @@ namespace ft {
 							temp->_color = RED;
 							node = node->_parent;
 						}
-						else if (temp->_left->_color == BLACK) {
-							temp->_right->_color = BLACK;
-							temp->_color = RED;
-							left_rotate(temp);
-							temp = node->_parent->_left;
-						}
 						else {
+							if (temp->_left->_color == BLACK) {
+								temp->_right->_color = BLACK;
+								temp->_color = RED;
+								left_rotate(temp);
+								temp = node->_parent->_left;
+							}
 							temp->_color = node->_parent->_color;
 							node->_parent->_color = BLACK;
 							temp->_left->_color = BLACK;

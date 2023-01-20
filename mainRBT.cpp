@@ -18,23 +18,14 @@ void print_node(ft::Node<T> *node) {
 
 int main() {
 	ft::RBT<int, std::less<int>> bst;
-	ft::Node<int> *one = bst.insert(55);
-	ft::Node<int> *two = bst.insert(40);
-	ft::Node<int> *three = bst.insert(65);
-	ft::Node<int> *thour = bst.insert(60);
-	ft::Node<int> *five = bst.insert(75);
-	ft::Node<int> *six = bst.insert(57);
-// std::cout << "after 57" << std::endl;
-	ft::Node<int> *seven = bst.insert(56);
+	bst.insert(55);
+	bst.insert(40);
+	bst.insert(65);
+	bst.insert(60);
+	bst.insert(75);
+	bst.insert(57);
+	bst.insert(56);
 
 	bst.del(57);
-
-	print_node(one);
-	print_node(two);
-	print_node(three);
-	print_node(thour);
-	print_node(five);
-	print_node(six);
-	print_node(seven);
 	bst.printTree();
 }

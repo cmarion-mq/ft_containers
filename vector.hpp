@@ -18,10 +18,10 @@
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
-	class vector
-	{
+	class vector {
+/* ####################   PUBLIC  #################### */
 		public:
-/*-------- TYPES ---------*/
+	/*-------- TYPES ---------*/
 			typedef T										value_type;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::reference			reference;
@@ -35,7 +35,7 @@ namespace ft {
 			typedef std::ptrdiff_t 							difference_type;
 			typedef size_t									size_type; 
 
-/*--- CON/DE_STRUCTORS ---*/
+	/*--- CON/DE_STRUCTORS ---*/
 			explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0)
 			{};
 			
@@ -80,7 +80,7 @@ namespace ft {
 				return (*this);
 			};
 
-/*---     ITERATORS    ---*/
+	/*---     ITERATORS    ---*/
 			iterator				begin()			{ return _data;	};
 			const_iterator			begin() const	{ return _data; };
 			iterator 				end()			{ return _data + _n; };
@@ -90,7 +90,7 @@ namespace ft {
 			reverse_iterator		rend()			{ return reverse_iterator(_data); };
 			const_reverse_iterator	rend() const	{ return const_reverse_iterator(_data); };
 
-/*---     CAPACITY     ---*/
+	/*---     CAPACITY     ---*/
 			size_type	size() const		{ return (_n); };
 			size_type	max_size() const	{ return (_alloc.max_size()); };
 			size_type	capacity() const	{ return (_capacity); };
@@ -121,7 +121,7 @@ namespace ft {
 				}
 			};
 
-/*---  ELEMENT ACCESS  ---*/
+	/*---  ELEMENT ACCESS  ---*/
 			reference		operator[] (size_type n)		{ return (_data[n]); };
 			const_reference operator[] (size_type n) const	{ return (_data[n]); };
 			reference		front()							{ return (*_data); };
@@ -149,7 +149,7 @@ namespace ft {
 				return (_data[n]);
 			};
 			
-/*---     MODIFIERS    ---*/
+	/*---     MODIFIERS    ---*/
 			template <class InputIterator>
 			void assign(typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last) {
 				clear();
@@ -262,16 +262,18 @@ namespace ft {
 				_n = 0;
 			};
 
-/*---     ALLOCATOR    ---*/
+	/*---     ALLOCATOR    ---*/
 			allocator_type get_allocator() const { return _alloc; };
 
-
+/* ####################   PRIVATE  #################### */
 		private:
+	/*---     MEMBRES    ---*/
 			allocator_type	_alloc;
 		    pointer			_data;
 		    size_type		_n;
 		    size_type		_capacity;
 
+	/*---     FONCTION HELPERS   ---*/
 			template <class InputIterator>
 			void insert_helper(iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag) {
 				size_type tot_between_begin_position = std::distance(begin(), position);
@@ -303,6 +305,7 @@ namespace ft {
 			};
 	};
 
+/*---     NON MEMBER FONCTION    ---*/
 	template <class T, class Alloc>
 	inline bool operator == (const vector<T, Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return ( lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()) );
