@@ -267,7 +267,7 @@ namespace ft {
 
 /* ####################   PRIVATE  #################### */
 		private:
-	/*---     MEMBRES    ---*/
+	/*---     MEMBER OBJECTS    ---*/
 			allocator_type	_alloc;
 		    pointer			_data;
 		    size_type		_n;
