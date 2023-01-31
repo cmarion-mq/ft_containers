@@ -37,11 +37,14 @@ namespace ft {
 
 			template <class _T, class _Container>
 			friend bool operator < (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs);
-		
+
+/*---     MEMBER OBJECTS    ---*/
 		protected:
 			container_type	_c;
 	};
 
+	
+/*---     NON MEMBER FONCTION    ---*/
 	template <class T, class Container>
 	bool operator == (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
 		return (lhs._c == rhs._c);

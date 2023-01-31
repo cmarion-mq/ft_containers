@@ -18,7 +18,7 @@ namespace ft {
 
 /*---   MEMBER FONCTION  ---*/
 		pair &operator =(const pair& pr) {
-			if (this != &x) {
+			if (this != &pr) {
 				first = pr.first;
 				second = pr.second;
 			}
@@ -27,7 +27,7 @@ namespace ft {
 
 /*---   MEMBER OBJECTS  ---*/
 		first_type	first;
-		second_type	second:
+		second_type	second;
 	};
 
 

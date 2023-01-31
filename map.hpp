@@ -41,17 +41,20 @@ namespace ft {
 			};
 
 	/*--- CON/DE_STRUCTORS ---*/
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {};
 
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
+				for (InputIterator it = first; it != last; ++ it)
+					_rbt.insert(*it);
+			};
 
-			map (const map& x);
+			map (const map& x) {};
 
 /* ####################  PRIVATE  #################### */
-	/*--- MEMBERS ---*/			
+	/*--- MEMBER OBJECTS ---*/			
 		private :
-			RBT<value_type, value_compare, allocator_type>	rbt;	
+			RBT<value_type, key_compare , allocator_type>	_rbt;
 
 
 /*---     ITERATORS    ---*/
