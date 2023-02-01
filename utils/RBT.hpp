@@ -3,10 +3,9 @@
 
 #include <iostream>
 #include "RBT_node.hpp"
-#include "utils/pair.hpp"
 
 namespace ft {
-	template < class T = ft::pair<K, V>, class Compare, class Allocator = std::allocator<T> >
+	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class RBT
 	{
 		typedef Compare		key_compare;

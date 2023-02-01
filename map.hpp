@@ -45,11 +45,17 @@ namespace ft {
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {
+				std::cout << "test" << std::endl;
 				for (InputIterator it = first; it != last; ++ it)
 					_rbt.insert(*it);
 			};
 
 			map (const map& x) {};
+
+	/*--- DIVERS ---*/
+		void print() {
+			_rbt.printTree();
+		};
 
 /* ####################  PRIVATE  #################### */
 	/*--- MEMBER OBJECTS ---*/			
