@@ -8,9 +8,10 @@ namespace ft {
 	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class RBT
 	{
-		typedef Compare		key_compare;
-		typedef Node<T> 	node;
-		typedef Node<T> *	nodePtr;
+		typedef Compare					key_compare;
+		typedef	typename T::first_type	key;
+		typedef Node<T> 				node;
+		typedef Node<T> *				nodePtr;
 
 /* ####################   PUBLIC  #################### */
 		public :
@@ -41,8 +42,9 @@ namespace ft {
 			};
 	
 	/*--- INSERT ---*/
-			void	insert(T new_key) {
+			void	insert(T new_element) {
 				nodePtr	temp = _root;
+				key		new_key = new_element.first;
 				while (temp != _leaf) {
 					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
 						temp = temp->_right;
@@ -51,7 +53,7 @@ namespace ft {
 					else
 						break;
 				}
-				nodePtr new_node = new node(new_key, RED, temp, _leaf, _leaf);
+				nodePtr new_node = new node(new_element, RED, temp, _leaf, _leaf);
 				if (temp == _leaf) { 
 					_root = new_node;
 					new_node->_color = BLACK;
@@ -64,8 +66,8 @@ namespace ft {
 			};
 
 	/*--- DELETE ---*/
-			void	del(T new_key) {
-				nodePtr	del_node = find_node(new_key);
+			void	del(T new_element) {
+				nodePtr	del_node = find_node(new_element.first);
 				if (del_node == _leaf)
 					std::cout << "Key not found in the tree" << std::endl;
 				else {		

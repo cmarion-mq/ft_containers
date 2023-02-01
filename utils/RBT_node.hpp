@@ -22,9 +22,8 @@ namespace ft {
 		Node(const Allocator &alloc = Allocator()): _pair(T()), _key(key()), _alloc(alloc), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
 		{};
 
-		Node(T pair, color color, Node *parent, Node *left, Node *right, const Allocator &alloc = Allocator()): _alloc(alloc), _color(color), _parent(parent), _left(left), _right(right) {
+		Node(T pair, color color, Node *parent, Node *left, Node *right, const Allocator &alloc = Allocator()): _key(pair.first), _alloc(alloc), _color(color), _parent(parent), _left(left), _right(right) {
 			_alloc.construct(&_pair, pair);
-			_alloc.construct(&_key, pair.first());
 		};
 	};
 }
