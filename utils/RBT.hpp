@@ -15,8 +15,8 @@ namespace ft {
 
 /* ####################   PUBLIC  #################### */
 		public :
-	/*--- CON/DE_STRUCTORS ---*/
-			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp){
+		/*--- CON/DE_STRUCTORS ---*/
+			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp), _size(0){
 				_leaf = new node();
 				_root = _leaf;
 			};
@@ -41,7 +41,7 @@ namespace ft {
 				delete _leaf;
 			};
 	
-	/*--- INSERT ---*/
+		/*---      INSERT      ---*/
 			void	insert(T new_element) {
 				nodePtr	temp = _root;
 				key		new_key = new_element.first;
@@ -63,9 +63,10 @@ namespace ft {
 				else
 					temp->_left = new_node;
 				insert_balancing(new_node);
+				_size ++;
 			};
 
-	/*--- DELETE ---*/
+		/*---      DELETE      ---*/
 			void	del(T new_element) {
 				nodePtr	del_node = find_node(new_element.first);
 				if (del_node == _leaf)
@@ -101,14 +102,38 @@ namespace ft {
 					delete del_node;
 					if (del_color == BLACK)
 						del_balancing(x);
+					_size --;
 				}
 			};
 
-	/*--- DIVERS ---*/
+		/*---      CLEAR       ---*/
+			void clear() {
+				nodePtr	temp = _root;
+				while (temp != _leaf) {
+					if (temp->_right != _leaf)
+						temp = temp->_right;
+					else if (temp->_left != _leaf) 
+						temp = temp->_left;
+					else {
+						nodePtr del = temp;
+						if (temp->_parent->_left == temp)
+							temp->_parent->_left = _leaf;
+						else
+							temp->_parent->_right = _leaf;
+						temp = temp->_parent;
+						delete del;
+					}
+				}
+			};
+
+		/*---      DIVERS      ---*/
 			void printTree() {
     			if (_root != _leaf)
       				printHelper(_root, "", true);
 			};
+
+			size_t	size() const		{ return (_size); };
+			size_t	max_size() const	{ return (_alloc.max_size()); };
 
 /* ####################   PRIVATE   #################### */
 
@@ -117,8 +142,9 @@ namespace ft {
 			nodePtr 		_root;
 			nodePtr 		_leaf;
 			key_compare		_comp;
+			size_t			_size;		
 
-	/*--- INSERT HELPERS ---*/
+		/*--- INSERT HELPERS ---*/
 			void	insert_balancing(nodePtr node){
 				while (node->_parent->_color == RED) {
 					if (node->_parent == node->_parent->_parent->_left) {
@@ -161,7 +187,7 @@ namespace ft {
 				_root->_color = BLACK;
 			};
 
-	/*--- DELETE HELPERS ---*/
+		/*--- DELETE HELPERS ---*/
 			nodePtr	find_node(T key) {
 				nodePtr	temp = _root;
 				while (temp != _leaf) {
@@ -250,7 +276,7 @@ namespace ft {
 				node->_color = BLACK;
 			}
 
-	/*--- OTHER HELPERS ---*/
+		/*--- OTHER HELPERS ---*/
 			void	left_rotate(nodePtr x){
 				nodePtr	y = x->_right;
 				x->_right = y->_left;
@@ -283,11 +309,7 @@ namespace ft {
 				x->_parent = y;
 			};
 
-	/*--- DESTRUCT HELPERS ---*/
-			void	destruc_helper(nodePtr x){
-			}
-
-	/*--- PRINT HELPER ---*/
+		/*--- PRINT HELPER ---*/
 			void printHelper(nodePtr node, std::string indent, bool last) {
 				if (node != _leaf) {
 					std::cout << indent;

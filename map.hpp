@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <sstream>
+#include "iterators/reverse_iterator.hpp"
+#include "iterators/rbt_iterator.hpp"
 #include "utils/RBT.hpp"
 #include "utils/pair.hpp"
 
@@ -11,7 +13,7 @@ namespace ft {
 	class map {
 /* ####################  PUBLIC  #################### */
 		public:
-	/*-------- TYPES ---------*/
+		/*-------- TYPES ---------*/
 			typedef Key											key_type;
 			typedef T											mapped_type;
 			typedef pair<const Key, T>							value_type;
@@ -23,10 +25,10 @@ namespace ft {
 			typedef typename Allocator::const_reference			const_reference;
 			typedef typename Allocator::pointer					pointer;
 			typedef typename Allocator::const_pointer			const_pointer;
-			// typedef std::bidirectional_iterator<value_type>		iterator;
-			// typedef std::bidirectional_iterator<value_type> 	const_iterator;
-			// typedef std::reverse_iterator<iterator>				reverse_iterator;
-			// typedef std::reverse_iterator<const_iterator> 		const_reverse_iterator;
+			typedef ft::rbt_iterator<value_type>				iterator;
+			typedef ft::rbt_iterator<const value_type> 			const_iterator;
+			typedef ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type, value_type, bool> {
 				friend class map;
@@ -40,22 +42,32 @@ namespace ft {
 					value_compare(Compare c) : comp(c) {}
 			};
 
-	/*--- CON/DE_STRUCTORS ---*/
+		/*--- CON/DE_STRUCTORS ---*/
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {};
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {
-				std::cout << "test" << std::endl;
 				for (InputIterator it = first; it != last; ++ it)
 					_rbt.insert(*it);
 			};
 
 			map (const map& x) {};
 
-	/*--- DIVERS ---*/
-		void print() {
-			_rbt.printTree();
-		};
+		/*---     CAPACITY     ---*/
+			bool		empty() const		{ return (_rbt.size() == 0); };
+			size_type	size() const		{ return (_rbt.size()); };
+			size_type	max_size() const	{ return (_rbt.max_size()); };
+		
+		/*---     MODIFIERS    ---*/
+			void clear() {
+				_rbt.clear();
+			};
+
+		/*---      DIVERS      ---*/
+			void print() {
+				std::cout << "size: " << size() << std::endl;
+				_rbt.printTree();
+			};
 
 /* ####################  PRIVATE  #################### */
 	/*--- MEMBER OBJECTS ---*/			
@@ -65,12 +77,9 @@ namespace ft {
 
 /*---     ITERATORS    ---*/
 
-/*---     CAPACITY     ---*/
 
 /*---  ELEMENT ACCESS  ---*/
 			
-/*---     MODIFIERS    ---*/
-
 /*---     ALLOCATOR    ---*/
 	};
 }
