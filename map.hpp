@@ -51,16 +51,36 @@ namespace ft {
 					_rbt.insert(*it);
 			};
 
-			map (const map& x) {};
+			map (const map& x) {}; //###################_TO_DO
 
 		/*---     CAPACITY     ---*/
 			bool		empty() const		{ return (_rbt.size() == 0); };
 			size_type	size() const		{ return (_rbt.size()); };
 			size_type	max_size() const	{ return (_rbt.max_size()); };
 		
+		/*---  ELEMENT ACCESS  ---*/
+		
+		
 		/*---     MODIFIERS    ---*/
 			void clear() {
 				_rbt.clear();
+			};
+
+			iterator erase( iterator pos ) {}; //###################_TO_DO
+
+			size_type erase( const Key& key ) {
+				if (_rbt.del(key))
+					return (1);
+				return (0);
+			};
+
+			pair<iterator,bool> insert (const value_type& val) {}; //###################_TO_DO
+
+		/*---     MODIFIERS    ---*/
+			size_type count( const Key& key ) const {
+				if (_rbt.find_node(key))
+					return (1);
+				return (0);
 			};
 
 		/*---      DIVERS      ---*/
@@ -78,7 +98,6 @@ namespace ft {
 /*---     ITERATORS    ---*/
 
 
-/*---  ELEMENT ACCESS  ---*/
 			
 /*---     ALLOCATOR    ---*/
 	};

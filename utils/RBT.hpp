@@ -22,88 +22,77 @@ namespace ft {
 			};
 
 			~RBT() {
-				nodePtr	temp = _root;
-				while (temp != _leaf) {
-					if (temp->_right != _leaf)
-						temp = temp->_right;
-					else if (temp->_left != _leaf) 
-						temp = temp->_left;
-					else {
-						nodePtr del = temp;
-						if (temp->_parent->_left == temp)
-							temp->_parent->_left = _leaf;
-						else
-							temp->_parent->_right = _leaf;
-						temp = temp->_parent;
-						delete del;
-					}
-				}
+				if (_size > 0)
+					clear();
 				delete _leaf;
 			};
 	
 		/*---      INSERT      ---*/
 			void	insert(T new_element) {
-				nodePtr	temp = _root;
+				nodePtr	x = _root;
+				nodePtr	y = NULL;
 				key		new_key = new_element.first;
-				while (temp != _leaf) {
-					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
-						temp = temp->_right;
-					else if (temp->_left != _leaf && _comp(new_key, temp->_key))
-						temp = temp->_left;
-					else
-						break;
+				while (x != _leaf) {
+					y = x;
+					if (!_comp(new_key, x->_key))
+						x = x->_right;
+					else if (_comp(new_key, x->_key))
+						x = x->_left;
 				}
-				nodePtr new_node = new node(new_element, RED, temp, _leaf, _leaf);
-				if (temp == _leaf) { 
+				nodePtr new_node = new node(new_element, RED, y, _leaf, _leaf);
+				if (y == NULL) { 
 					_root = new_node;
 					new_node->_color = BLACK;
+					return;
 				}
-				else if (!_comp(new_key, temp->_key))
-					temp->_right = new_node;
+				else if (!_comp(new_node->_key, y->_key))
+					y->_right = new_node;
 				else
-					temp->_left = new_node;
+					y->_left = new_node;
+				new_node->_parent = y;
 				insert_balancing(new_node);
 				_size ++;
 			};
 
 		/*---      DELETE      ---*/
-			void	del(T new_element) {
-				nodePtr	del_node = find_node(new_element.first);
-				if (del_node == _leaf)
+			bool	del(key del_key) {
+				nodePtr	del_node = find_node(del_key);
+				if (del_node == NULL) {
 					std::cout << "Key not found in the tree" << std::endl;
-				else {		
-					color	del_color = del_node->_color;
-					nodePtr x;
-					if (del_node->_left == _leaf) {
-						x = del_node->_right;
-						replace(del_node, del_node->_right);
-					}
-					else if (del_node->_right == _leaf) {
-						x = del_node->_left;
-						replace(del_node, del_node->_left);
+					return (false);
+				}
+				color	del_color = del_node->_color;
+				nodePtr x;
+				if (del_node->_left == _leaf) {
+					x = del_node->_right;
+					replace(del_node, del_node->_right);
+				}
+				else if (del_node->_right == _leaf) {
+					x = del_node->_left;
+					replace(del_node, del_node->_left);
+				}
+				else {
+					nodePtr y = min(del_node->_right);
+					del_color = y->_color;
+					x = y->_right;
+					if (y->_parent == del_node) {
+						x->_parent = y;
 					}
 					else {
-						nodePtr y = min(del_node->_right);
-						del_color = y->_color;
-						x = y->_right;
-						if (y->_parent == del_node) {
-							x->_parent = y;
-						}
-						else {
-							replace(y, y->_right);
-							y->_right = del_node->_right;
-							y->_right->_parent = y;
-						}
-						replace(del_node, y);
-						y->_left = del_node->_left;
-						y->_left->_parent = y;
-						y->_color = del_node->_color;
+						replace(y, y->_right);
+						y->_right = del_node->_right;
+						y->_right->_parent = y;
 					}
-					delete del_node;
-					if (del_color == BLACK)
-						del_balancing(x);
-					_size --;
+					replace(del_node, y);
+					y->_left = del_node->_left;
+					y->_left->_parent = y;
+					y->_color = del_node->_color;
 				}
+				delete del_node;
+				if (del_color == BLACK)
+					del_balancing(x);
+				_size --;
+				return (true);
 			};
 
 		/*---      CLEAR       ---*/
@@ -124,11 +113,28 @@ namespace ft {
 						delete del;
 					}
 				}
+				_size = 0;
 			};
 
+		/*---      FIND      ---*/
+			nodePtr	find_node(key key) const {
+				nodePtr	temp = _root;
+				while (temp != _leaf) {
+					if (temp->_key == key)
+						return (temp);
+					if (!_comp(key, temp->_key))
+						temp = temp->_right;
+					else //if (temp->_left != _leaf && _comp(key, temp->_key))
+						temp = temp->_left;
+					// else
+					// 	temp = _leaf;
+				}
+				return (NULL);
+			};
+			
 		/*---      DIVERS      ---*/
 			void printTree() {
-    			if (_root != _leaf)
+    			if (_size > 0)
       				printHelper(_root, "", true);
 			};
 
@@ -166,8 +172,8 @@ namespace ft {
 					}
 					else {
 						if (node->_parent->_parent->_left->_color == RED) {
-							node->_parent->_color = BLACK;
 							node->_parent->_parent->_left->_color = BLACK;
+							node->_parent->_color = BLACK;
 							node->_parent->_parent->_color = RED;
 							node = node->_parent->_parent;
 						}
@@ -188,18 +194,6 @@ namespace ft {
 			};
 
 		/*--- DELETE HELPERS ---*/
-			nodePtr	find_node(T key) {
-				nodePtr	temp = _root;
-				while (temp != _leaf) {
-					if (temp->_left != _leaf && !_comp(key, temp->_key))
-						temp = temp->_right;
-					else if (temp->_left != _leaf && _comp(key, temp->_key))
-						temp = temp->_left;
-					if (temp->_key == key)
-						return (temp);
-				}
-				return (_leaf);
-			};
 
 			void	replace(nodePtr x, nodePtr y) {
 				if (x->_parent == _leaf)
@@ -283,7 +277,7 @@ namespace ft {
 				if (y->_left != _leaf)
 					y->_left->_parent = x;
 				y->_parent = x->_parent;
-				if (x->_parent == _leaf)
+				if (x->_parent == NULL)
 					_root = y;
 				else if (x == x->_parent->_left)
 					x->_parent->_left = y;
@@ -299,7 +293,7 @@ namespace ft {
 				if (y->_right != _leaf)
 					y->_right->_parent = x;
 				y->_parent = x->_parent;
-				if (x->_parent == _leaf)
+				if (x->_parent == NULL)
 					_root = y;
 				else if (x == x->_parent->_right)
 					x->_parent->_right = y;
