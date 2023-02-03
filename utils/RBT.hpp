@@ -8,16 +8,17 @@ namespace ft {
 	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class RBT
 	{
-		typedef Compare					key_compare;
-		typedef	typename T::first_type	key;
-		typedef Node<T> 				node;
-		typedef Node<T> *				nodePtr;
+		typedef typename Allocator::template rebind<Node<T>>::other node_allocator;
+		typedef Compare												key_compare;
+		typedef	typename T::first_type								key;
+		typedef Node<T> 											node;
+		typedef Node<T> *											nodePtr;
 
 /* ####################   PUBLIC  #################### */
 		public :
 		/*--- CON/DE_STRUCTORS ---*/
-			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp), _size(0){
-				_leaf = new node();
+			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp), _size(0) {
+				_leaf = _node_alloc.allocate(1);
 				_root = _leaf;
 			};
 
@@ -29,29 +30,30 @@ namespace ft {
 	
 		/*---      INSERT      ---*/
 			void	insert(T new_element) {
-				nodePtr	x = _root;
-				nodePtr	y = NULL;
+				nodePtr	temp = _root;
 				key		new_key = new_element.first;
-				while (x != _leaf) {
-					y = x;
-					if (!_comp(new_key, x->_key))
-						x = x->_right;
-					else if (_comp(new_key, x->_key))
-						x = x->_left;
+				_size ++;
+				while (temp != _leaf) {
+					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
+						temp = temp->_right;
+					else if (temp->_left != _leaf && _comp(new_key, temp->_key))
+						temp = temp->_left;
+					else
+						break;
 				}
-				nodePtr new_node = new node(new_element, RED, y, _leaf, _leaf);
-				if (y == NULL) { 
+				nodePtr new_node = _node_alloc.allocate(_size + 1);
+				_node_alloc.construct(new_node, node(new_element, RED, temp, _leaf, _leaf));
+				if (temp == _leaf) { 
 					_root = new_node;
 					new_node->_color = BLACK;
 					return;
 				}
-				else if (!_comp(new_node->_key, y->_key))
-					y->_right = new_node;
+				if (!_comp(new_node->_key, temp->_key))
+					temp->_right = new_node;
 				else
-					y->_left = new_node;
-				new_node->_parent = y;
+					temp->_left = new_node;
+				new_node->_parent = temp;
 				insert_balancing(new_node);
-				_size ++;
 			};
 
 		/*---      DELETE      ---*/
@@ -124,10 +126,8 @@ namespace ft {
 						return (temp);
 					if (!_comp(key, temp->_key))
 						temp = temp->_right;
-					else //if (temp->_left != _leaf && _comp(key, temp->_key))
+					else
 						temp = temp->_left;
-					// else
-					// 	temp = _leaf;
 				}
 				return (NULL);
 			};
@@ -145,6 +145,7 @@ namespace ft {
 
 		private:
 			Allocator		_alloc;
+			node_allocator	_node_alloc;
 			nodePtr 		_root;
 			nodePtr 		_leaf;
 			key_compare		_comp;
@@ -277,7 +278,7 @@ namespace ft {
 				if (y->_left != _leaf)
 					y->_left->_parent = x;
 				y->_parent = x->_parent;
-				if (x->_parent == NULL)
+				if (x->_parent == _leaf)
 					_root = y;
 				else if (x == x->_parent->_left)
 					x->_parent->_left = y;
@@ -293,7 +294,7 @@ namespace ft {
 				if (y->_right != _leaf)
 					y->_right->_parent = x;
 				y->_parent = x->_parent;
-				if (x->_parent == NULL)
+				if (x->_parent == _leaf)
 					_root = y;
 				else if (x == x->_parent->_right)
 					x->_parent->_right = y;
@@ -369,8 +370,6 @@ namespace ft {
 		}
 		return searchTreeHelper(node->right, key);
 	}
-
-	// For balancing the tree after deletion
 
 	public:
 	RedBlackTree() {

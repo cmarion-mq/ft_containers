@@ -7,24 +7,22 @@
 namespace ft {
 	enum color {BLACK, RED};
 	
-	template <class T, class Allocator = std::allocator<T> >
+	template <class T >
 	struct Node {
 		typedef	typename T::first_type	key;
 
 		T	    		_pair;
 		key				_key;
-		Allocator		_alloc;
 		color			_color;
 		Node			*_parent;
 		Node			*_left;
 		Node			*_right;
 	
-		Node(const Allocator &alloc = Allocator()): _pair(T()), _key(key()), _alloc(alloc), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
+		Node(): _pair(T()), _key(key()), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
 		{};
 
-		Node(T pair, color color, Node *parent, Node *left, Node *right, const Allocator &alloc = Allocator()): _key(pair.first), _alloc(alloc), _color(color), _parent(parent), _left(left), _right(right) {
-			_alloc.construct(&_pair, pair);
-		};
+		Node(T pair, color color, Node *parent, Node *left, Node *right): _pair(pair), _key(pair.first), _color(color), _parent(parent), _left(left), _right(right)
+		{};
 	};
 }
 
