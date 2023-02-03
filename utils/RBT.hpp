@@ -59,10 +59,8 @@ namespace ft {
 		/*---      DELETE      ---*/
 			bool	del(key del_key) {
 				nodePtr	del_node = find_node(del_key);
-				if (del_node == NULL) {
-					std::cout << "Key not found in the tree" << std::endl;
+				if (del_node == NULL)
 					return (false);
-				}
 				color	del_color = del_node->_color;
 				nodePtr x;
 				if (del_node->_left == _leaf) {
@@ -90,8 +88,8 @@ namespace ft {
 					y->_left->_parent = y;
 					y->_color = del_node->_color;
 				}
-				delete del_node;
-				if (del_color == BLACK)
+				_node_alloc.deallocate(del_node, 1);
+				if (del_color == BLACK) 
 					del_balancing(x);
 				_size --;
 				return (true);
@@ -112,7 +110,8 @@ namespace ft {
 						else
 							temp->_parent->_right = _leaf;
 						temp = temp->_parent;
-						delete del;
+						_node_alloc.destroy(del);
+						_node_alloc.deallocate(del, 1);
 					}
 				}
 				_size = 0;
@@ -207,6 +206,8 @@ namespace ft {
 			}
 
 			nodePtr	min(nodePtr node) {
+				if (!node || node == _leaf)
+					return(_leaf);
 				while (node->_left != _leaf)
 					node = node->_left;
 				return (node);
@@ -214,7 +215,8 @@ namespace ft {
 
 			void	del_balancing(nodePtr node){
 				nodePtr temp;
-				while (node != _root && node->_color == BLACK) {
+
+				while (node != _root && (node->_color == BLACK || node == _leaf)) {
 					if (node == node->_parent->_left) {
 						temp = node->_parent->_right;
 						if (temp->_color == RED) {
