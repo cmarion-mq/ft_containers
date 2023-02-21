@@ -8,7 +8,7 @@ namespace ft {
 	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class RBT
 	{
-		typedef typename Allocator::template rebind<Node<T>>::other node_allocator;
+		typedef typename Allocator::template rebind<Node<T> >::other node_allocator;
 		typedef Compare												key_compare;
 		typedef	typename T::first_type								key;
 		typedef Node<T> 											node;
@@ -43,7 +43,7 @@ namespace ft {
 				}
 				nodePtr new_node = _node_alloc.allocate(_size + 1);
 				_node_alloc.construct(new_node, node(new_element, RED, temp, _leaf, _leaf));
-				if (temp == _leaf) { 
+				if (is_leaf(temp)) { 
 					_root = new_node;
 					new_node->_color = BLACK;
 					return;
@@ -63,11 +63,11 @@ namespace ft {
 					return (false);
 				color	del_color = del_node->_color;
 				nodePtr x;
-				if (del_node->_left == _leaf) {
+				if (is_leaf(del_node->_left)) {
 					x = del_node->_right;
 					replace(del_node, del_node->_right);
 				}
-				else if (del_node->_right == _leaf) {
+				else if (is_leaf(del_node)) {
 					x = del_node->_left;
 					replace(del_node, del_node->_left);
 				}
@@ -147,6 +147,8 @@ namespace ft {
 			node_allocator	_node_alloc;
 			nodePtr 		_root;
 			nodePtr 		_leaf;
+			nodePtr 		_minleaf;
+			nodePtr 		_maxleaf;
 			key_compare		_comp;
 			size_t			_size;		
 
@@ -196,7 +198,7 @@ namespace ft {
 		/*--- DELETE HELPERS ---*/
 
 			void	replace(nodePtr x, nodePtr y) {
-				if (x->_parent == _leaf)
+				if (is_leaf(x->_parent))
 					_root = y;
 				else if (x == x->_parent->_left)
 					x->_parent->_left = y;
@@ -205,18 +207,10 @@ namespace ft {
 				y->_parent = x->_parent;
 			}
 
-			nodePtr	min(nodePtr node) {
-				if (!node || node == _leaf)
-					return(_leaf);
-				while (node->_left != _leaf)
-					node = node->_left;
-				return (node);
-			};
-
 			void	del_balancing(nodePtr node){
 				nodePtr temp;
 
-				while (node != _root && (node->_color == BLACK || node == _leaf)) {
+				while (node != _root && (node->_color == BLACK || is_leaf(node))) {
 					if (node == node->_parent->_left) {
 						temp = node->_parent->_right;
 						if (temp->_color == RED) {
@@ -280,7 +274,7 @@ namespace ft {
 				if (y->_left != _leaf)
 					y->_left->_parent = x;
 				y->_parent = x->_parent;
-				if (x->_parent == _leaf)
+				if (is_leaf(x->_parent))
 					_root = y;
 				else if (x == x->_parent->_left)
 					x->_parent->_left = y;
@@ -296,7 +290,7 @@ namespace ft {
 				if (y->_right != _leaf)
 					y->_right->_parent = x;
 				y->_parent = x->_parent;
-				if (x->_parent == _leaf)
+				if (is_leaf(x->_parent))
 					_root = y;
 				else if (x == x->_parent->_right)
 					x->_parent->_right = y;
@@ -305,6 +299,41 @@ namespace ft {
 				y->_right = x;
 				x->_parent = y;
 			};
+
+			nodePtr	min(nodePtr node) {
+				if (!node || is_leaf(node))
+					return(_leaf);
+				while (node->_left != _leaf)
+					node = node->_left;
+				return (node);
+			};
+
+			nodePtr	max(nodePtr node) {
+				if (!node || is_leaf(node))
+					return(_leaf);
+				while (node->_left != _leaf)
+					node = node->_right;
+				return (node);
+			};
+
+			void	min_max_actu() {
+				nodePtr min = min(_root);
+				nodePtr max = max(_root);
+				if (_minleaf->_parent) {
+					_minleaf->_parent->_left = _leaf;
+				}
+				if (_maxleaf->_parent) {
+					_maxleaf->_parent->_right = _leaf;
+				}
+				_minleaf->_parent = min;
+				_maxleaf->_parent = max;
+				min->_left = _minleaf;
+				max->_right = _maxleaf;
+			}
+
+			bool	is_leaf(nodePtr node) {
+				return(is_leaf(node) || node == _minleaf || node == _maxleaf);
+			}
 
 		/*--- PRINT HELPER ---*/
 			void printHelper(nodePtr node, std::string indent, bool last) {

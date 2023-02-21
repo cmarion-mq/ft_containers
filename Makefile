@@ -4,7 +4,8 @@ STACK_PATH		=	./stack/
 
 SRCS			=	main_42.cpp \
 					vector.cpp \
-					stack.cpp
+					stack.cpp \
+					map.cpp
 
 CXX	 			=	c++
 CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address

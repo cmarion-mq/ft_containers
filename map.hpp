@@ -9,7 +9,7 @@
 #include "utils/pair.hpp"
 
 namespace ft {
-	template< class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T>> >
+	template< class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > >
 	class map {
 /* ####################  PUBLIC  #################### */
 		public:
@@ -51,7 +51,21 @@ namespace ft {
 					_rbt.insert(*it);
 			};
 
-			map (const map& x) {}; //###################_TO_DO
+			map (const map& x) {
+				for (const_iterator it = x.begin(); it != x.end(); ++ it)
+					_rbt.insert(*it);
+			};
+
+			map& operator= (const map& x) {
+				clear();
+				for (const_iterator it = x.begin(); it != x.end(); ++ it)
+					_rbt.insert(*it);
+				return (*this);
+			}
+
+			~map () {
+				clear();
+			}
 
 		/*---     CAPACITY     ---*/
 			bool		empty() const		{ return (_rbt.size() == 0); };
@@ -66,7 +80,7 @@ namespace ft {
 				_rbt.clear();
 			};
 
-			iterator erase( iterator pos ) {}; //###################_TO_DO
+			//iterator erase( iterator pos ) {}; //###################_TO_DO
 
 			size_type erase( const Key& key ) {
 				if (_rbt.del(key))
@@ -74,7 +88,7 @@ namespace ft {
 				return (0);
 			};
 
-			pair<iterator,bool> insert (const value_type& val) {}; //###################_TO_DO
+			//pair<iterator, bool> insert (const value_type& val) {}; //###################_TO_DO
 
 		/*---     MODIFIERS    ---*/
 			size_type count( const Key& key ) const {
