@@ -76,6 +76,18 @@ namespace ft {
 		
 		
 		/*---     MODIFIERS    ---*/
+			void insert (const value_type& val) {
+				_rbt.insert(val);
+			};
+
+			// pair<iterator,bool> insert (const value_type& val) {
+			// 	_rbt.insert(val);
+			// };
+
+			// iterator insert (iterator position, const value_type& val) {};
+
+			//template <class InputIterator>  void insert (InputIterator first, InputIterator last);
+
 			void clear() {
 				_rbt.clear();
 			};

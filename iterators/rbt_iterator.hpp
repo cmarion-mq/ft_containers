@@ -3,15 +3,15 @@
 
 #include "../utils/RBT_node.hpp"
 
-template< class T >
-ft::Node<T> *rbt_nextt(ft::Node<T> *from) {
+// template< class T >
+// ft::Node<T> *rbt_nextt(ft::Node<T> *from) {
 
-};
+// };
 
-template< class T >
-ft::Node<T> *rbt_previous(ft::Node<T> *from) {
+// template< class T >
+// ft::Node<T> *rbt_previous(ft::Node<T> *from) {
 	
-};
+// };
 
 namespace ft {
 	template< class T >

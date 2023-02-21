@@ -19,7 +19,18 @@ namespace ft {
 		/*--- CON/DE_STRUCTORS ---*/
 			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp), _size(0) {
 				_leaf = _node_alloc.allocate(1);
+				_maxleaf = _node_alloc.allocate(1);
+				_minleaf = _node_alloc.allocate(1);
 				_root = _leaf;
+				_leaf->_parent = NULL;
+				_leaf->_left = NULL;
+				_leaf->_right = NULL;
+				_maxleaf->_parent = NULL;
+				_maxleaf->_left = NULL;
+				_maxleaf->_right = NULL;	
+				_minleaf->_parent = NULL;
+				_minleaf->_left = NULL;
+				_minleaf->_right = NULL;
 			};
 
 			~RBT() {
@@ -33,10 +44,10 @@ namespace ft {
 				nodePtr	temp = _root;
 				key		new_key = new_element.first;
 				_size ++;
-				while (temp != _leaf) {
-					if (temp->_right != _leaf && !_comp(new_key, temp->_key))
+				while (!is_leaf(temp)) {
+					if (!is_leaf(temp->_right) && !_comp(new_key, temp->_key))
 						temp = temp->_right;
-					else if (temp->_left != _leaf && _comp(new_key, temp->_key))
+					else if (!is_leaf(temp->_left) && _comp(new_key, temp->_key))
 						temp = temp->_left;
 					else
 						break;
@@ -54,6 +65,7 @@ namespace ft {
 					temp->_left = new_node;
 				new_node->_parent = temp;
 				insert_balancing(new_node);
+				// min_max_actu();
 			};
 
 		/*---      DELETE      ---*/
@@ -92,16 +104,17 @@ namespace ft {
 				if (del_color == BLACK) 
 					del_balancing(x);
 				_size --;
+				min_max_actu();
 				return (true);
 			};
 
 		/*---      CLEAR       ---*/
 			void clear() {
 				nodePtr	temp = _root;
-				while (temp != _leaf) {
-					if (temp->_right != _leaf)
+				while (!is_leaf(temp)) {
+					if (!is_leaf(temp->_right))
 						temp = temp->_right;
-					else if (temp->_left != _leaf) 
+					else if (!is_leaf(temp->_left)) 
 						temp = temp->_left;
 					else {
 						nodePtr del = temp;
@@ -120,7 +133,7 @@ namespace ft {
 		/*---      FIND      ---*/
 			nodePtr	find_node(key key) const {
 				nodePtr	temp = _root;
-				while (temp != _leaf) {
+				while (!is_leaf(temp)) {
 					if (temp->_key == key)
 						return (temp);
 					if (!_comp(key, temp->_key))
@@ -271,7 +284,7 @@ namespace ft {
 			void	left_rotate(nodePtr x){
 				nodePtr	y = x->_right;
 				x->_right = y->_left;
-				if (y->_left != _leaf)
+				if (!is_leaf(y->_left))
 					y->_left->_parent = x;
 				y->_parent = x->_parent;
 				if (is_leaf(x->_parent))
@@ -287,7 +300,7 @@ namespace ft {
 			void	right_rotate(nodePtr x){
 				nodePtr	y = x->_left;
 				x->_left = y->_right;
-				if (y->_right != _leaf)
+				if (!is_leaf(y->_right))
 					y->_right->_parent = x;
 				y->_parent = x->_parent;
 				if (is_leaf(x->_parent))
@@ -302,42 +315,40 @@ namespace ft {
 
 			nodePtr	min(nodePtr node) {
 				if (!node || is_leaf(node))
-					return(_leaf);
-				while (node->_left != _leaf)
+					return(node);
+				while (!is_leaf(node->_left))
 					node = node->_left;
 				return (node);
 			};
 
 			nodePtr	max(nodePtr node) {
 				if (!node || is_leaf(node))
-					return(_leaf);
-				while (node->_left != _leaf)
+					return(node);
+				while (!is_leaf(node->_right))
 					node = node->_right;
 				return (node);
 			};
 
 			void	min_max_actu() {
-				nodePtr min = min(_root);
-				nodePtr max = max(_root);
-				if (_minleaf->_parent) {
+				nodePtr minp = min(_root);
+				nodePtr maxp = max(_root);
+				if (_minleaf->_parent && _minleaf->_parent->_left == _minleaf)
 					_minleaf->_parent->_left = _leaf;
-				}
-				if (_maxleaf->_parent) {
+				_minleaf->_parent = minp;
+				minp->_left = _minleaf;
+				if (_maxleaf->_parent && _maxleaf->_parent->_right == _maxleaf)
 					_maxleaf->_parent->_right = _leaf;
-				}
-				_minleaf->_parent = min;
-				_maxleaf->_parent = max;
-				min->_left = _minleaf;
-				max->_right = _maxleaf;
+				_maxleaf->_parent = maxp;
+				maxp->_right = _maxleaf;
 			}
 
 			bool	is_leaf(nodePtr node) {
-				return(is_leaf(node) || node == _minleaf || node == _maxleaf);
+				return(node == _leaf || node == _minleaf || node == _maxleaf);
 			}
 
 		/*--- PRINT HELPER ---*/
 			void printHelper(nodePtr node, std::string indent, bool last) {
-				if (node != _leaf) {
+				if (!is_leaf(node)) {
 					std::cout << indent;
 					if (last) {
 						std::cout << "R----";
