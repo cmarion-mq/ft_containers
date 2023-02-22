@@ -23,6 +23,10 @@ namespace ft {
 
 		Node(T pair, color color, Node *parent, Node *left, Node *right): _pair(pair), _key(pair.first), _color(color), _parent(parent), _left(left), _right(right)
 		{};
+
+		bool is_leaf() {
+			return (!_left && !_right)
+		}
 	};
 }
 

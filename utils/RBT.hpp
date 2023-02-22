@@ -22,13 +22,17 @@ namespace ft {
 				_maxleaf = _node_alloc.allocate(1);
 				_minleaf = _node_alloc.allocate(1);
 				_root = _leaf;
+				_root->_color = BLACK;
+				// _root->_parent = _leaf;
+				// _root->_left = _leaf;
+				// _root->_right = _leaf;
 				_leaf->_parent = NULL;
 				_leaf->_left = NULL;
 				_leaf->_right = NULL;
-				_maxleaf->_parent = NULL;
+				_maxleaf->_parent = _root;
 				_maxleaf->_left = NULL;
 				_maxleaf->_right = NULL;	
-				_minleaf->_parent = NULL;
+				_minleaf->_parent = _root;
 				_minleaf->_left = NULL;
 				_minleaf->_right = NULL;
 			};
@@ -37,6 +41,8 @@ namespace ft {
 				if (_size > 0)
 					clear();
 				delete _leaf;
+				delete _maxleaf;
+				delete _minleaf;
 			};
 	
 		/*---      INSERT      ---*/
@@ -54,7 +60,7 @@ namespace ft {
 				}
 				nodePtr new_node = _node_alloc.allocate(_size + 1);
 				_node_alloc.construct(new_node, node(new_element, RED, temp, _leaf, _leaf));
-				if (is_leaf(temp)) { 
+				if (temp == _leaf) { 
 					_root = new_node;
 					new_node->_color = BLACK;
 					return;
@@ -65,7 +71,7 @@ namespace ft {
 					temp->_left = new_node;
 				new_node->_parent = temp;
 				insert_balancing(new_node);
-				// min_max_actu();
+				min_max_actu();
 			};
 
 		/*---      DELETE      ---*/
@@ -336,7 +342,7 @@ namespace ft {
 					_minleaf->_parent->_left = _leaf;
 				_minleaf->_parent = minp;
 				minp->_left = _minleaf;
-				if (_maxleaf->_parent && _maxleaf->_parent->_right == _maxleaf)
+				if (_maxleaf && _maxleaf->_parent && _maxleaf->_parent->_right == _maxleaf)
 					_maxleaf->_parent->_right = _leaf;
 				_maxleaf->_parent = maxp;
 				maxp->_right = _maxleaf;
@@ -436,14 +442,6 @@ namespace ft {
 
 	NodePtr searchTree(int k) {
 		return searchTreeHelper(this->root, k);
-	}
-
-
-	NodePtr maximum(NodePtr node) {
-		while (node->right != TNULL) {
-		node = node->right;
-		}
-		return node;
 	}
 
 	NodePtr successor(NodePtr x) {
