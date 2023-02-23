@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "RBT_node.hpp"
+#include "iterators/rbt_iterator.hpp"
+#include "iterators/reverse_iterator.hpp"
 
 namespace ft {
 	template < class T, class Compare, class Allocator = std::allocator<T> >
@@ -10,9 +12,14 @@ namespace ft {
 	{
 		typedef typename Allocator::template rebind<Node<T> >::other node_allocator;
 		typedef Compare												key_compare;
-		typedef	typename T::first_type								key;
+		typedef	typename T::first_type								key_type;
+		typedef	typename T::second_type								value_type;
 		typedef Node<T> 											node;
 		typedef Node<T> *											nodePtr;
+		typedef RBT_iterator<node, value_type>						iterator;
+		typedef RBT_iterator<node, const value_type>				const_iterator;
+		typedef ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 /* ####################   PUBLIC  #################### */
 		public :
@@ -48,7 +55,7 @@ namespace ft {
 		/*---      INSERT      ---*/
 			void	insert(T new_element) {
 				nodePtr	temp = _root;
-				key		new_key = new_element.first;
+				key_type		new_key = new_element.first;
 				_size ++;
 				while (!is_leaf(temp)) {
 					if (!is_leaf(temp->_right) && !_comp(new_key, temp->_key))
@@ -75,7 +82,7 @@ namespace ft {
 			};
 
 		/*---      DELETE      ---*/
-			bool	del(key del_key) {
+			bool	del(key_type del_key) {
 				nodePtr	del_node = find_node(del_key);
 				if (del_node == NULL)
 					return (false);
@@ -137,7 +144,7 @@ namespace ft {
 			};
 
 		/*---      FIND      ---*/
-			nodePtr	find_node(key key) const {
+			nodePtr	find_node(key_type key) const {
 				nodePtr	temp = _root;
 				while (!is_leaf(temp)) {
 					if (temp->_key == key)
@@ -150,6 +157,16 @@ namespace ft {
 				return (NULL);
 			};
 			
+		/*---    ITERATORS     ---*/
+			iterator				begin() 			{ return ( iterator(_minleaf->_parent)); };
+			const_iterator			begin()		const	{ return ( const_iterator(_minleaf->_parent)); };
+			reverse_iterator		rbegin()			{ return ( reverse_iterator(end())); };
+			const_reverse_iterator	rbegin() 	const	{ return ( const_reverse_iterator(end())); };
+			iterator				end()				{ return ( iterator(_maxleaf)); };
+			const_iterator			end()		const	{ return ( const_iterator(_maxleaf)); };
+			reverse_iterator 		rend()				{ return ( reverse_iterator(begin())); };
+			const_reverse_iterator 	rend()		const	{ return ( const_reverse_iterator(begin())); };
+
 		/*---      DIVERS      ---*/
 			void printTree() {
     			if (_size > 0)

@@ -25,7 +25,7 @@ namespace ft {
 		{};
 
 		bool is_leaf() {
-			return (!_left && !_right)
+			return (!_left && !_right);
 		}
 	};
 }

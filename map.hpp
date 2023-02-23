@@ -25,8 +25,8 @@ namespace ft {
 			typedef typename Allocator::const_reference			const_reference;
 			typedef typename Allocator::pointer					pointer;
 			typedef typename Allocator::const_pointer			const_pointer;
-			typedef ft::RBT_iterator<value_type>				iterator;
-			typedef ft::RBT_iterator<const value_type> 			const_iterator;
+			typedef ft::RBT_iterator<key_type, mapped_type>		iterator;
+			typedef ft::RBT_iterator<key_type, mapped_type> 	const_iterator;
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
@@ -67,6 +67,16 @@ namespace ft {
 				clear();
 			}
 
+		/*---    ITERATORS     ---*/
+			iterator				begin() 			{ return (_rbt.begin()); };	
+			const_iterator			begin() 	const	{ return (_rbt.begin()); };
+			reverse_iterator		rbegin()			{ return (_rbt.rbegin()); };
+			const_reverse_iterator	rbegin() 	const	{ return (_rbt.rbegin()); };
+			iterator				end()				{ return (_rbt.end()); };
+			const_iterator			end()		const	{ return (_rbt.end()); };
+			reverse_iterator 		rend()				{ return (_rbt.rend()); };
+			const_reverse_iterator 	rend()		const	{ return (_rbt.rend()); };
+
 		/*---     CAPACITY     ---*/
 			bool		empty() const		{ return (_rbt.size() == 0); };
 			size_type	size() const		{ return (_rbt.size()); };
@@ -75,22 +85,20 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 
-		/*---    ITEARATORS    ---*/
-			// iterator		begin() 		{  };	
-			// const_iterator	begin() const	{ return(iterator(_min)); };
 
 		/*---     MODIFIERS    ---*/
 			void insert (const value_type& val) {
 				_rbt.insert(val);
 			};
 
-			// pair<iterator,bool> insert (const value_type& val) {
-			// 	_rbt.insert(val);
-			// };
+			pair<iterator,bool>	insert (const value_type& val) {
+				_rbt.insert(val);
+			};
 
-			// iterator insert (iterator position, const value_type& val) {};
+			iterator 			insert (iterator position, const value_type& val) {};
 
 			//template <class InputIterator>  void insert (InputIterator first, InputIterator last);
+
 
 			void clear() {
 				_rbt.clear();
@@ -104,9 +112,7 @@ namespace ft {
 				return (0);
 			};
 
-			//pair<iterator, bool> insert (const value_type& val) {}; //###################_TO_DO
-
-		/*---     MODIFIERS    ---*/
+		/*---     OPERATIONS    ---*/
 			size_type count( const Key& key ) const {
 				if (_rbt.find_node(key))
 					return (1);

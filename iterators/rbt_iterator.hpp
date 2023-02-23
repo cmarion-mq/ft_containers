@@ -10,21 +10,22 @@
 
 
 namespace ft {
-	template< class T >
+	template< typename Key, typename ValueType>
 	class RBT_iterator {
 		public:
 	/*-------- TYPES ---------*/
+			typedef Node< pair<Key, ValueType> >	node;
+			typedef Node< pair<Key, ValueType> >*	nodePtr;
 
 
 	/*--- CON/DE_STRUCTORS ---*/
 		RBT_iterator(): _current(NULL) {};
 
-		RBT_iterator(Node<T> *current): _current(current) {};
+		RBT_iterator(nodePtr current): _current(current) {};
 
-		private:
-		/*-------- TYPES ---------*/
-			typedef Node<T>*	nodePtr;
-			
+		~RBT_iterator() {};
+
+		private:			
 		/*--- MEMBER OBJECTS ---*/
 			nodePtr	_current;
 			
@@ -60,8 +61,8 @@ namespace ft {
 				}
 				if (!_current->_left->is_leaf()) {
 					_current = _current->_left;
-					while (!_curent->_right->is_leaf())
-						_current = _current->_right
+					while (!_current->_right->is_leaf())
+						_current = _current->_right;
 					return (*this);
 				}
 				else {
@@ -72,9 +73,13 @@ namespace ft {
 						_current = init->_left;
 						return (*this);
 					}
-					_current = _current->_parent
+					_current = _current->_parent;
 					return (*this);
 				}
+			};
+
+			node &operator *() {
+				return (_current);
 			};
     };
 }
