@@ -157,6 +157,32 @@ namespace ft {
 				}
 				return (NULL);
 			};
+
+			iterator	find_node_i(const key_type key) {
+				nodePtr	temp = _root;
+				while (!temp->is_leaf()) {
+					if (temp->_key == key)
+						return (iterator(temp));
+					if (!_comp(key, temp->_key))
+						temp = temp->_right;
+					else
+						temp = temp->_left;
+				}
+				return (end());
+			};
+
+			const_iterator	find_node_i(const key_type key) const {
+				nodePtr	temp = _root;
+				while (!temp->is_leaf()) {
+					if (temp->_key == key)
+						return (const_iterator(temp));
+					if (!_comp(key, temp->_key))
+						temp = temp->_right;
+					else
+						temp = temp->_left;
+				}
+				return (end());
+			};
 			
 		/*---    ITERATORS     ---*/
 			iterator				begin() 			{ return ( iterator(_minleaf->_parent)); };

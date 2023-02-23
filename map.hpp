@@ -89,14 +89,14 @@ namespace ft {
 				if (_rbt.find_node(val.first))
 					return (pair<iterator, bool> (_rbt.insert(val), true));
 				else
-					return (pair<iterator, bool> (_rbt.insert(val), false));
+					return (pair<iterator, bool> (_rbt.find_node_i(val), false));
 			};
 
 			// iterator 			insert (iterator position, const value_type& val) {};
 
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last) {
-				
+
 			};
 
 
@@ -113,11 +113,21 @@ namespace ft {
 			};
 
 		/*---     OPERATIONS    ---*/
-			size_type count( const Key& key ) const {
+			iterator find (const key_type &k) {
+				return (_rbt.find_node_i(k));
+			};
+			
+			const_iterator find (const key_type& k) const {
+				return (_rbt.find_node_i(k));
+			};
+			
+			size_type count( const key_type &key ) const {
 				if (_rbt.find_node(key))
 					return (1);
 				return (0);
 			};
+
+
 
 		/*---      DIVERS      ---*/
 			void print() {
