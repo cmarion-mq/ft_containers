@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <sstream>
-#include "iterators/reverse_iterator.hpp"
-#include "iterators/rbt_iterator.hpp"
 #include "utils/RBT.hpp"
 #include "utils/pair.hpp"
 
@@ -25,8 +23,8 @@ namespace ft {
 			typedef typename Allocator::const_reference			const_reference;
 			typedef typename Allocator::pointer					pointer;
 			typedef typename Allocator::const_pointer			const_pointer;
-			typedef ft::RBT_iterator<key_type, mapped_type>		iterator;
-			typedef ft::RBT_iterator<key_type, mapped_type> 	const_iterator;
+			typedef RBT_iterator<value_type, mapped_type>		iterator;
+			typedef RBT_iterator<value_type, mapped_type> 		const_iterator;
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
@@ -87,17 +85,19 @@ namespace ft {
 
 
 		/*---     MODIFIERS    ---*/
-			void insert (const value_type& val) {
-				_rbt.insert(val);
-			};
-
 			pair<iterator,bool>	insert (const value_type& val) {
-				_rbt.insert(val);
+				if (_rbt.find_node(val.first))
+					return (pair<iterator, bool> (_rbt.insert(val), true));
+				else
+					return (pair<iterator, bool> (_rbt.insert(val), false));
 			};
 
-			iterator 			insert (iterator position, const value_type& val) {};
+			// iterator 			insert (iterator position, const value_type& val) {};
 
-			//template <class InputIterator>  void insert (InputIterator first, InputIterator last);
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last) {
+				
+			};
 
 
 			void clear() {

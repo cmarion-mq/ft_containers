@@ -10,12 +10,13 @@
 
 
 namespace ft {
-	template< typename Key, typename ValueType>
+	template< typename ValueType, typename MappedType>
 	class RBT_iterator {
 		public:
 	/*-------- TYPES ---------*/
-			typedef Node< pair<Key, ValueType> >	node;
-			typedef Node< pair<Key, ValueType> >*	nodePtr;
+			typedef Node<ValueType>	node;
+			typedef node &			reference;
+			typedef node *			nodePtr;
 
 
 	/*--- CON/DE_STRUCTORS ---*/
@@ -78,8 +79,8 @@ namespace ft {
 				}
 			};
 
-			node &operator *() {
-				return (_current);
+			reference &operator *() {
+				return (_current->_pair);
 			};
     };
 }

@@ -16,8 +16,8 @@ namespace ft {
 		typedef	typename T::second_type								value_type;
 		typedef Node<T> 											node;
 		typedef Node<T> *											nodePtr;
-		typedef RBT_iterator<node, value_type>						iterator;
-		typedef RBT_iterator<node, const value_type>				const_iterator;
+		typedef RBT_iterator<T, value_type>							iterator;
+		typedef RBT_iterator<T, const value_type>					const_iterator;
 		typedef ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
@@ -53,7 +53,7 @@ namespace ft {
 			};
 	
 		/*---      INSERT      ---*/
-			void	insert(T new_element) {
+			iterator	insert(T new_element) {
 				nodePtr	temp = _root;
 				key_type		new_key = new_element.first;
 				_size ++;
@@ -70,7 +70,7 @@ namespace ft {
 				if (temp == _leaf) { 
 					_root = new_node;
 					new_node->_color = BLACK;
-					return;
+					return(iterator(new_node));
 				}
 				if (!_comp(new_node->_key, temp->_key))
 					temp->_right = new_node;
@@ -79,6 +79,7 @@ namespace ft {
 				new_node->_parent = temp;
 				insert_balancing(new_node);
 				min_max_actu();
+				return (iterator(new_node));
 			};
 
 		/*---      DELETE      ---*/
@@ -146,7 +147,7 @@ namespace ft {
 		/*---      FIND      ---*/
 			nodePtr	find_node(key_type key) const {
 				nodePtr	temp = _root;
-				while (!is_leaf(temp)) {
+				while (!temp->is_leaf()) {
 					if (temp->_key == key)
 						return (temp);
 					if (!_comp(key, temp->_key))
