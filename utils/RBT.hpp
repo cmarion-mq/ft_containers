@@ -185,14 +185,14 @@ namespace ft {
 			};
 			
 		/*---    ITERATORS     ---*/
-			iterator				begin() 			{ return ( iterator(_minleaf->_parent)); };
-			const_iterator			begin()		const	{ return ( const_iterator(_minleaf->_parent)); };
-			reverse_iterator		rbegin()			{ return ( reverse_iterator(end())); };
-			const_reverse_iterator	rbegin() 	const	{ return ( const_reverse_iterator(end())); };
-			iterator				end()				{ return ( iterator(_maxleaf)); };
-			const_iterator			end()		const	{ return ( const_iterator(_maxleaf)); };
-			reverse_iterator 		rend()				{ return ( reverse_iterator(begin())); };
-			const_reverse_iterator 	rend()		const	{ return ( const_reverse_iterator(begin())); };
+			iterator				begin() 			{ return (iterator(_minleaf->_parent));			};
+			const_iterator			begin()		const	{ return (const_iterator(_minleaf->_parent));	};
+			reverse_iterator		rbegin()			{ return (reverse_iterator(end()));				};
+			const_reverse_iterator	rbegin() 	const	{ return (const_reverse_iterator(end()));		};
+			iterator				end()				{ return (iterator(_maxleaf));					};
+			const_iterator			end()		const	{ return (const_iterator(_maxleaf));			};
+			reverse_iterator 		rend()				{ return (reverse_iterator(begin()));			};
+			const_reverse_iterator 	rend()		const	{ return (const_reverse_iterator(begin()));		};
 
 		/*---      DIVERS      ---*/
 			void printTree() {

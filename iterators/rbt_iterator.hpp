@@ -52,7 +52,7 @@ namespace ft {
 				}
 			};*/
 
-			RBT_iterator &operator --() {
+			RBT_iterator	&operator	--() {
 				if (_current->is_leaf()) {
 					if (_current->_parent) {
 						_current = _current->_parent;
@@ -79,9 +79,10 @@ namespace ft {
 				}
 			};
 
-			reference &operator *() {
-				return (_current->_pair);
-			};
+			reference 		operator	*()		{ return (_current->_pair);		};
+			nodePtr 		&operator	->()	{ return (&_current->_pair);	};
+
+
     };
 }
 #endif

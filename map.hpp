@@ -89,27 +89,31 @@ namespace ft {
 				if (_rbt.find_node(val.first))
 					return (pair<iterator, bool> (_rbt.insert(val), true));
 				else
-					return (pair<iterator, bool> (_rbt.find_node_i(val), false));
+					return (pair<iterator, bool> (_rbt.find_node_i(val.first), false));
 			};
 
 			// iterator 			insert (iterator position, const value_type& val) {};
 
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last) {
-
+				while (first != last) {
+					_rbt.insert(*first);
+					first ++;
+				}
 			};
 
-
-			void clear() {
-				_rbt.clear();
+			void erase( iterator pos ) {
+				_rbt.del(*pos._current->_key);
 			};
-
-			//iterator erase( iterator pos ) {}; //###################_TO_DO
 
 			size_type erase( const Key& key ) {
 				if (_rbt.del(key))
 					return (1);
 				return (0);
+			};
+
+			void clear() {
+				_rbt.clear();
 			};
 
 		/*---     OPERATIONS    ---*/
@@ -126,8 +130,6 @@ namespace ft {
 					return (1);
 				return (0);
 			};
-
-
 
 		/*---      DIVERS      ---*/
 			void print() {
