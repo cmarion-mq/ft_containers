@@ -13,11 +13,11 @@ namespace ft {
 		typedef typename Allocator::template rebind<Node<T> >::other node_allocator;
 		typedef Compare												key_compare;
 		typedef	typename T::first_type								key_type;
-		typedef	typename T::second_type								value_type;
+		typedef	typename T::second_type								mapped_type;
 		typedef Node<T> 											node;
 		typedef Node<T> *											nodePtr;
-		typedef RBT_iterator<T, value_type>							iterator;
-		typedef RBT_iterator<T, const value_type>					const_iterator;
+		typedef RBT_iterator<T, mapped_type>						iterator;
+		typedef RBT_iterator<T, const mapped_type>					const_iterator;
 		typedef ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 

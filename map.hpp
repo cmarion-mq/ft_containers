@@ -82,7 +82,9 @@ namespace ft {
 		
 		/*---  ELEMENT ACCESS  ---*/
 		
-
+			mapped_type &operator[] (const key_type& k) {
+				return (*(_rbt.find_node(k))->_pair.first);
+			};
 
 		/*---     MODIFIERS    ---*/
 			pair<iterator,bool>	insert (const value_type& val) {
@@ -141,7 +143,6 @@ namespace ft {
 	/*--- MEMBER OBJECTS ---*/			
 		private :
 			RBT<value_type, key_compare, allocator_type>	_rbt;
-
 
 /*---     ITERATORS    ---*/
 

@@ -17,7 +17,7 @@ int main() {
 	map_int.insert(ft::pair<const int, int> (60,4));
 	map_int.insert(ft::pair<const int, int> (57,6));
 	map_int.insert(ft::pair<const int, int> (40,0));
-	// map_int.erase(65);
+	map_int.erase(65);
 	
 	map_int.print();
 	// std::cout << "count 3: " << map_int.count(3) << std::endl;
