@@ -6,32 +6,28 @@
 namespace ft {
 	template< typename ValueType, typename MappedType>
 	class RBT_iterator {
+/* ####################   PUBLIC  #################### */
 		public:
 	/*-------- TYPES ---------*/
 			typedef Node<ValueType>	node;
 			typedef node &			reference;
 			typedef node *			nodePtr;
 
-
 	/*--- CON/DE_STRUCTORS ---*/
-		RBT_iterator(): _current(NULL) {};
+			RBT_iterator(): _current(NULL) {};
 
-		RBT_iterator(nodePtr current): _current(current) {};
+			RBT_iterator(nodePtr current): _current(current) {};
 
-		RBT_iterator &operator =(const RBT_iterator<ValueType, MappedType> &x) {
-			if (this == &x) { 
-				return *this;
+			RBT_iterator &operator =(const RBT_iterator<ValueType, MappedType> &x) {
+				if (this == &x) { 
+					return *this;
+				}
+				_current = x._current;
+				return (*this);
 			}
-			_current = x._current;
-			return (*this);
-		}
 
-		~RBT_iterator() {};
+			~RBT_iterator() {};
 
-		private:			
-		/*--- MEMBER OBJECTS ---*/
-			nodePtr	_current;
-			
 			/*nodePtr rbt_previous(nodePtr *from) {
 				if (from->is_leaf()) {
 					if (from->_parent)
@@ -128,6 +124,12 @@ namespace ft {
 
 			reference 		operator	*()		{ return (_current->_pair);		};
 			nodePtr 		&operator	->()	{ return (&_current->_pair);	};
+			
+/* ####################   PRIVATE  #################### */
+		private:			
+		/*--- MEMBER OBJECTS ---*/
+			nodePtr	_current;
+			
     };
 }
 

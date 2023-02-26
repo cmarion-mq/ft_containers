@@ -12,15 +12,14 @@ template<typename Key, typename Value>
 std::ostream& operator<<(std::ostream& os, NS::map<Key, Value> const& m)
 {
    os << "{ ";
-   for(auto const& p: m)
+   for(NS::map<Key, Value>::iterator p = m.begin(); p != m.end(); ++ p)
         os << '(' << p.first << ':' << p.second << ") ";
    return os << "}\n";
 }
  
-struct Point { double x, y; };
-struct PointCmp {
-    bool operator()(const Point& lhs, const Point& rhs) const {
-        return lhs.x < rhs.x; // NB. intentionally ignores y
+ struct PointCmp {
+    bool operator()(const int &lhs, const int &rhs) const {
+        return lhs > rhs;
     }
 };
 
@@ -47,23 +46,12 @@ int main() {
 		
 		std::cout << "\nCustom Key class option 1:\n";
 		// Use a comparison struct
-		NS::map<Point, double, PointCmp> mag;
-		mag[{5, -12}] = 13;
-		mag[{3, 4}] = 5;
-		mag[{-8, -15}] = 17;	
-		for(NS::map<Point, double, PointCmp>::iterator p = mag.begin(); p != mag.end(); ++ p)
-			std::cout << "The magnitude of (" << p.first.x << ", " << p.first.y << ") is " << p.second << '\n';
-		
-		std::cout << "\nCustom Key class option 2:\n";
-		auto cmpLambda = [&mag](const Point &lhs, const Point &rhs) {
-			return mag[lhs] < mag[rhs];
-		};
-		NS::map<Point, double, decltype(cmpLambda)> magy(cmpLambda);
-			
-		for(auto p : magy)
-			std::cout << "The magnitude of (" << p.first.x
-						<< ", " << p.first.y << ") is "
-						<< p.second << '\n';
+		NS::map<int, double, PointCmp> mag;
+		mag[5] = 13;
+		mag[4] = 5;
+		mag[15] = 17;	
+		for(NS::map<int, double, PointCmp>::iterator p = mag.begin(); p != mag.end(); ++ p)
+			std::cout << "first " << p. << ", is " << *p.second << '\n';
 	}
 	std::cout << std::endl;
 
