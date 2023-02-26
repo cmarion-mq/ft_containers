@@ -122,7 +122,7 @@ namespace ft {
 				return (_current != other._current);
 			}
 
-			reference 		operator	*()		{ return (_current->_pair);		};
+			ValueType 		operator	*()		{ return (_current->_pair);		};
 			nodePtr 		&operator	->()	{ return (&_current->_pair);	};
 			
 /* ####################   PRIVATE  #################### */

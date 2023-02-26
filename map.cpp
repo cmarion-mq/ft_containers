@@ -12,8 +12,8 @@ template<typename Key, typename Value>
 std::ostream& operator<<(std::ostream& os, NS::map<Key, Value> const& m)
 {
    os << "{ ";
-   for(NS::map<Key, Value>::iterator p = m.begin(); p != m.end(); ++ p)
-        os << '(' << p.first << ':' << p.second << ") ";
+   for(typename NS::map<Key, Value>::iterator p = m.begin(); p != m.end(); ++ p)
+        os << '(' << (*p).first << ':' << (*p).second << ") ";
    return os << "}\n";
 }
  
@@ -51,7 +51,7 @@ int main() {
 		mag[4] = 5;
 		mag[15] = 17;	
 		for(NS::map<int, double, PointCmp>::iterator p = mag.begin(); p != mag.end(); ++ p)
-			std::cout << "first " << p. << ", is " << *p.second << '\n';
+			std::cout << "first " << (*p).first << ", is " << (*p).second << '\n';
 	}
 	std::cout << std::endl;
 

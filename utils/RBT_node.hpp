@@ -7,21 +7,21 @@
 namespace ft {
 	enum color {BLACK, RED};
 	
-	template <class T >
+	template <class ValueType >
 	struct Node {
-		typedef	typename T::first_type	key;
+		typedef	typename ValueType::first_type	key;
 
-		T	    		_pair;
+		ValueType  		_pair;
 		key				_key;
 		color			_color;
 		Node			*_parent;
 		Node			*_left;
 		Node			*_right;
 	
-		Node(): _pair(T()), _key(key()), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
+		Node(): _pair(ValueType()), _key(key()), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
 		{};
 
-		Node(T pair, color color, Node *parent, Node *left, Node *right): _pair(pair), _key(pair.first), _color(color), _parent(parent), _left(left), _right(right)
+		Node(ValueType pair, color color, Node *parent, Node *left, Node *right): _pair(pair), _key(pair.first), _color(color), _parent(parent), _left(left), _right(right)
 		{};
 
 		bool is_leaf() const {

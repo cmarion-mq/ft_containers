@@ -83,7 +83,7 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type &operator[] (const key_type& k) {
-				return (*(_rbt.find_node(k))->_pair.first);
+				return ((*(_rbt.find_node(k))->_pair).second);
 			};
 
 		/*---     MODIFIERS    ---*/

@@ -7,19 +7,19 @@
 #include "iterators/reverse_iterator.hpp"
 
 namespace ft {
-	template < class T, class Compare, class Allocator = std::allocator<T> >
+	template < class ValueType, class Compare, class Allocator = std::allocator<ValueType> >
 	class RBT
 	{
-		typedef typename Allocator::template rebind<Node<T> >::other node_allocator;
-		typedef Compare												key_compare;
-		typedef	typename T::first_type								key_type;
-		typedef	typename T::second_type								mapped_type;
-		typedef Node<T> 											node;
-		typedef Node<T> *											nodePtr;
-		typedef RBT_iterator<T, mapped_type>						iterator;
-		typedef RBT_iterator<T, const mapped_type>					const_iterator;
-		typedef ft::reverse_iterator<iterator>						reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+		typedef typename Allocator::template rebind<Node<ValueType> >::other	node_allocator;
+		typedef Compare															key_compare;
+		typedef	typename ValueType::first_type									key_type;
+		typedef	typename ValueType::second_type									mapped_type;
+		typedef Node<ValueType> 												node;
+		typedef Node<ValueType> *												nodePtr;
+		typedef RBT_iterator<ValueType, mapped_type>							iterator;
+		typedef RBT_iterator<ValueType, const mapped_type>						const_iterator;
+		typedef ft::reverse_iterator<iterator>									reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 
 /* ####################   PUBLIC  #################### */
 		public :
@@ -53,9 +53,9 @@ namespace ft {
 			};
 	
 		/*---      INSERT      ---*/
-			iterator	insert(T new_element) {
-				nodePtr	temp = _root;
-				key_type		new_key = new_element.first;
+			iterator	insert(ValueType new_element) {
+				nodePtr		temp = _root;
+				key_type	new_key = new_element.first;
 				_size ++;
 				while (!is_leaf(temp)) {
 					if (!is_leaf(temp->_right) && !_comp(new_key, temp->_key))
