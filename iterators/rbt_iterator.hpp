@@ -5,15 +5,15 @@
 #include "iterators/iterators_traits.hpp"
 
 namespace ft {
-	template< typename ValueType>
+	template< class ValueType>
 	class RBT_iterator;
 
-	template< typename ValueType>
+	template< class ValueType>
 	class RBT_const_iterator;
 /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 *****************************                   ITERATOR BASE                    *****************************
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
-	template< typename ValueType>
+	template< class ValueType>
 	class RBT_itBase {
 /* ####################   PUBLIC  #################### */
 		public:
@@ -38,7 +38,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (*this);
 			}
 
-			virtual ~RBT_itBase() {};
+			~RBT_itBase() {};
 
 			RBT_itBase	&operator	--() {
 				if (_current->is_leaf()) {
@@ -104,20 +104,16 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (temp);
 			}
 
-			bool			operator ==(constRBT_itBase &other) const {
+			bool			operator ==(const RBT_itBase &other) const {
 				return (_current == other._current);
 			}
 
-			bool			operator !=(constRBT_itBase &other) const {
+			bool			operator !=(const RBT_itBase &other) const {
 				return (_current != other._current);
 			}
 
 			ValueType 		&operator	*()		{ return (_current->_pair);		};
 			ValueType 		*operator	->()	{ return (&_current->_pair);	};
-			
-			operatorRBT_itBase<const ValueType>() const {
-				return (RBT_itBase<const ValueType>)(this->_current);
-			}
 
 /* ####################   PRIVATE  #################### */
 		private:			
@@ -129,7 +125,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 *****************************                      ITERATOR                      *****************************
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 
-	template< typename ValueType>
+	template< class ValueType>
 	class RBT_iterator {
 /* ####################   PUBLIC  #################### */
 		public:
@@ -140,13 +136,13 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	/*--- CON/DE_STRUCTORS ---*/
 			RBT_iterator(): _current(NULL) {};
 
-			RBT_iterator(nodePtr current): _current(RBT_itBase(current)) {};
+			RBT_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
 
 			RBT_iterator(const RBT_iterator &x) {
 				_current = x._current;
 			};
 
-			RBT_iterator &operator =(const RBT_itBase<ValueType> &x) {
+			RBT_iterator &operator =(const RBT_iterator &x) {
 				if (this == &x) { 
 					return *this;
 				}
@@ -154,7 +150,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (*this);
 			}
 
-			virtual ~RBT_itBase() {};
+			~RBT_iterator() {};
 
 			RBT_iterator	&operator	--() {
 				-- _current;
@@ -167,41 +163,133 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			};
 
 			RBT_iterator	operator	++(int) {
-				RBT_itBase temp(*this);
+				RBT_iterator temp(*this);
 				operator ++();
 				return (temp);
 			}
 
 			RBT_iterator	operator	--(int) {
-				RBT_itBase temp(*this);
+				RBT_iterator temp(*this);
 				operator --();
 				return (*this);
 			}
 
-			bool			operator ==(constRBT_itBase &other) const {
-				return (_current == other._current);
-			}
-
-			bool			operator !=(constRBT_itBase &other) const {
-				return (_current != other._current);
-			}
-
 			ValueType 		&operator	*()		{ return (_current->_pair);		};
 			ValueType 		*operator	->()	{ return (&_current->_pair);	};
-			
-			operatorRBT_itBase<const ValueType>() const {
-				return (RBT_itBase<const ValueType>)(this->_current);
-			}
 
 /* ####################   PRIVATE  #################### */
 		private:			
 		/*--- MEMBER OBJECTS ---*/
-			RBT_itBase	_current;
+			RBT_itBase<ValueType>	_current;
 	};
 
-	template< typename ValueType>
-	class RBT_const_iterator;
 
-}
+/*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*****************************                   CONST ITERATOR                   *****************************
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
+
+	template< class ValueType>
+	class RBT_const_iterator {
+/* ####################   PUBLIC  #################### */
+		public:
+	/*-------- TYPES ---------*/
+			typedef Node<ValueType>	node;
+			typedef node *			nodePtr;
+
+	/*--- CON/DE_STRUCTORS ---*/
+			RBT_const_iterator(): _current(NULL) {};
+
+			RBT_const_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
+
+			RBT_const_iterator(const RBT_const_iterator &x) {
+				_current = x._current;
+			};
+
+			RBT_const_iterator &operator =(const RBT_const_iterator &x) {
+				if (this == &x) { 
+					return *this;
+				}
+				_current = x._current;
+				return (*this);
+			}
+
+			~RBT_const_iterator() {};
+
+			RBT_const_iterator	&operator	--() {
+				-- _current;
+				return (*this);
+			};
+
+			RBT_const_iterator	&operator	++() {
+				++ _current;
+				return (*this);
+			};
+
+			RBT_const_iterator	operator	++(int) {
+				RBT_const_iterator temp(*this);
+				operator ++();
+				return (temp);
+			}
+
+			RBT_const_iterator	operator	--(int) {
+				RBT_const_iterator temp(*this);
+				operator --();
+				return (*this);
+			}
+
+			ValueType 		&operator	*()		{ return (_current->_pair);		};
+			ValueType 		*operator	->()	{ return (&_current->_pair);	};
+
+/* ####################   PRIVATE  #################### */
+		private:			
+		/*--- MEMBER OBJECTS ---*/
+			RBT_itBase<ValueType>	_current;
+	};
+
+	template <class ValueType1, class ValueType2>
+	bool operator== (const RBT_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
+		return ( lhs.base() == rhs.base());
+	};
+
+	template <class ValueType1, class ValueType2>
+	bool operator== (const RBT_const_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
+		return ( lhs.base() == rhs.base());
+	};
+
+	template <class ValueType1, class ValueType2>
+	bool operator== (const RBT_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
+		return ( lhs.base() == rhs.base());
+	};
+
+	template <class ValueType1, class ValueType2>
+	bool operator== (const RBT_const_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
+		return ( lhs.base() == rhs.base());
+	};
+
+	/*template <class Iterator1, class Iterator2>
+	bool operator!= (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
+		return ( lhs.base() != rhs.base());
+	};
+
+	template <class Iterator1, class Iterator2>
+	bool operator<  (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
+		return ( lhs.base() > rhs.base());
+	};
+
+	template <class Iterator1, class Iterator2>
+	bool operator<= (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
+		return ( lhs.base() >= rhs.base());
+	};
+
+	template <class Iterator1, class Iterator2>
+	bool operator>  (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
+		return ( lhs.base() < rhs.base());
+	};
+
+	template <class Iterator1, class Iterator2>
+	bool operator>= (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
+		return ( lhs.base() <= rhs.base());
+	};
+}*/
 
 #endif
