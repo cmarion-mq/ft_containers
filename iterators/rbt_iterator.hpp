@@ -2,23 +2,35 @@
 # define RBT_ITERATOR
 
 #include "../utils/RBT_node.hpp"
+#include "iterators/iterators_traits.hpp"
 
 namespace ft {
-	template< typename ValueType, typename MappedType>
-	class RBT_iterator {
+	template< typename ValueType>
+	class RBT_iterator;
+
+	template< typename ValueType>
+	class RBT_const_iterator;
+/*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*****************************                   ITERATOR BASE                    *****************************
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
+	template< typename ValueType>
+	class RBT_itBase {
 /* ####################   PUBLIC  #################### */
 		public:
 	/*-------- TYPES ---------*/
 			typedef Node<ValueType>	node;
-			typedef node &			reference;
 			typedef node *			nodePtr;
 
 	/*--- CON/DE_STRUCTORS ---*/
-			RBT_iterator(): _current(NULL) {};
+			RBT_itBase(): _current(NULL) {};
 
-			RBT_iterator(nodePtr current): _current(current) {};
+			RBT_itBase(nodePtr current): _current(current) {};
 
-			RBT_iterator &operator =(const RBT_iterator<ValueType, MappedType> &x) {
+			RBT_itBase(const RBT_itBase &x) {
+				_current = x._current;
+			};
+
+			RBT_itBase &operator =(const RBT_itBase<ValueType> &x) {
 				if (this == &x) { 
 					return *this;
 				}
@@ -26,31 +38,9 @@ namespace ft {
 				return (*this);
 			}
 
-			~RBT_iterator() {};
+			virtual ~RBT_itBase() {};
 
-			/*nodePtr rbt_previous(nodePtr *from) {
-				if (from->is_leaf()) {
-					if (from->_parent)
-						return (from->_parent);
-					return (from);
-				}
-				if (!from->_left->is_leaf()) {
-					from = from->_left;
-					while (!from->_right->is_leaf())
-						from = from->_right
-					return (from);
-				}
-				else {
-					nodePtr init = from;
-					while (from->_parent && !from->_parent->is_leaf() && from == from->_parent->_left)
-						from = from->_parent;
-					if (from->_parent == NULL)
-						return (init->_left);
-					return (from->_parent);
-				}
-			};*/
-
-			RBT_iterator	&operator	--() {
+			RBT_itBase	&operator	--() {
 				if (_current->is_leaf()) {
 					if (_current->_parent) {
 						_current = _current->_parent;
@@ -76,7 +66,7 @@ namespace ft {
 				}
 			};
 
-			RBT_iterator	&operator	++() {
+			RBT_itBase	&operator	++() {
 				if (_current->is_leaf()) {
 					if (_current->_parent) {
 						_current = _current->_parent;
@@ -102,35 +92,116 @@ namespace ft {
 				}
 			};
 
-			RBT_iterator	operator	++(int) {
-				RBT_iterator temp(*this);
+			RBT_itBase	operator	++(int) {
+				RBT_itBase temp(*this);
 				operator ++();
-				return (*this);
+				return (temp);
 			}
 
-			RBT_iterator	operator	--(int) {
-				RBT_iterator temp(*this);
+			RBT_itBase	operator	--(int) {
+				RBT_itBase temp(*this);
 				operator --();
-				return (*this);
+				return (temp);
 			}
 
-			bool			operator ==(const RBT_iterator &other) const {
+			bool			operator ==(constRBT_itBase &other) const {
 				return (_current == other._current);
 			}
 
-			bool			operator !=(const RBT_iterator &other) const {
+			bool			operator !=(constRBT_itBase &other) const {
 				return (_current != other._current);
 			}
 
-			ValueType 		operator	*()		{ return (_current->_pair);		};
-			nodePtr 		&operator	->()	{ return (&_current->_pair);	};
+			ValueType 		&operator	*()		{ return (_current->_pair);		};
+			ValueType 		*operator	->()	{ return (&_current->_pair);	};
 			
+			operatorRBT_itBase<const ValueType>() const {
+				return (RBT_itBase<const ValueType>)(this->_current);
+			}
+
 /* ####################   PRIVATE  #################### */
 		private:			
 		/*--- MEMBER OBJECTS ---*/
 			nodePtr	_current;
-			
     };
+
+/*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*****************************                      ITERATOR                      *****************************
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
+
+	template< typename ValueType>
+	class RBT_iterator {
+/* ####################   PUBLIC  #################### */
+		public:
+	/*-------- TYPES ---------*/
+			typedef Node<ValueType>	node;
+			typedef node *			nodePtr;
+
+	/*--- CON/DE_STRUCTORS ---*/
+			RBT_iterator(): _current(NULL) {};
+
+			RBT_iterator(nodePtr current): _current(RBT_itBase(current)) {};
+
+			RBT_iterator(const RBT_iterator &x) {
+				_current = x._current;
+			};
+
+			RBT_iterator &operator =(const RBT_itBase<ValueType> &x) {
+				if (this == &x) { 
+					return *this;
+				}
+				_current = x._current;
+				return (*this);
+			}
+
+			virtual ~RBT_itBase() {};
+
+			RBT_iterator	&operator	--() {
+				-- _current;
+				return (*this);
+			};
+
+			RBT_iterator	&operator	++() {
+				++ _current;
+				return (*this);
+			};
+
+			RBT_iterator	operator	++(int) {
+				RBT_itBase temp(*this);
+				operator ++();
+				return (temp);
+			}
+
+			RBT_iterator	operator	--(int) {
+				RBT_itBase temp(*this);
+				operator --();
+				return (*this);
+			}
+
+			bool			operator ==(constRBT_itBase &other) const {
+				return (_current == other._current);
+			}
+
+			bool			operator !=(constRBT_itBase &other) const {
+				return (_current != other._current);
+			}
+
+			ValueType 		&operator	*()		{ return (_current->_pair);		};
+			ValueType 		*operator	->()	{ return (&_current->_pair);	};
+			
+			operatorRBT_itBase<const ValueType>() const {
+				return (RBT_itBase<const ValueType>)(this->_current);
+			}
+
+/* ####################   PRIVATE  #################### */
+		private:			
+		/*--- MEMBER OBJECTS ---*/
+			RBT_itBase	_current;
+	};
+
+	template< typename ValueType>
+	class RBT_const_iterator;
+
 }
 
 #endif

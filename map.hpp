@@ -12,21 +12,22 @@ namespace ft {
 /* ####################  PUBLIC  #################### */
 		public:
 		/*-------- TYPES ---------*/
-			typedef Key											key_type;
-			typedef T											mapped_type;
-			typedef pair<const Key, T>							value_type;
-			typedef size_t										size_type;
-			typedef std::ptrdiff_t 								difference_type;
-			typedef Compare										key_compare;
-			typedef Allocator									allocator_type;
-			typedef typename Allocator::reference				reference;
-			typedef typename Allocator::const_reference			const_reference;
-			typedef typename Allocator::pointer					pointer;
-			typedef typename Allocator::const_pointer			const_pointer;
-			typedef RBT_iterator<value_type, mapped_type>		iterator;
-			typedef RBT_iterator<value_type, const mapped_type> const_iterator;
-			typedef ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
+			typedef Key												key_type;
+			typedef T												mapped_type;
+			typedef pair<const Key, T>								value_type;
+			typedef size_t											size_type;
+			typedef std::ptrdiff_t 									difference_type;
+			typedef Compare											key_compare;
+			typedef Allocator										allocator_type;
+			typedef typename Allocator::reference					reference;
+			typedef typename Allocator::const_reference				const_reference;
+			typedef typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer				const_pointer;
+			typedef	RBT<value_type, key_compare, allocator_type>	rbt;
+			typedef typename rbt::iterator							iterator;
+			typedef typename rbt::const_iterator 					const_iterator;
+			typedef typename rbt::reverse_iterator 					reverse_iterator;
+			typedef typename rbt::const_reverse_iterator	  		const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type, value_type, bool> {
 				friend class map;

@@ -10,19 +10,20 @@ namespace ft {
 	template < class ValueType, class Compare, class Allocator = std::allocator<ValueType> >
 	class RBT
 	{
+/* ####################   PUBLIC  #################### */
+		public :
+		/*-------- TYPES ---------*/
 		typedef typename Allocator::template rebind<Node<ValueType> >::other	node_allocator;
 		typedef Compare															key_compare;
 		typedef	typename ValueType::first_type									key_type;
 		typedef	typename ValueType::second_type									mapped_type;
 		typedef Node<ValueType> 												node;
 		typedef Node<ValueType> *												nodePtr;
-		typedef RBT_iterator<ValueType, mapped_type>							iterator;
-		typedef RBT_iterator<ValueType, const mapped_type>						const_iterator;
+		typedef RBT_iterator<ValueType>											iterator;
+		typedef RBT_iterator<const ValueType>									const_iterator;
 		typedef ft::reverse_iterator<iterator>									reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 
-/* ####################   PUBLIC  #################### */
-		public :
 		/*--- CON/DE_STRUCTORS ---*/
 			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp), _size(0) {
 				_leaf = _node_alloc.allocate(1);

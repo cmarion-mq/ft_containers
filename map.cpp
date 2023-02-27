@@ -7,15 +7,6 @@
 #ifndef NS
 # define NS ft
 #endif
-
-template<typename Key, typename Value>
-std::ostream& operator<<(std::ostream& os, NS::map<Key, Value> const& m)
-{
-   os << "{ ";
-   for(typename NS::map<Key, Value>::iterator p = m.begin(); p != m.end(); ++ p)
-        os << '(' << (*p).first << ':' << (*p).second << ") ";
-   return os << "}\n";
-}
  
  struct PointCmp {
     bool operator()(const int &lhs, const int &rhs) const {
@@ -32,17 +23,22 @@ int main() {
 		map1["something"] = 69;
 		map1["anything"] = 199;
 		map1["that thing"] = 50;
-		std::cout << "map1 = " << map1;
+		std::cout << "map1 = " << std::endl;
+		map1.print();
 		
 		// (4) Range constructor
 		NS::map<std::string, int> iter(map1.find("anything"), map1.end());
-		std::cout << "\niter = " << iter;
-		std::cout << "map1 = " << map1;
+		std::cout << "iter = " << std::endl;
+		iter.print();
+		std::cout << "map1 = " << std::endl;
+		map1.print();
 		
 		// (6) Copy constructor
 		NS::map<std::string, int> copied(map1);
-		std::cout << "\ncopied = " << copied;
-		std::cout << "map1 = " << map1;
+		std::cout << "copied = " << std::endl;
+		copied.print();
+		std::cout << "map1 = " << std::endl;
+		map1.print();
 		
 		std::cout << "\nCustom Key class option 1:\n";
 		// Use a comparison struct
