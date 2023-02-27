@@ -24,7 +24,7 @@ namespace ft {
 			typedef typename Allocator::pointer					pointer;
 			typedef typename Allocator::const_pointer			const_pointer;
 			typedef RBT_iterator<value_type, mapped_type>		iterator;
-			typedef RBT_iterator<value_type, mapped_type> 		const_iterator;
+			typedef RBT_iterator<value_type, const mapped_type> const_iterator;
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
@@ -45,19 +45,16 @@ namespace ft {
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {
-				for (InputIterator it = first; it != last; ++ it)
-					_rbt.insert(*it);
+				insert(first, last);
 			};
 
 			map (const map& x) {
-				for (const_iterator it = x.begin(); it != x.end(); ++ it)
-					_rbt.insert(*it);
+				insert(x.begin(), x.end());
 			};
 
 			map& operator= (const map& x) {
 				clear();
-				for (const_iterator it = x.begin(); it != x.end(); ++ it)
-					_rbt.insert(*it);
+				insert(x.begin(), x.end());
 				return (*this);
 			}
 
@@ -83,7 +80,7 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type &operator[] (const key_type& k) {
-				return ((*(_rbt.find_node(k))->_pair).second);
+				return (_rbt.find_node(k)->_pair.second);
 			};
 
 		/*---     MODIFIERS    ---*/
