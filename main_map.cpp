@@ -14,13 +14,6 @@
     }
 };
 
-template<class Key, class Value, class Compare>
-void print(NS::map<Key, Value, Compare> map) {
-	for(typename NS::map<Key, Value, Compare>::iterator p = map.begin(); p != map.end(); ++ p)
-			std::cout << (*p).first << ", is " << (*p).second << std::endl;
-	std::cout << std::endl;
-};
-
 int main() {
 // ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
@@ -31,21 +24,21 @@ int main() {
 		map1["anything"] = 199;
 		map1["that thing"] = 50;
 		std::cout << "map1 = " << std::endl;
-		print(map1);
+		map1.print();
 		
 		// (4) Range constructor
 		NS::map<std::string, int> iter(map1.find("anything"), map1.end());
 		std::cout << "iter = " << std::endl;
-		print(iter);
+		iter.print();
 		std::cout << "map1 = " << std::endl;
-		print(map1);
+		map1.print();
 		
 		// (6) Copy constructor
 		NS::map<std::string, int> copied(map1);
 		std::cout << "copied = " << std::endl;
-		print(copied);
+		copied.print();
 		std::cout << "map1 = " << std::endl;
-		print(map1);
+		map1.print();
 		
 		std::cout << "\nCustom Key class option 1:\n";
 		// Use a comparison struct
@@ -53,23 +46,12 @@ int main() {
 		mag[5] = 13;
 		mag[4] = 5;
 		mag[15] = 17;	
-		print(mag);
+		for(NS::map<int, double, PointCmp>::iterator p = mag.begin(); p != mag.end(); ++ p)
+			std::cout << "first " << (*p).first << ", is " << (*p).second << '\n';
 	}
 	std::cout << std::endl;
 
-// // ################################  ELEMENT ACCESS  ##############
-// 	std::cout << "\e[7m=============ELEMENT ACCESS============\e[0m" << std::endl;
-// 	{
-// 		NS::map<std::string,int> mymap;
-//         mymap["alpha"] = 0;
-//         mymap["beta"] = 0;
-//         mymap["gamma"] = 0;
-//   		mymap.at("alpha") = 10;
-//   		mymap.at("beta") = 20;
-//   		mymap.at("gamma") = 30;
 
-// 		print(mymap);
-// 	}
 
 
 

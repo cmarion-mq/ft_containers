@@ -20,7 +20,7 @@ namespace ft {
 		typedef Node<ValueType> 												node;
 		typedef Node<ValueType> *												nodePtr;
 		typedef RBT_iterator<ValueType>											iterator;
-		typedef RBT_iterator<const ValueType>									const_iterator;
+		typedef RBT_const_iterator<ValueType>									const_iterator;
 		typedef ft::reverse_iterator<iterator>									reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 

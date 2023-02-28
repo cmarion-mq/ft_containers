@@ -10,6 +10,7 @@ namespace ft {
 
 	template< class ValueType>
 	class RBT_const_iterator;
+	
 /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 *****************************                   ITERATOR BASE                    *****************************
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
@@ -104,16 +105,16 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (temp);
 			}
 
-			bool			operator ==(const RBT_itBase &other) const {
+			bool		operator ==(const RBT_itBase &other) const {
 				return (_current == other._current);
 			}
 
-			bool			operator !=(const RBT_itBase &other) const {
+			bool		operator !=(const RBT_itBase &other) const {
 				return (_current != other._current);
 			}
 
-			ValueType 		&operator	*()		{ return (_current->_pair);		};
-			ValueType 		*operator	->()	{ return (&_current->_pair);	};
+			ValueType 	&operator	*()		{ return (_current->_pair);		};
+			ValueType 	*operator	->()	{ return (&_current->_pair);	};
 
 /* ####################   PRIVATE  #################### */
 		private:			
@@ -174,8 +175,12 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (*this);
 			}
 
-			ValueType 		&operator	*()		{ return (_current->_pair);		};
-			ValueType 		*operator	->()	{ return (&_current->_pair);	};
+			ValueType 		&operator	*()		{ return (*_current);		};
+			ValueType 		*operator	->()	{ return (&(*_current));	};
+
+			const RBT_itBase<ValueType>	&base() const {
+				return (_current);
+			}
 
 /* ####################   PRIVATE  #################### */
 		private:			
@@ -237,8 +242,12 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (*this);
 			}
 
-			ValueType 		&operator	*()		{ return (_current->_pair);		};
-			ValueType 		*operator	->()	{ return (&_current->_pair);	};
+			ValueType 		&operator	*()		{ return (*_current);		};
+			ValueType 		*operator	->()	{ return (&(*_current));	};
+
+			const RBT_itBase<ValueType>	&base() const {
+				return (_current);
+			}
 
 /* ####################   PRIVATE  #################### */
 		private:			
@@ -246,50 +255,49 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			RBT_itBase<ValueType>	_current;
 	};
 
+/*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*****************************                      OPERATORS                     *****************************
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
+
 	template <class ValueType1, class ValueType2>
-	bool operator== (const RBT_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
+	bool operator == (const RBT_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
 		return ( lhs.base() == rhs.base());
 	};
 
 	template <class ValueType1, class ValueType2>
-	bool operator== (const RBT_const_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
+	bool operator == (const RBT_const_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
 		return ( lhs.base() == rhs.base());
 	};
 
 	template <class ValueType1, class ValueType2>
-	bool operator== (const RBT_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
+	bool operator == (const RBT_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
 		return ( lhs.base() == rhs.base());
 	};
 
 	template <class ValueType1, class ValueType2>
-	bool operator== (const RBT_const_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
+	bool operator == (const RBT_const_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
 		return ( lhs.base() == rhs.base());
 	};
 
-	/*template <class Iterator1, class Iterator2>
-	bool operator!= (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
+	template <class ValueType1, class ValueType2>
+	bool operator != (const RBT_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
 		return ( lhs.base() != rhs.base());
 	};
 
-	template <class Iterator1, class Iterator2>
-	bool operator<  (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
-		return ( lhs.base() > rhs.base());
+	template <class ValueType1, class ValueType2>
+	bool operator != (const RBT_const_iterator< ValueType1>& lhs, const RBT_iterator< ValueType2>& rhs) {
+		return ( lhs.base() != rhs.base());
 	};
 
-	template <class Iterator1, class Iterator2>
-	bool operator<= (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
-		return ( lhs.base() >= rhs.base());
+	template <class ValueType1, class ValueType2>
+	bool operator != (const RBT_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
+		return ( lhs.base() != rhs.base());
 	};
 
-	template <class Iterator1, class Iterator2>
-	bool operator>  (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
-		return ( lhs.base() < rhs.base());
+	template <class ValueType1, class ValueType2>
+	bool operator != (const RBT_const_iterator< ValueType1>& lhs, const RBT_const_iterator< ValueType2>& rhs) {
+		return ( lhs.base() != rhs.base());
 	};
-
-	template <class Iterator1, class Iterator2>
-	bool operator>= (const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs) {
-		return ( lhs.base() <= rhs.base());
-	};
-}*/
+}
 
 #endif
