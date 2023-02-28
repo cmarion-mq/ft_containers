@@ -16,8 +16,9 @@
 
 template<class Key, class Value, class Compare>
 void print(NS::map<Key, Value, Compare> map) {
-	for(typename NS::map<Key, Value, Compare>::iterator p = map.begin(); p != map.end(); ++ p)
-			std::cout << (*p).first << ", is " << (*p).second << std::endl;
+(void) map;
+	// for(typename NS::map<Key, Value, Compare>::iterator p = map.begin(); p != map.end(); ++ p)
+	// 		std::cout << (*p).first << ", is " << (*p).second << std::endl;
 	std::cout << std::endl;
 };
 
@@ -33,27 +34,27 @@ int main() {
 		std::cout << "map1 = " << std::endl;
 		print(map1);
 		
-		// (4) Range constructor
-		NS::map<std::string, int> iter(map1.find("anything"), map1.end());
-		std::cout << "iter = " << std::endl;
-		print(iter);
-		std::cout << "map1 = " << std::endl;
-		print(map1);
+		// // (4) Range constructor
+		// NS::map<std::string, int> iter(map1.find("anything"), map1.end());
+		// std::cout << "iter = " << std::endl;
+		// print(iter);
+		// std::cout << "map1 = " << std::endl;
+		// print(map1);
 		
-		// (6) Copy constructor
-		NS::map<std::string, int> copied(map1);
-		std::cout << "copied = " << std::endl;
-		print(copied);
-		std::cout << "map1 = " << std::endl;
-		print(map1);
+		// // (6) Copy constructor
+		// NS::map<std::string, int> copied(map1);
+		// std::cout << "copied = " << std::endl;
+		// print(copied);
+		// std::cout << "map1 = " << std::endl;
+		// print(map1);
 		
-		std::cout << "\nCustom Key class option 1:\n";
-		// Use a comparison struct
-		NS::map<int, double, PointCmp> mag;
-		mag[5] = 13;
-		mag[4] = 5;
-		mag[15] = 17;	
-		print(mag);
+		// std::cout << "\nCustom Key class option 1:\n";
+		// // Use a comparison struct
+		// NS::map<int, double, PointCmp> mag;
+		// mag[5] = 13;
+		// mag[4] = 5;
+		// mag[15] = 17;	
+		// print(mag);
 	}
 	std::cout << std::endl;
 
@@ -75,15 +76,15 @@ int main() {
 
 
 
-	ft::map<int, int> map_int;
-	map_int.insert(ft::pair<const int, int> (65,4));
-	map_int.insert(ft::pair<const int, int> (75,6));
-	map_int.insert(ft::pair<const int, int> (60,4));
-	map_int.insert(ft::pair<const int, int> (57,6));
-	map_int.insert(ft::pair<const int, int> (40,0));
-	map_int.erase(65);
+	// ft::map<int, int> map_int;
+	// map_int.insert(ft::pair<const int, int> (65,4));
+	// map_int.insert(ft::pair<const int, int> (75,6));
+	// map_int.insert(ft::pair<const int, int> (60,4));
+	// map_int.insert(ft::pair<const int, int> (57,6));
+	// map_int.insert(ft::pair<const int, int> (40,0));
+	// map_int.erase(65);
 	
-	map_int.print();
+	// map_int.print();
 	// std::cout << "count 3: " << map_int.count(3) << std::endl;
 	// std::cout << "count 1: " << map_int.count(1) << std::endl;
 	// std::cout << "empty: " << map_int.empty() << std::endl;

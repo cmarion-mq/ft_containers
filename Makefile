@@ -9,7 +9,7 @@ SRCS			=	main_42.cpp \
 					map.cpp
 
 CXX	 			=	c++
-CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address
 
 OBJS_FT			=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_ft.o))
 OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))

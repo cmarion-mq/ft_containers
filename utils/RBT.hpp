@@ -26,6 +26,7 @@ namespace ft {
 
 		/*--- CON/DE_STRUCTORS ---*/
 			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _comp(comp), _size(0) {
+				_size = 0;
 				_leaf = _node_alloc.allocate(1);
 				_maxleaf = _node_alloc.allocate(1);
 				_minleaf = _node_alloc.allocate(1);
@@ -48,9 +49,9 @@ namespace ft {
 			~RBT() {
 				if (_size > 0)
 					clear();
-				delete _leaf;
-				delete _maxleaf;
-				delete _minleaf;
+				_node_alloc.deallocate(_leaf, 1);
+				_node_alloc.deallocate(_maxleaf, 1);
+				_node_alloc.deallocate(_minleaf, 1);
 			};
 	
 		/*---      INSERT      ---*/
@@ -133,10 +134,6 @@ namespace ft {
 						temp = temp->_left;
 					else {
 						nodePtr del = temp;
-						if (temp->_parent->_left == temp)
-							temp->_parent->_left = _leaf;
-						else
-							temp->_parent->_right = _leaf;
 						temp = temp->_parent;
 						_node_alloc.destroy(del);
 						_node_alloc.deallocate(del, 1);
@@ -186,8 +183,25 @@ namespace ft {
 			};
 			
 		/*---    ITERATORS     ---*/
-			iterator				begin() 			{ return (iterator(_minleaf->_parent));			};
-			const_iterator			begin()		const	{ return (const_iterator(_minleaf->_parent));	};
+			iterator		begin() { 
+				std::cout << "test" << std::endl;
+				if (_size == 0)
+					return (iterator(_minleaf));
+				else if (_size == 1)
+					return (iterator(_root));
+				return (iterator(_minleaf->_parent));
+			};
+
+			const_iterator	begin()		const	{
+				if (_size == 0){
+				std::cout << "Minleaf parent first" << _minleaf->_parent->_pair.first << std::endl;
+					return (const_iterator(_minleaf));
+			}
+				else if (_size == 1)
+					return (const_iterator(_root));
+				return (const_iterator(_minleaf->_parent));
+			};
+			
 			reverse_iterator		rbegin()			{ return (reverse_iterator(end()));				};
 			const_reverse_iterator	rbegin() 	const	{ return (const_reverse_iterator(end()));		};
 			iterator				end()				{ return (iterator(_maxleaf));					};

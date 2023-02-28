@@ -49,7 +49,7 @@ namespace ft {
 				insert(first, last);
 			};
 
-			map (const map& x) {
+			map (const map &x) {
 				insert(x.begin(), x.end());
 			};
 
@@ -81,11 +81,15 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type &operator[] (const key_type& k) {
-				return (_rbt.find_node(k)->_pair.second);
+				iterator f = _rbt.find_node_i(k);
+				if (f != end())
+					return ((*f).second);
+				insert(value_type(k, mapped_type()));
+				return((*_rbt.find_node_i(k)).second);
 			};
 
 		/*---     MODIFIERS    ---*/
-			pair<iterator,bool>	insert (const value_type& val) {
+			pair<iterator, bool>	insert (const value_type& val) {
 				if (_rbt.find_node(val.first))
 					return (pair<iterator, bool> (_rbt.insert(val), true));
 				else
