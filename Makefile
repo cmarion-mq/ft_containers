@@ -16,7 +16,7 @@ OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))
 
 DEPS			=	$(OBJS_STD:.o=.d) $(OBJS_FT:.o=.d)
 
-all: 				$(OBJS_FT) $(OBJS_STD)
+all: 				$(OBJS_FT) #$(OBJS_STD)
 
 $(OBJ_PATH)%_ft.o:	%.cpp
 					@mkdir -p $(dir $@)

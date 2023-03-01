@@ -26,7 +26,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			RBT_itBase(): _current(NULL) {};
 
 			RBT_itBase(nodePtr current): _current(current) {};
-
+								
 			RBT_itBase(const RBT_itBase &x) {
 				_current = x._current;
 			};
@@ -92,6 +92,8 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					return (*this);
 				}
 			};
+
+			const nodePtr getCurrent() const { return (_current);}
 
 			RBT_itBase	operator	++(int) {
 				RBT_itBase temp(*this);
@@ -175,6 +177,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (*this);
 			}
 
+								
 			ValueType 		&operator	*()		{ return (*_current);		};
 			ValueType 		*operator	->()	{ return (&(*_current));	};
 
@@ -204,9 +207,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	/*--- CON/DE_STRUCTORS ---*/
 			RBT_const_iterator(): _current(NULL) {};
 
-			RBT_const_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {
-				
-			};
+			RBT_const_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
 
 			RBT_const_iterator(const RBT_const_iterator &x) {
 				_current = x._current;

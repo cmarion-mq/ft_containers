@@ -61,7 +61,6 @@ namespace ft {
 				nodePtr		temp = _root;
 				key_type	new_key = new_element.first;
 				_size ++;
-								// std::cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$4" << std::endl;
 				while (!is_leaf(temp)) {
 					if (!is_leaf(temp->_right) && !_comp(new_key, temp->_key))
 						temp = temp->_right;
@@ -84,6 +83,7 @@ namespace ft {
 				new_node->_parent = temp;
 				insert_balancing(new_node);
 				min_max_actu();
+				_root->_parent = NULL;
 				return (iterator(new_node));
 			};
 
@@ -125,6 +125,7 @@ namespace ft {
 					del_balancing(x);
 				_size --;
 				min_max_actu();
+				_root->_parent = NULL;
 				return (true);
 			};
 
@@ -201,12 +202,11 @@ namespace ft {
 
 			const_iterator	begin()		const	{
 				if (_size == 0){
-					return (const_iterator());
-					// return (const_iterator(_minleaf));
+					// return (const_iterator());
+					return (const_iterator(_minleaf));
 			}
-				else if (_size == 1) {
-				std::cout << "****************************************-------------------------***********************Minleaf parent first" << _minleaf->_parent->_pair.first << std::endl;
-					return (const_iterator(_root)); }
+				else if (_size == 1)
+					return (const_iterator(_root));
 				return (const_iterator(_minleaf->_parent));
 			};
 			
@@ -219,6 +219,10 @@ namespace ft {
 
 		/*---      DIVERS      ---*/
 			void printTree() {
+				std::cout << "leaf :     " << _leaf << std::endl;
+				std::cout << "min leaf : " << _minleaf << std::endl;
+				std::cout << "max leaf : " << _maxleaf << std::endl;
+				std::cout << "root :     " << _root << std::endl << std::endl;
     			if (_size > 0)
       				printHelper(_root, "", true);
 			};
@@ -416,7 +420,7 @@ namespace ft {
 			}
 
 			bool	is_leaf(nodePtr node) {
-				return(node == _leaf || node == _minleaf || node == _maxleaf);
+				return(node == _leaf || node == _minleaf || node == _maxleaf || node == NULL);
 			}
 
 		/*--- PRINT HELPER ---*/
@@ -432,7 +436,7 @@ namespace ft {
 						indent += "|  ";
 					}
 					std::string sColor = node->_color ? "RED" : "BLACK";
-					std::cout << node->_key << "(" << sColor << ")" << std::endl;
+					std::cout << node->_key << " Left[ " << node->_left << " ] " << " Right{ " << node->_right << " } " << "(" << sColor << ")" << std::endl;
 					printHelper(node->_left, indent, false);
 					printHelper(node->_right, indent, true);
 				};

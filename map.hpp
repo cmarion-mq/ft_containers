@@ -81,12 +81,11 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type &operator[] (const key_type& k) {
-				std::cout << "#############################" << std::endl;
 				iterator f = _rbt.find_node_i(k);
 				if (f != end())
 					return ((*f).second);
 				_rbt.insert(value_type(k, mapped_type()));
-				return((*_rbt.find_node_i(k)).second);
+				return((*f).second);
 			};
 
 		/*---     MODIFIERS    ---*/
@@ -101,7 +100,7 @@ namespace ft {
 
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last) {
-				while (first != last) {
+				while (first != last) {				
 					_rbt.insert(*first);
 					first ++;
 				}
@@ -143,13 +142,9 @@ namespace ft {
 			};
 
 /* ####################  PRIVATE  #################### */
-	/*--- MEMBER OBJECTS ---*/			
 		private :
+	/*--- MEMBER OBJECTS ---*/			
 			RBT<value_type, key_compare, allocator_type>	_rbt;
-
-/*---     ITERATORS    ---*/
-
-
 	};
 }
 

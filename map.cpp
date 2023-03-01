@@ -16,9 +16,9 @@
 
 template<class Key, class Value, class Compare>
 void print(NS::map<Key, Value, Compare> map) {
-(void) map;
-	// for(typename NS::map<Key, Value, Compare>::iterator p = map.begin(); p != map.end(); ++ p)
-	// 		std::cout << (*p).first << ", is " << (*p).second << std::endl;
+	std::cout << "map1 size = " << map.size() << std::endl;
+	for(typename NS::map<Key, Value, Compare>::iterator p = map.begin(); p != map.end(); ++ p)
+			std::cout << (*p).first << ", is " << (*p).second << std::endl;
 	std::cout << std::endl;
 };
 
@@ -28,10 +28,9 @@ int main() {
 	{
 		// (1) Default constructor
 		NS::map<std::string, int> map1;
-		map1["something"] = 69;
-		map1["anything"] = 199;
-		map1["that thing"] = 50;
-		std::cout << "map1 size = " << map1.size() << std::endl;
+		map1["1"] = 69;
+		map1["2"] = 199;
+		map1["3"] = 50;
 		print(map1);
 		
 		// // (4) Range constructor
