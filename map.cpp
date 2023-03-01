@@ -31,7 +31,7 @@ int main() {
 		map1["something"] = 69;
 		map1["anything"] = 199;
 		map1["that thing"] = 50;
-		std::cout << "map1 = " << std::endl;
+		std::cout << "map1 size = " << map1.size() << std::endl;
 		print(map1);
 		
 		// // (4) Range constructor

@@ -135,7 +135,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			typedef node *			nodePtr;
 
 	/*--- CON/DE_STRUCTORS ---*/
-			RBT_iterator(): _current(NULL) {};
+			RBT_iterator(): _current(RBT_itBase<ValueType>()) {};
 
 			RBT_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
 

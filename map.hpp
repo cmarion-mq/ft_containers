@@ -81,16 +81,17 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type &operator[] (const key_type& k) {
+				std::cout << "#############################" << std::endl;
 				iterator f = _rbt.find_node_i(k);
 				if (f != end())
 					return ((*f).second);
-				insert(value_type(k, mapped_type()));
+				_rbt.insert(value_type(k, mapped_type()));
 				return((*_rbt.find_node_i(k)).second);
 			};
 
 		/*---     MODIFIERS    ---*/
 			pair<iterator, bool>	insert (const value_type& val) {
-				if (_rbt.find_node(val.first))
+				if (_rbt.find_node_i(val.first))
 					return (pair<iterator, bool> (_rbt.insert(val), true));
 				else
 					return (pair<iterator, bool> (_rbt.find_node_i(val.first), false));
