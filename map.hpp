@@ -80,12 +80,29 @@ namespace ft {
 		
 		/*---  ELEMENT ACCESS  ---*/
 		
-			mapped_type &operator[] (const key_type& k) {
+			mapped_type			&operator[] (const key_type& k) {
 				typename rbt::nodePtr f = _rbt.find_node(k);
 				if (f)
 					return (f->_pair.second);
 				_rbt.insert(value_type(k, mapped_type()));
 				return(_rbt.find_node(k)->_pair.second);
+			};
+
+			mapped_type&		at (const key_type& k) {
+				typename rbt::nodePtr f = _rbt.find_node(k);
+				if (!f) {
+					throw std::out_of_range("map::at");
+				}
+				return (f->_pair.second);
+			};
+			
+			const mapped_type&	at (const key_type& k) const {
+				typename rbt::nodePtr f = _rbt.find_node(k);
+				if (!f) {
+					throw std::out_of_range("map::at");
+				}
+				return (f->_pair.second);
+
 			};
 
 		/*---     MODIFIERS    ---*/
@@ -100,21 +117,29 @@ namespace ft {
 			// iterator 			insert (iterator position, const value_type& val) {};
 
 			template <class InputIterator>
-			void insert (InputIterator first, InputIterator last) {
+			void					insert (InputIterator first, InputIterator last) {
 				while (first != last) {				
 					_rbt.insert(*first);
 					first ++;
 				}
 			};
 
-			void erase( iterator pos ) {
-				_rbt.del(*pos._current->_key);
+			void 					erase( iterator pos ) {
+				_rbt.del((*pos).first);
 			};
 
-			size_type erase( const Key& key ) {
+			size_type 				erase( const Key& key ) {
 				if (_rbt.del(key))
 					return (1);
 				return (0);
+			};
+
+			void 					erase (iterator first, iterator last) {
+				while (first != last) {
+					iterator del = first;
+					first ++;
+					erase(del);
+				}
 			};
 
 			void clear() {

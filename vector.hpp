@@ -130,7 +130,6 @@ namespace ft {
 			const_reference	back() const 					{ return (*(_data + _n - 1)); };
 
 			reference		at (size_type n) {
-
 				if (n >= _n) {
 					std::string			str;
 					std::stringstream	stn, st_n;
