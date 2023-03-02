@@ -142,12 +142,20 @@ namespace ft {
 				}
 			};
 
-			void clear() {
+			void 					swap (map& x) {
+				_rbt.swap(x._rbt);
+			};
+
+			void 					clear() {
 				_rbt.clear();
 			};
 
+		/*---     OBSERVERS    ---*/
+			key_compare		key_comp() 		const	{ return (key_compare()); };
+			value_compare 	value_comp() 	const	{ return (value_compare(key_comp())); };
+
 		/*---     OPERATIONS    ---*/
-			iterator find (const key_type &k) {
+			iterator		find (const key_type &k) {
 				typename rbt::nodePtr f = _rbt.find_node(k);
 				if (f) {
 					return (iterator(f));
@@ -155,18 +163,23 @@ namespace ft {
 				return (end());
 			};
 			
-			const_iterator find (const key_type& k) const {
+			const_iterator	find (const key_type& k) const {
 				typename rbt::nodePtr f = _rbt.find_node(k);
 				if (f)
 					return (const_iterator(f));
 				return (end());
 			};
 			
-			size_type count( const key_type &key ) const {
+			size_type		count( const key_type &key ) const {
 				if (_rbt.find_node(key))
 					return (1);
 				return (0);
 			};
+
+			iterator 		lower_bound (const key_type& k) 		{ return (_rbt.lower_bound(k)); };
+			const_iterator	lower_bound (const key_type& k) const	{ return (_rbt.lower_bound(k)); };
+			iterator 		upper_bound (const key_type& k) 		{ return (_rbt.upper_bound(k)); };
+			const_iterator 	upper_bound (const key_type& k) const 	{ return (_rbt.upper_bound(k)); };
 
 		/*---      DIVERS      ---*/
 			void print() {

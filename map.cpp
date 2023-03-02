@@ -47,7 +47,6 @@ int main() {
 		std::cout << "map1 = " << std::endl;
 		print(map1);
 		
-		std::cout << "\nCustom Key class option 1:\n";
 		// Use a comparison struct
 		NS::map<int, double, PointCmp> mag;
 		mag[5] = 13;
@@ -86,7 +85,7 @@ int main() {
 		ret = mymap.insert ( NS::pair<const char,int>('z',500) );
 		if (ret.second==false) {
 			std::cout << "element 'z' already existed";
-			std::cout << " with a value of " << ret.first->second << '\n';
+			std::cout << " with a value of " << ret.first->second << std::endl;
 		}
 
 		// // second insert function version (with hint position):
@@ -99,9 +98,9 @@ int main() {
 		anothermap.insert(mymap.begin(),mymap.find('c'));
 
 		// showing contents:
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl; 
 		print(mymap);
-		std::cout << "anothermap contains:\n";
+		std::cout << "anothermap contains:" << std::endl;
 		print(anothermap);
 	}
 	{
@@ -115,33 +114,31 @@ int main() {
 		mymap['d']=40;
 		mymap['e']=50;
 		mymap['f']=60;
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl;
 		print(mymap);
 		it=mymap.find('b');
 		mymap.erase (it);                   // erasing by iterator
 		mymap.erase ('c'); 					// erasing by key
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl;
 		print(mymap);                 
 		it=mymap.find ('e');
 		mymap.erase ( it, mymap.end() );    // erasing by range
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl;
 		print(mymap);
 	}
 	{
 		std::cout << "\e[7m Swap \e[0m" << std::endl;
-		NS::map<char,int> mymap;
-		mymap['x']=100;
-		mymap['y']=200;
-		mymap['z']=300;
-		std::cout << "mymap contains:\n";
-		print(mymap);
-		mymap.clear();
-		std::cout << "mymap contains:\n";
-		print(mymap);
-		mymap['a']=1101;
-		mymap['b']=2202;
-		std::cout << "mymap contains:\n";
-		print(mymap);
+		NS::map<char,int> foo,bar;
+		foo['x']=100;
+		foo['y']=200;
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+		foo.swap(bar);
+		std::cout << "foo contains:" << std::endl;
+		print(foo);
+		std::cout << "bar contains:" << std::endl;
+		print(bar);
 	}
 	{
 		std::cout << "\e[7m Clear \e[0m" << std::endl;
@@ -149,21 +146,74 @@ int main() {
 		mymap['x']=100;
 		mymap['y']=200;
 		mymap['z']=300;
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl;
 		print(mymap);
 		mymap.clear();
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl;
 		print(mymap);
 		mymap['a']=1101;
 		mymap['b']=2202;
-		std::cout << "mymap contains:\n";
+		std::cout << "mymap contains:" << std::endl;
+		print(mymap);
+	}
+// ################################  OPERATIONS  ##############
+	std::cout << "\e[7m=============OPERATIONS============\e[0m" << std::endl;
+	{
+		std::cout << "\e[7m Find \e[0m" << std::endl;
+		NS::map<char,int> mymap;
+		NS::map<char,int>::iterator it;
+
+		mymap['a']=50;
+		mymap['b']=100;
+		mymap['c']=150;
+		mymap['d']=200;
+
+		it = mymap.find('b');
+		if (it != mymap.end())
+			mymap.erase (it);
+
+		// print content:
+		std::cout << "elements in mymap:" << std::endl;
+		std::cout << "a => " << mymap.find('a')->second << std::endl;
+		std::cout << "c => " << mymap.find('c')->second << std::endl;
+		std::cout << "d => " << mymap.find('d')->second << std::endl;
+		std::cout << std::endl;
+	}
+	{
+		std::cout << "\e[7m Count \e[0m" << std::endl;
+		NS::map<char,int> mymap;
+		char c;
+		mymap ['a']=101;
+		mymap ['c']=202;
+		mymap ['f']=303;
+		for (c='a'; c<'h'; c++)
+		{
+			std::cout << c;
+			if (mymap.count(c)>0)
+			std::cout << " is an element of mymap." << std::endl;
+			else 
+			std::cout << " is not an element of mymap." << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	{
+		std::cout << "\e[7m Lower/Upper_bound \e[0m" << std::endl;
+		NS::map<char,int> mymap;
+		NS::map<char,int>::iterator itlow,itup;
+
+		mymap['a']=20;
+		mymap['b']=40;
+		mymap['c']=60;
+		mymap['d']=80;
+		mymap['e']=100;
+
+		itlow=mymap.lower_bound ('b');  // itlow points to b
+		itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+
+		mymap.erase(itlow,itup);        // erases [itlow,itup)
 		print(mymap);
 	}
 
-
-
-	// std::cout << "count 3: " << map_int.count(3) << std::endl;
-	// std::cout << "count 1: " << map_int.count(1) << std::endl;
 	// std::cout << "empty: " << map_int.empty() << std::endl;
 	// std::cout << "max size: " << map_int.max_size() << std::endl;
 }

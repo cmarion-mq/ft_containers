@@ -31,9 +31,6 @@ namespace ft {
 				_minleaf = _node_alloc.allocate(sizeof(node));
 				_root = _leaf;
 				_root->_color = BLACK;
-				// _root->_parent = _leaf;
-				// _root->_left = _leaf;
-				// _root->_right = _leaf;
 				_leaf->_parent = NULL;
 				_leaf->_left = NULL;
 				_leaf->_right = NULL;
@@ -140,16 +137,18 @@ namespace ft {
 					else {
 						nodePtr del = temp;
 						if (temp->_parent) {
-							if (temp->_parent->_left == temp)
-								temp->_parent->_left = _leaf;
-							else
-								temp->_parent->_right = _leaf;
+							temp->_parent->_left = _leaf;
+							temp->_parent->_right = _leaf;
 						}
 						temp = temp->_parent;
 						_node_alloc.destroy(del);
 						_node_alloc.deallocate(del, sizeof(node));
 					}
 				}
+				_root = _leaf;
+				_maxleaf->_parent = _root;
+				_minleaf->_parent = _root;
+				_root->_color = BLACK;
 				_size = 0;
 			};
 
@@ -199,6 +198,57 @@ namespace ft {
 
 			size_t	size() const		{ return (_size); };
 			size_t	max_size() const	{ return (_alloc.max_size()); };
+
+			void swap (RBT & x) {
+				std::swap(_alloc, x._alloc);
+				std::swap(_node_alloc, x._node_alloc);
+				std::swap(_root, x._root);
+				std::swap(_leaf, x._leaf);
+				std::swap(_minleaf, x._minleaf);
+				std::swap(_maxleaf, x._maxleaf);
+				std::swap(_comp, x._comp);
+				std::swap(_size, x._size);
+			};
+
+			iterator 		lower_bound (const key_type& k) {
+				iterator i = begin();
+				while (i != end()) {
+					if (!_comp(i->first, k))
+						return i;
+					i ++;
+				}
+				return end();
+			};
+
+			const_iterator lower_bound (const key_type& k) const {
+				const_iterator i = begin();
+				while (i != end()) {
+					if (!_comp(i->first, k))
+						return i;
+					i ++;
+				}
+				return end();
+			};
+
+			iterator 		upper_bound (const key_type& k) {
+				iterator i = begin();
+				while (i != end()) {
+					if (_comp(i->first, k))
+						return i;
+					i ++;
+				}
+				return end();
+			};
+
+			const_iterator upper_bound (const key_type& k) const {
+				const_iterator i = begin();
+				while (i != end()) {
+					if (_comp(i->first, k))
+						return i;
+					i ++;
+				}
+				return end();
+			};
 
 /* ####################   PRIVATE   #################### */
 
@@ -412,7 +462,7 @@ namespace ft {
 				};
 			}
 	};
-
+}
 
 /*	void initializeNULLNode(NodePtr node, NodePtr parent) {
 		node->data = 0;
@@ -420,33 +470,6 @@ namespace ft {
 		node->left = nullptr;
 		node->right = nullptr;
 		node->color = 0;
-	}
-
-	// Preorder
-	void preOrderHelper(NodePtr node) {
-		if (node != TNULL) {
-		cout << node->data << " ";
-		preOrderHelper(node->left);
-		preOrderHelper(node->right);
-		}
-	}
-
-	// Inorder
-	void inOrderHelper(NodePtr node) {
-		if (node != TNULL) {
-		inOrderHelper(node->left);
-		cout << node->data << " ";
-		inOrderHelper(node->right);
-		}
-	}
-
-	// Post order
-	void postOrderHelper(NodePtr node) {
-		if (node != TNULL) {
-		postOrderHelper(node->left);
-		postOrderHelper(node->right);
-		cout << node->data << " ";
-		}
 	}
 
 	NodePtr searchTreeHelper(NodePtr node, int key) {
@@ -459,67 +482,6 @@ namespace ft {
 		}
 		return searchTreeHelper(node->right, key);
 	}
-
-	public:
-	RedBlackTree() {
-		TNULL = new Node;
-		TNULL->color = 0;
-		TNULL->left = nullptr;
-		TNULL->right = nullptr;
-		root = TNULL;
-	}
-
-	void preorder() {
-		preOrderHelper(this->root);
-	}
-
-	void inorder() {
-		inOrderHelper(this->root);
-	}
-
-	void postorder() {
-		postOrderHelper(this->root);
-	}
-
-	NodePtr searchTree(int k) {
-		return searchTreeHelper(this->root, k);
-	}
-
-	NodePtr successor(NodePtr x) {
-		if (x->right != TNULL) {
-		return minimum(x->right);
-		}
-
-		NodePtr y = x->parent;
-		while (y != TNULL && x == y->right) {
-		x = y;
-		y = y->parent;
-		}
-		return y;
-	}
-
-	NodePtr predecessor(NodePtr x) {
-		if (x->left != TNULL) {
-		return maximum(x->left);
-		}
-
-		NodePtr y = x->parent;
-		while (y != TNULL && x == y->left) {
-		x = y;
-		y = y->parent;
-		}
-
-		return y;
-	}
-
-
-	NodePtr getRoot() {
-		return this->root;
-	}
-
-	void deleteNode(int data) {
-		deleteNodeHelper(this->root, data);
-	}*/
-}
+}*/
 
 #endif
