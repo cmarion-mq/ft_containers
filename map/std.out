@@ -1,0 +1,47 @@
+[7m=============CONSTRUCTORS============[0m
+size = 3
+1, is 69
+2, is 199
+3, is 50
+
+iter = 
+size = 0
+
+map1 = 
+size = 3
+1, is 69
+2, is 199
+3, is 50
+
+copied = 
+size = 3
+1, is 69
+2, is 199
+3, is 50
+
+map1 = 
+size = 3
+1, is 69
+2, is 199
+3, is 50
+
+
+Custom Key class option 1:
+size = 3
+15, is 17
+5, is 13
+4, is 5
+
+
+[7m=============ELEMENT ACCESS============[0m
+size = 3
+alpha, is 0
+beta, is 0
+gamma, is 0
+
+size = 4
+40, is 0
+57, is 6
+60, is 4
+75, is 6
+

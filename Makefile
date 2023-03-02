@@ -16,7 +16,7 @@ OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))
 
 DEPS			=	$(OBJS_STD:.o=.d) $(OBJS_FT:.o=.d)
 
-all: 				$(OBJS_FT) #$(OBJS_STD)
+all: 				$(OBJS_FT) $(OBJS_STD)
 
 $(OBJ_PATH)%_ft.o:	%.cpp
 					@mkdir -p $(dir $@)
@@ -45,10 +45,10 @@ stack:				all
 map:				all
 					@mkdir -p $(MAP_PATH) 
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)map_ft.o -o $(MAP_PATH)ft_map
-#					$(CXX) $(CXXFLAGS) $(OBJ_PATH)map_std.o -o $(MAP_PATH)std_map
-#					time $(MAP_PATH)ft_map > $(MAP_PATH)ft.out
-#					time $(MAP_PATH)std_map > $(MAP_PATH)std.out
-#					diff $(MAP_PATH)ft.out $(MAP_PATH)std.out
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)map_std.o -o $(MAP_PATH)std_map
+					time $(MAP_PATH)ft_map > $(MAP_PATH)ft.out
+					time $(MAP_PATH)std_map > $(MAP_PATH)std.out
+					diff $(MAP_PATH)ft.out $(MAP_PATH)std.out
 
 clean:
 					rm -rf $(OBJ_PATH)

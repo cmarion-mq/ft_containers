@@ -139,10 +139,12 @@ namespace ft {
 						temp = temp->_left;
 					else {
 						nodePtr del = temp;
-						if (temp->_parent->_left == temp)
-							temp->_parent->_left = _leaf;
-						else
-							temp->_parent->_right = _leaf;
+						if (temp->_parent) {
+							if (temp->_parent->_left == temp)
+								temp->_parent->_left = _leaf;
+							else
+								temp->_parent->_right = _leaf;
+						}
 						temp = temp->_parent;
 						_node_alloc.destroy(del);
 						_node_alloc.deallocate(del, sizeof(node));
@@ -164,49 +166,17 @@ namespace ft {
 				}
 				return (NULL);
 			};
-
-			iterator	find_node_i(const key_type key) {
-				nodePtr	temp = _root;
-				while (!temp->is_leaf()) {
-					if (temp->_key == key)
-						return (iterator(temp));
-					if (!_comp(key, temp->_key))
-						temp = temp->_right;
-					else
-						temp = temp->_left;
-				}
-				return (end());
-			};
-
-			const_iterator	find_node_i(const key_type key) const {
-				nodePtr	temp = _root;
-				while (!temp->is_leaf()) {
-					if (temp->_key == key)
-						return (const_iterator(temp));
-					if (!_comp(key, temp->_key))
-						temp = temp->_right;
-					else
-						temp = temp->_left;
-				}
-				return (end());
-			};
 			
 		/*---    ITERATORS     ---*/
 			iterator		begin() { 
 				if (_size == 0)
-					return (iterator(_minleaf));
-				else if (_size == 1)
-					return (iterator(_root));
+					return (end());
 				return (iterator(_minleaf->_parent));
 			};
 
 			const_iterator	begin()		const	{
-				if (_size == 0){
-					// return (const_iterator());
-					return (const_iterator(_minleaf));
-			}
-				else if (_size == 1)
-					return (const_iterator(_root));
+				if (_size == 0)
+					return (end());
 				return (const_iterator(_minleaf->_parent));
 			};
 			

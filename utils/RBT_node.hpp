@@ -24,21 +24,6 @@ namespace ft {
 		Node(ValueType pair, color color, Node *parent, Node *left, Node *right): _pair(pair), _key(pair.first), _color(color), _parent(parent), _left(left), _right(right)
 		{};
 
-		// Node(const Node &x) : _pair(x._pair), _key(x._pair.first), _color(x._color), _parent(x._parent), _left(x._left), _right(x._right)
-		// {};
-
-		// Node& operator=(const Node& cpy) {
-		// 	if (this != &cpy) {
-		// 		_pair = cpy._pair;
-		// 		_key = cpy._pair.first;
-		// 		_color = cpy._pair;
-		// 		_left = cpy._left;
-		// 		_right = cpy._right;
-		// 		_parent = cpy._parent;
-		// 	}
-		// 	return *this;
-		// };
-
 		bool is_leaf() const {
 			return (!_left && !_right);
 		};

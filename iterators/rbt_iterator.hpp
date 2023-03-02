@@ -93,7 +93,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				}
 			};
 
-			const nodePtr getCurrent() const { return (_current);}
+			nodePtr getCurrent() const { return (_current);}
 
 			RBT_itBase	operator	++(int) {
 				RBT_itBase temp(*this);

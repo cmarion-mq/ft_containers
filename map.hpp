@@ -81,19 +81,20 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type &operator[] (const key_type& k) {
-				iterator f = _rbt.find_node_i(k);
-				if (f != end())
-					return ((*f).second);
+				typename rbt::nodePtr f = _rbt.find_node(k);
+				if (f)
+					return (f->_pair.second);
 				_rbt.insert(value_type(k, mapped_type()));
-				return((*f).second);
+				return(_rbt.find_node(k)->_pair.second);
 			};
 
 		/*---     MODIFIERS    ---*/
 			pair<iterator, bool>	insert (const value_type& val) {
-				if (_rbt.find_node_i(val.first))
+				iterator i = find(val.first);
+				if (i == end())
 					return (pair<iterator, bool> (_rbt.insert(val), true));
 				else
-					return (pair<iterator, bool> (_rbt.find_node_i(val.first), false));
+					return (pair<iterator, bool> (i, false));
 			};
 
 			// iterator 			insert (iterator position, const value_type& val) {};
@@ -122,11 +123,18 @@ namespace ft {
 
 		/*---     OPERATIONS    ---*/
 			iterator find (const key_type &k) {
-				return (_rbt.find_node_i(k));
+				typename rbt::nodePtr f = _rbt.find_node(k);
+				if (f) {
+					return (iterator(f));
+				}
+				return (end());
 			};
 			
 			const_iterator find (const key_type& k) const {
-				return (_rbt.find_node_i(k));
+				typename rbt::nodePtr f = _rbt.find_node(k);
+				if (f)
+					return (const_iterator(f));
+				return (end());
 			};
 			
 			size_type count( const key_type &key ) const {
