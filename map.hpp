@@ -114,7 +114,10 @@ namespace ft {
 					return (pair<iterator, bool> (i, false));
 			};
 
-			// iterator 			insert (iterator position, const value_type& val) {};
+			iterator 			insert (iterator position, const value_type& val) {
+				(void) position;
+				return (insert(val).first);
+			};
 
 			template <class InputIterator>
 			void					insert (InputIterator first, InputIterator last) {
@@ -180,6 +183,17 @@ namespace ft {
 			const_iterator	lower_bound (const key_type& k) const	{ return (_rbt.lower_bound(k)); };
 			iterator 		upper_bound (const key_type& k) 		{ return (_rbt.upper_bound(k)); };
 			const_iterator 	upper_bound (const key_type& k) const 	{ return (_rbt.upper_bound(k)); };
+
+			pair<iterator,iterator>             equal_range (const key_type& k) {
+				return ft::make_pair(lower_bound(k), upper_bound(k));
+			};
+
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+				return ft::make_pair(lower_bound(k), upper_bound(k));
+			};
+
+		/*---     ALLOCATOR    ---*/
+			allocator_type get_allocator() const { return (_rbt.get_allocator()); };
 
 		/*---      DIVERS      ---*/
 			void print() {

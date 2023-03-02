@@ -250,6 +250,8 @@ namespace ft {
 				return end();
 			};
 
+			Allocator get_allocator() const { return (_alloc); };
+
 /* ####################   PRIVATE   #################### */
 
 		private:

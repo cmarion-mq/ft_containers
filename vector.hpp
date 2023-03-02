@@ -130,6 +130,7 @@ namespace ft {
 			const_reference	back() const 					{ return (*(_data + _n - 1)); };
 
 			reference		at (size_type n) {
+
 				if (n >= _n) {
 					std::string			str;
 					std::stringstream	stn, st_n;
@@ -225,26 +226,30 @@ namespace ft {
 			};
 
 			iterator erase(iterator position) {
-				size_type tot_between_begin_position = std::distance(begin(), position);
-				for (size_type i = tot_between_begin_position; i < _n - 1; i ++) {
-					_alloc.destroy(_data + i);
-					_alloc.construct(_data + i, _data[i + 1]);
+				if (position + 1 != end()) {
+					size_type tot_between_begin_position = std::distance(begin(), position);
+					for (size_type i = tot_between_begin_position; i < _n - 1; i ++) {
+						_alloc.destroy(_data + i);
+						_alloc.construct(_data + i, _data[i + 1]);
+					}
 				}
 				_alloc.destroy(_data + _n - 1);
 				_n --;
-				return (position);
+				return (position);			
 			};
 			
 			iterator erase(iterator first, iterator last) {
-				size_type n = std::distance(first, last); //tot erase
-				size_type tot_between_begin_position = std::distance(begin(), first);
-				size_type i = tot_between_begin_position;
-				for (; i < _n && i + n < _n; i ++) {
-					_alloc.destroy(_data + i);
-					_alloc.construct(_data + i, _data[i + n]);
-					_alloc.destroy(_data + i + n);
+				if (first != last && last != end()) {
+					size_type n = std::distance(first, last); //tot erase
+					size_type tot_between_begin_position = std::distance(begin(), first);
+					size_type i = tot_between_begin_position;
+					for (; i < _n && i + n < _n; i ++) {
+						_alloc.destroy(_data + i);
+						_alloc.construct(_data + i, _data[i + n]);
+						_alloc.destroy(_data + i + n);
+					}
+					_n -= n;
 				}
-				_n -= n;
 				return (first);
 			};
 
