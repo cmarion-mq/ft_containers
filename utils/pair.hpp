@@ -16,6 +16,9 @@ namespace ft {
 		pair (const first_type &a, const second_type &b): first(a), second(b)
 		{};
 
+		template <class U1, class U2>
+		pair(const pair<U1, U2>& x): first(x.first), second(x.second) {}
+
 /*---   MEMBER FONCTION  ---*/
 		pair &operator =(const pair& pr) {
 			if (this != &pr) {

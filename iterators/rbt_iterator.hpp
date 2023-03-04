@@ -16,12 +16,18 @@ namespace ft {
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 	template< class ValueType>
 	class RBT_itBase {
+/* ####################   TYPES   #################### */
+		public:
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef ValueType							value_type;
+			typedef ValueType &							reference;
+			typedef ValueType *							pointer;
+			typedef std::ptrdiff_t						difference_type;
+		private:
+			typedef typename ft::Node<ValueType> *		nodePtr;
+		
 /* ####################   PUBLIC  #################### */
 		public:
-	/*-------- TYPES ---------*/
-			typedef Node<ValueType>	node;
-			typedef node *			nodePtr;
-
 	/*--- CON/DE_STRUCTORS ---*/
 			RBT_itBase(): _current(NULL) {};
 
@@ -119,8 +125,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			ValueType 	*operator	->()	{ return (&_current->_pair);	};
 
 /* ####################   PRIVATE  #################### */
-		private:			
-		/*--- MEMBER OBJECTS ---*/
+	/*--- MEMBER OBJECTS ---*/
 			nodePtr	_current;
     };
 
@@ -130,12 +135,18 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 	template< class ValueType>
 	class RBT_iterator {
+/* ####################   TYPES   #################### */		
+		public:
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef ValueType							value_type;
+			typedef ValueType &							reference;
+			typedef ValueType *							pointer;
+			typedef std::ptrdiff_t						difference_type;
+		private:
+			typedef typename ft::Node<ValueType> *		nodePtr;
+
 /* ####################   PUBLIC  #################### */
 		public:
-	/*-------- TYPES ---------*/
-			typedef Node<ValueType>	node;
-			typedef node *			nodePtr;
-
 	/*--- CON/DE_STRUCTORS ---*/
 			RBT_iterator(): _current(RBT_itBase<ValueType>()) {};
 
@@ -198,12 +209,18 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 	template< class ValueType>
 	class RBT_const_iterator {
+/* ####################   TYPES   #################### */
+		public:
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef ValueType							value_type;
+			typedef ValueType &							reference;
+			typedef ValueType *							pointer;
+			typedef std::ptrdiff_t						difference_type;
+		private:
+			typedef typename ft::Node<ValueType> *		nodePtr;
+
 /* ####################   PUBLIC  #################### */
 		public:
-	/*-------- TYPES ---------*/
-			typedef Node<ValueType>	node;
-			typedef node *			nodePtr;
-
 	/*--- CON/DE_STRUCTORS ---*/
 			RBT_const_iterator(): _current(NULL) {};
 

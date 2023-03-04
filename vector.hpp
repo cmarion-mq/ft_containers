@@ -41,11 +41,13 @@ namespace ft {
 			
 			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _n(n), _capacity(n)
 			{
-				if (_n > _alloc.max_size())
-					throw std::length_error("cannot create std::vector larger than max_size()");
-				_data = _alloc.allocate(n);
-				for (size_type i = 0; i < _n; i ++)
-					_alloc.construct(_data + i, val);
+				if (n > 0) {
+					if (_n > _alloc.max_size())
+						throw std::length_error("cannot create std::vector larger than max_size()");
+					_data = _alloc.allocate(n);
+					for (size_type i = 0; i < _n; i ++)
+						_alloc.construct(_data + i, val);
+				}
 			};
 			
 			template <class InputIterator>
@@ -239,7 +241,7 @@ namespace ft {
 			};
 			
 			iterator erase(iterator first, iterator last) {
-				if (first != last && last != end()) {
+				if (first != last) {
 					size_type n = std::distance(first, last); //tot erase
 					size_type tot_between_begin_position = std::distance(begin(), first);
 					size_type i = tot_between_begin_position;

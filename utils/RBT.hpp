@@ -10,20 +10,22 @@ namespace ft {
 	template < class ValueType, class Compare, class Allocator = std::allocator<ValueType> >
 	class RBT
 	{
-/* ####################   PUBLIC  #################### */
+/* ####################   TYPES   #################### */
 		public :
-		/*-------- TYPES ---------*/
-		typedef typename Allocator::template rebind<Node<ValueType> >::other	node_allocator;
-		typedef Compare															key_compare;
-		typedef	typename ValueType::first_type									key_type;
-		typedef	typename ValueType::second_type									mapped_type;
-		typedef Node<ValueType> 												node;
-		typedef Node<ValueType> *												nodePtr;
-		typedef RBT_iterator<ValueType>											iterator;
-		typedef RBT_const_iterator<ValueType>									const_iterator;
-		typedef ft::reverse_iterator<iterator>									reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
+			typedef typename Allocator::template rebind<Node<ValueType> >::other	node_allocator;
+			typedef Compare															key_compare;
+			typedef RBT_iterator<ValueType>											iterator;
+			typedef RBT_const_iterator<ValueType>									const_iterator;
+			typedef ft::reverse_iterator<iterator>									reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
+			typedef Node<ValueType> *												nodePtr;
+		private:
+			typedef	typename ValueType::first_type									key_type;
+			typedef	typename ValueType::second_type									mapped_type;
+			typedef Node<ValueType> 												node;
 
+/* ####################   PUBLIC  #################### */
+		public:
 		/*--- CON/DE_STRUCTORS ---*/
 			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _node_alloc(node_allocator()), _comp(comp), _size(0) {
 				_leaf = _node_alloc.allocate(sizeof(node));
@@ -132,13 +134,15 @@ namespace ft {
 				while (!is_leaf(temp)) {
 					if (!is_leaf(temp->_right))
 						temp = temp->_right;
-					else if (!is_leaf(temp->_left)) 
+					else if (!is_leaf(temp->_left))
 						temp = temp->_left;
 					else {
 						nodePtr del = temp;
 						if (temp->_parent) {
-							temp->_parent->_left = _leaf;
-							temp->_parent->_right = _leaf;
+							if (temp->_parent->_left == temp)
+								temp->_parent->_left = _leaf;
+							else
+								temp->_parent->_right = _leaf;
 						}
 						temp = temp->_parent;
 						_node_alloc.destroy(del);
@@ -253,7 +257,6 @@ namespace ft {
 			Allocator get_allocator() const { return (_alloc); };
 
 /* ####################   PRIVATE   #################### */
-
 		private:
 			Allocator		_alloc;
 			node_allocator	_node_alloc;
