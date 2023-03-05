@@ -204,14 +204,18 @@ namespace ft {
 			size_t	max_size() const	{ return (_alloc.max_size()); };
 
 			void swap (RBT & x) {
-				std::swap(_alloc, x._alloc);
-				std::swap(_node_alloc, x._node_alloc);
+				// std::swap(_alloc, x._alloc);
+				// std::swap(_node_alloc, x._node_alloc);
 				std::swap(_root, x._root);
 				std::swap(_leaf, x._leaf);
 				std::swap(_minleaf, x._minleaf);
 				std::swap(_maxleaf, x._maxleaf);
 				std::swap(_comp, x._comp);
 				std::swap(_size, x._size);
+				if (_size == 0)
+					_minleaf->_parent = _maxleaf;
+				if (x._size == 0)
+					_minleaf->_parent = _maxleaf;
 			};
 
 			iterator 		lower_bound (const key_type& k) {
