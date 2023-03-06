@@ -243,10 +243,9 @@ namespace ft {
 			iterator erase(iterator first, iterator last) {
 				if (first != last) {
 					size_type n = std::distance(first, last); //tot erase
-					size_type tot_between_begin_position = std::distance(begin(), first);
-					size_type i = tot_between_begin_position;
-					for (; i < _n && i + n < _n; i ++) {
-						_alloc.destroy(_data + i);
+					size_type i = std::distance(begin(), first); //tot_between_begin_position;
+					for (; i < n && i + n < _n; i ++) {
+						// _alloc.destroy(_data + i);
 						_alloc.construct(_data + i, _data[i + n]);
 						_alloc.destroy(_data + i + n);
 					}

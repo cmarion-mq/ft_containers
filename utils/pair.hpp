@@ -43,17 +43,17 @@ namespace ft {
 
 /*---   OPERATORS   ---*/
 	template< class T1, class T2 >
-	bool operator ==(const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs) {
+	bool operator ==(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs) {
 		return (lhs.first == rhs.first && lhs.second == rhs.second);
 	};
 
 	template< class T1, class T2 >
-	bool operator !=( const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs ) {
+	bool operator !=( const pair<T1, T2>& lhs, const pair<T1, T2>& rhs ) {
 		return !(lhs == rhs);
 	};
 
 	template< class T1, class T2 >
-	bool operator <( const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs ) {
+	bool operator <( const pair<T1, T2>& lhs, const pair<T1, T2>& rhs ) {
 		if (lhs.first == rhs.first)
 			return (lhs.second < rhs.second);
 		else 
@@ -61,7 +61,7 @@ namespace ft {
 	};
 
 	template< class T1, class T2 >
-	bool operator <=( const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs ) {
+	bool operator <=( const pair<T1, T2>& lhs, const pair<T1, T2>& rhs ) {
 		if (lhs.first == rhs.first)
 			return (lhs.second <= rhs.second);
 		else 
@@ -69,7 +69,7 @@ namespace ft {
 	};
 
 	template< class T1, class T2 >
-	bool operator >( const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs ) {
+	bool operator >( const pair<T1, T2>& lhs, const pair<T1, T2>& rhs ) {
 		if (lhs.first == rhs.first)
 			return (lhs.second > rhs.second);
 		else 
@@ -77,7 +77,7 @@ namespace ft {
 	};
 
 	template< class T1, class T2 >
-	bool operator >=( const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs ) {
+	bool operator >=( const pair<T1, T2>& lhs, const pair<T1, T2>& rhs ) {
 		if (lhs.first == rhs.first)
 			return (lhs.second >= rhs.second);
 		else 

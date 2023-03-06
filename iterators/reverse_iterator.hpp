@@ -5,11 +5,12 @@
 
 namespace ft {
 	template <class Iterator>
-	class reverse_iterator : public std::iterator <	typename iterator_traits<Iterator>::iterator_category,
-													typename iterator_traits<Iterator>::value_type,
-													typename iterator_traits<Iterator>::difference_type,
-													typename iterator_traits<Iterator>::pointer,
-													typename iterator_traits<Iterator>::reference >
+	class reverse_iterator
+	// : public std::iterator <	typename iterator_traits<Iterator>::iterator_category,
+	// 												typename iterator_traits<Iterator>::value_type,
+	// 												typename iterator_traits<Iterator>::difference_type,
+	// 												typename iterator_traits<Iterator>::pointer,
+	// 												typename iterator_traits<Iterator>::reference >
 	{
 		public:
 /*-------- TYPES ---------*/
@@ -23,10 +24,18 @@ namespace ft {
 /*--- CON/DE_STRUCTORS ---*/
 			reverse_iterator(): _current(NULL) {};
 			
-			explicit reverse_iterator (iterator_type it): _current(it) {};
+			explicit reverse_iterator(iterator_type it): _current(it) {};
 			
 			template <class Iter>
-			reverse_iterator (const reverse_iterator<Iter>& rev_it): _current(rev_it.base()) {};
+			reverse_iterator(const reverse_iterator<Iter>& rev_it): _current(rev_it.base()) {};
+
+			// reverse_iterator(pointer ptr): _current(ptr) {};
+			
+			// template <class Iter>
+			// reverse_iterator &operator= (const reverse_iterator<Iter> &x) {
+			// 	_current = x.base();
+			// 	return(*this);
+			// }
 
 /*---       BASE       ---*/
 			iterator_type 		base() const 							{ return _current; };
@@ -38,8 +47,8 @@ namespace ft {
 			pointer 			operator->() const 						{ return &(operator*()); }
 
 			reference			operator*() const {
-				iterator_type	temp = base() - 1;
-				return *temp; 
+				Iterator temp = _current;
+				return *(--temp); 
 			};
 			
 			reverse_iterator&	operator++() { 
@@ -75,7 +84,7 @@ namespace ft {
 			};
 
 		protected:
-			Iterator _current;
+			iterator_type _current;
     };
 
 	template <class Iterator1, class Iterator2>

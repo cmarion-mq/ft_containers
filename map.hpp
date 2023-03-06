@@ -114,14 +114,14 @@ namespace ft {
 					return (pair<iterator, bool> (i, false));
 			};
 
-			iterator 			insert (iterator position, const value_type& val) {
+			iterator 				insert (iterator position, const value_type& val) {
 				(void) position;
 				return (insert(val).first);
 			};
 
 			template <class InputIterator>
 			void					insert (InputIterator first, InputIterator last) {
-				while (first != last) {				
+				while (first != last) {		
 					_rbt.insert(*first);
 					first ++;
 				}
