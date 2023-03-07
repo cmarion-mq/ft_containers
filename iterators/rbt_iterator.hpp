@@ -64,7 +64,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					nodePtr init = _current;
 					while (_current->_parent && !_current->_parent->is_leaf() && _current == _current->_parent->_left)
 						_current = _current->_parent;
-					if (_current->_parent == NULL) {
+					if (_current->_parent == NULL || _current->_parent->is_leaf()) {
 						_current = init->_left;
 						return (*this);
 					}
@@ -90,7 +90,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					nodePtr init = _current;
 					while (_current->_parent && !_current->_parent->is_leaf() && _current == _current->_parent->_right)
 						_current = _current->_parent;
-					if (_current->_parent == NULL) {
+					if (_current->_parent == NULL || _current->_parent->is_leaf()) {
 						_current = init->_right;
 						return (*this);
 					}
@@ -98,6 +98,21 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					return (*this);
 				}
 			};
+
+				// 		else {
+				// 	nodePtr init = _current;
+				// 	nodePtr temp = _current->_parent;
+				// 	while (temp && !temp->is_leaf() && _current == temp->_right) {
+				// 		_current = temp;
+				// 		temp = temp->_parent;
+				// 	}
+				// 	if (temp == NULL) {
+				// 		_current = init->_right;
+				// 		return (*this);
+				// 	}
+				// 	_current = temp;
+				// 	return (*this);
+				// }
 
 			nodePtr getCurrent() const { return (_current);}
 

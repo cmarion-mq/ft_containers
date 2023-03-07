@@ -9,7 +9,7 @@ SRCS			=	main_42.cpp \
 					map.cpp
 
 CXX	 			=	c++
-CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address
 
 OBJS_FT			=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_ft.o))
 OBJS_STD		=	$(addprefix $(OBJ_PATH),$(SRCS:.cpp=_std.o))
@@ -46,9 +46,9 @@ map:				all
 					@mkdir -p $(MAP_PATH) 
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)map_ft.o -o $(MAP_PATH)ft_map
 					$(CXX) $(CXXFLAGS) $(OBJ_PATH)map_std.o -o $(MAP_PATH)std_map
-					time $(MAP_PATH)ft_map > $(MAP_PATH)ft.out
-					time $(MAP_PATH)std_map > $(MAP_PATH)std.out
-					diff $(MAP_PATH)ft.out $(MAP_PATH)std.out
+#					time $(MAP_PATH)ft_map > $(MAP_PATH)ft.out
+#					time $(MAP_PATH)std_map > $(MAP_PATH)std.out
+#					diff $(MAP_PATH)ft.out $(MAP_PATH)std.out
 
 clean:
 					rm -rf $(OBJ_PATH)

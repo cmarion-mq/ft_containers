@@ -32,6 +32,7 @@ namespace ft {
 				_maxleaf = _node_alloc.allocate(sizeof(node));
 				_minleaf = _node_alloc.allocate(sizeof(node));
 				_root = _leaf;
+				_root->_parent = _leaf;
 				_root->_color = BLACK;
 				_leaf->_parent = NULL;
 				_leaf->_left = NULL;
@@ -73,6 +74,7 @@ namespace ft {
 				if (temp == _leaf) { 
 					_root = new_node;
 					new_node->_color = BLACK;
+					min_max_actu();
 					return(iterator(new_node));
 				}
 				if (!_comp(new_node->_key, temp->_key))
