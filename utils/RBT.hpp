@@ -32,7 +32,7 @@ namespace ft {
 				_maxleaf = _node_alloc.allocate(sizeof(node));
 				_minleaf = _node_alloc.allocate(sizeof(node));
 				_root = _leaf;
-				_root->_parent = _leaf;
+				_root->_parent = NULL;
 				_root->_color = BLACK;
 				_leaf->_parent = NULL;
 				_leaf->_left = NULL;
@@ -71,7 +71,7 @@ namespace ft {
 				}
 				nodePtr new_node = _node_alloc.allocate(sizeof(node));
 				_node_alloc.construct(new_node, node(new_element, RED, temp, _leaf, _leaf));
-				if (temp == _leaf) { 
+				if (is_leaf(temp)) { 
 					_root = new_node;
 					new_node->_color = BLACK;
 					min_max_actu();
@@ -93,13 +93,17 @@ namespace ft {
 				nodePtr	del_node = find_node(del_key);
 				if (del_node == NULL)
 					return (false);
+				if (del_node->_left == _minleaf)
+					_minleaf->_parent = NULL;
+				if (del_node->_right == _maxleaf)
+					_maxleaf->_parent = NULL;
 				color	del_color = del_node->_color;
 				nodePtr x;
 				if (is_leaf(del_node->_left)) {
 					x = del_node->_right;
 					replace(del_node, del_node->_right);
 				}
-				else if (is_leaf(del_node)) {
+				else if (is_leaf(del_node->_right)) {
 					x = del_node->_left;
 					replace(del_node, del_node->_left);
 				}
@@ -160,14 +164,16 @@ namespace ft {
 
 		/*---      FIND      ---*/
 			nodePtr	find_node(key_type key) const {
-				nodePtr	temp = _root;
-				while (!temp->is_leaf()) {
-					if (temp->_key == key)
-						return (temp);
-					if (!_comp(key, temp->_key))
-						temp = temp->_right;
-					else
-						temp = temp->_left;
+				if (_size > 0) {
+					nodePtr	temp = _root;
+					while (!temp->is_leaf()) {
+						if (temp->_key == key)
+							return (temp);
+						if (!_comp(key, temp->_key))
+							temp = temp->_right;
+						else
+							temp = temp->_left;
+					}
 				}
 				return (NULL);
 			};
@@ -243,7 +249,7 @@ namespace ft {
 			iterator 		upper_bound (const key_type& k) {
 				iterator i = begin();
 				while (i != end()) {
-					if (_comp(i->first, k))
+					if (_comp(k, i->first ))
 						return i;
 					i ++;
 				}
@@ -253,7 +259,7 @@ namespace ft {
 			const_iterator upper_bound (const key_type& k) const {
 				const_iterator i = begin();
 				while (i != end()) {
-					if (_comp(i->first, k))
+					if (_comp(k, i->first))
 						return i;
 					i ++;
 				}
@@ -448,6 +454,12 @@ namespace ft {
 					_maxleaf->_parent->_right = _leaf;
 				_maxleaf->_parent = maxp;
 				maxp->_right = _maxleaf;
+				_maxleaf->_left = NULL;
+				_maxleaf->_right = NULL;
+				_maxleaf->_color = BLACK;
+				_minleaf->_left = NULL;
+				_minleaf->_right = NULL;
+				_minleaf->_color = BLACK;
 			}
 
 			bool	is_leaf(nodePtr node) {

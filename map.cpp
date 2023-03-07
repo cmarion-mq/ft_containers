@@ -83,28 +83,28 @@ void init_array_str_str(NS::pair<std::string, std::string>* arr, std::size_t siz
     }
 }
 
+void PRINT_LINE(std::string msg, int value)
+    {
+        std::cout << msg << " " << (value) << std::endl;                                                        
+    }
+
 int main() {
 
-    // NS::pair<int, std::string> intstr_arr[64];
-    // init_array_int_str(intstr_arr, 64);
-    // // NS::pair<std::string, std::string> strstr_arr[32];
-    // // init_array_str_str(strstr_arr, 32);
-    // // std::size_t intstr_size = 64;
-    // // std::size_t strstr_size = 32;
-
-	// typedef NS::map<int, std::string, std::less<int>, std::allocator<NS::pair<const int, std::string> > >
-	// intmap;
-	// // typedef NS::map<std::string, std::string, std::less<std::string>, std::allocator<NS::pair<const std::string, std::string> > >
-    // // strmap;
-        
-	// 	intmap m(intstr_arr, intstr_arr + 1);
-	// 	print(m);
-    //     // intmap n(intstr_arr, intstr_arr + 1);
-
-    //     // if (n == m)
-    //     //     std::cout << "Equal..." << std::endl;
+    NS::pair<int, std::string> intstr_arr[64];
+    init_array_int_str(intstr_arr, 64);
+    NS::pair<std::string, std::string> strstr_arr[32];
+    init_array_str_str(strstr_arr, 32);
+    // std::size_t intstr_size = 64;
+    // std::size_t strstr_size = 32;
+// 
+	typedef NS::map<int, std::string, std::less<int>, std::allocator<NS::pair<const int, std::string> > >
+	intmap;
+	// typedef NS::map<std::string, std::string, std::less<std::string>, std::allocator<NS::pair<const std::string, std::string> > >
+    // strmap;
 
 
+
+/*
 // ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
 	{
@@ -278,24 +278,25 @@ int main() {
 		}
 		std::cout << std::endl;
 	}
-	// {
-	// 	std::cout << "\e[7m Lower/Upper_bound \e[0m" << std::endl;
-	// 	NS::map<char,int> mymap;
-	// 	NS::map<char,int>::iterator itlow,itup;
+	{
+		std::cout << "\e[7m Lower/Upper_bound \e[0m" << std::endl;
+		NS::map<char,int> mymap;
+		NS::map<char,int>::iterator itlow,itup;
 
-	// 	mymap['a']=20;
-	// 	mymap['b']=40;
-	// 	mymap['c']=60;
-	// 	mymap['d']=80;
-	// 	mymap['e']=100;
+		mymap['a']=20;
+		mymap['b']=40;
+		mymap['c']=60;
+		mymap['d']=80;
+		mymap['e']=100;
 
-	// 	itlow=mymap.lower_bound ('b');  // itlow points to b
-	// 	itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+		itlow=mymap.lower_bound ('b');  // itlow points to b
+		itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 
-	// 	mymap.erase(itlow,itup);        // erases [itlow,itup)
-	// 	print(mymap);
-	// }
+		mymap.erase(itlow,itup);        // erases [itlow,itup)
+		print(mymap);
+	}
 
 	// std::cout << "empty: " << map_int.empty() << std::endl;
 	// std::cout << "max size: " << map_int.max_size() << std::endl;
+	*/
 }

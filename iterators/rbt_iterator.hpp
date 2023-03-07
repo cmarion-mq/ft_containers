@@ -99,21 +99,6 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				}
 			};
 
-				// 		else {
-				// 	nodePtr init = _current;
-				// 	nodePtr temp = _current->_parent;
-				// 	while (temp && !temp->is_leaf() && _current == temp->_right) {
-				// 		_current = temp;
-				// 		temp = temp->_parent;
-				// 	}
-				// 	if (temp == NULL) {
-				// 		_current = init->_right;
-				// 		return (*this);
-				// 	}
-				// 	_current = temp;
-				// 	return (*this);
-				// }
-
 			nodePtr getCurrent() const { return (_current);}
 
 			RBT_itBase	operator	++(int) {
