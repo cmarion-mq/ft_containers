@@ -487,24 +487,4 @@ namespace ft {
 	};
 }
 
-/*	void initializeNULLNode(NodePtr node, NodePtr parent) {
-		node->data = 0;
-		node->parent = parent;
-		node->left = nullptr;
-		node->right = nullptr;
-		node->color = 0;
-	}
-
-	NodePtr searchTreeHelper(NodePtr node, int key) {
-		if (node == TNULL || key == node->data) {
-		return node;
-		}
-
-		if (key < node->data) {
-		return searchTreeHelper(node->left, key);
-		}
-		return searchTreeHelper(node->right, key);
-	}
-}*/
-
 #endif

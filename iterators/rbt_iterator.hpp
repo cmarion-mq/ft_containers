@@ -230,13 +230,13 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				_current = x._current;
 			};
 
-			RBT_const_iterator &operator =(const RBT_const_iterator &x) {
-				if (this == &x) { 
-					return *this;
-				}
-				_current = x._current;
-				return (*this);
-			}
+			// RBT_const_iterator &operator =(const RBT_const_iterator &x) {
+			// 	if (this == &x) { 
+			// 		return *this;
+			// 	}
+			// 	_current = x._current;
+			// 	return (*this);
+			// }
 
 			~RBT_const_iterator() {};
 
