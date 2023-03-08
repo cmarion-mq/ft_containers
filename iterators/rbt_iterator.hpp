@@ -185,7 +185,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			RBT_iterator	operator	--(int) {
 				RBT_iterator temp(*this);
 				operator --();
-				return (*this);
+				return (temp);
 			}
 
 								
@@ -230,13 +230,9 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				_current = x._current;
 			};
 
-			// RBT_const_iterator &operator =(const RBT_const_iterator &x) {
-			// 	if (this == &x) { 
-			// 		return *this;
-			// 	}
-			// 	_current = x._current;
-			// 	return (*this);
-			// }
+			RBT_const_iterator(const RBT_iterator<ValueType> &x) {
+				_current = x.base();
+			};
 
 			~RBT_const_iterator() {};
 
@@ -259,7 +255,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			RBT_const_iterator	operator	--(int) {
 				RBT_const_iterator temp(*this);
 				operator --();
-				return (*this);
+				return (temp);
 			}
 
 			ValueType 		&operator	*()		{ return (*_current);		};
