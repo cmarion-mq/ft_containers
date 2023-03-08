@@ -51,7 +51,7 @@ namespace ft {
 			};
 			
 			template <class InputIterator>
-			vector (typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0)
+			vector (InputIterator first, typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type  last, const allocator_type& alloc = allocator_type()): _alloc(alloc), _data(NULL), _n(0), _capacity(0)
 			{
 				insert_helper(begin(), first, last, typename iterator_traits<InputIterator>::iterator_category());
 			};
@@ -153,7 +153,7 @@ namespace ft {
 			
 		/*---     MODIFIERS    ---*/
 			template <class InputIterator>
-			void assign(typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last) {
+			void assign(InputIterator first,typename enable_if<!ft::is_integral< InputIterator >::value, InputIterator >::type last) {
 				clear();
 				insert_helper(begin(), first, last, typename iterator_traits<InputIterator>::iterator_category());
 			};
@@ -166,6 +166,8 @@ namespace ft {
 						_alloc.destroy(_data + i);
 					_alloc.construct(_data + i, val);
 				}
+				for (size_type i = n; i < _n; i ++)
+					_alloc.destroy(_data + i);
 				_n = n;
 			};
 
@@ -294,11 +296,13 @@ namespace ft {
 							reserve(_n + n);
 					}		
 					for (size_type i = _n + n - 1; i > tot_between_begin_position + n - 1; i --) {
+						_alloc.destroy(_data + i);
 						_alloc.construct(_data + i, _data[i - n]);
-						_alloc.destroy(_data + i - n);
 					}
-					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++, first ++)
-						_alloc.construct(_data + i, *first);
+					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++, first ++) {
+						// _alloc.destroy(_data + i);
+						*(_data + i) = *first;
+					}
 					_n += n;
 				}
 			};

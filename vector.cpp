@@ -34,8 +34,50 @@ static void display(NS::vector<T, Allocator>& vect) {
 	NS::vector<int> myvector (10);   // 10 zero-initialized ints
 	myvector.at(11);
 }*/
-
+	typedef NS::vector<std::string, std::allocator<std::string> > strvector;
+	typedef NS::vector<int, std::allocator<int> > intvector;
+	typedef NS::vector<long, std::allocator<long> > longvector;
+	typedef NS::vector<double, std::allocator<double> > doublevector;
+	typedef NS::vector<char, std::allocator<char> > charvector;
+	
 int main() {
+
+    {
+        charvector v;
+
+        v.assign(0, 'c');
+
+        display(v);
+
+        v.assign(64, 'A');
+
+        display(v);
+
+        v.assign(32, '5');
+
+        display(v);
+
+        v.assign(49, '8');
+
+        display(v);
+
+        v.assign(77, '2');
+
+        display(v);
+    }
+
+    {
+        strvector v;
+
+        v.assign(0, "");
+
+        display(v);
+
+        v.assign(64, "vector-string");
+
+        display(v);
+    }
+
 	/*
 	// ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
