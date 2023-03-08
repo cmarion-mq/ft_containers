@@ -15,9 +15,9 @@ static void display(NS::vector<T, Allocator>& vect) {
     std::cout << "capacity: " << vect.capacity() << std::endl;
     std::cout << "empty: " << vect.empty() << std::endl;
 	if (!vect.empty()){
-		std::cout << "content: ";
-		for (size_t i = 0; i < vect.size(); i++){
-			std::cout << ' ' << vect[i];}
+		std::cout << "content: " << std::endl;
+		for (size_t i = 0; i < vect.size(); i++) {
+			std::cout << "::::: i " << i << "    " << vect[i] <<std::endl;}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
@@ -36,6 +36,7 @@ static void display(NS::vector<T, Allocator>& vect) {
 }*/
 
 int main() {
+	/*
 	// ################################  CONSTRUCTORS  ##############
 	std::cout << "\e[7m=============CONSTRUCTORS============\e[0m" << std::endl;
 	{
@@ -345,4 +346,5 @@ int main() {
 		display(bar);
 	}
 		return (0);
+	*/
 }

@@ -213,7 +213,4 @@ int main() {
 		mymap.erase(itlow,itup);        // erases [itlow,itup)
 		print(mymap);
 	}
-
-	// std::cout << "empty: " << map_int.empty() << std::endl;
-	// std::cout << "max size: " << map_int.max_size() << std::endl;
 }
