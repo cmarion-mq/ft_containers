@@ -82,10 +82,10 @@ namespace ft {
 			const_iterator			begin() const	{ return const_iterator(_data); };
 			iterator 				end()			{ return iterator(_data + _n); };
 			const_iterator			end() const		{ return const_iterator(_data + _n); };
-			reverse_iterator		rbegin()		{ return reverse_iterator(_data + _n); };
-			const_reverse_iterator 	rbegin() const	{ return const_reverse_iterator(_data + _n); };
-			reverse_iterator		rend()			{ return reverse_iterator(_data); };
-			const_reverse_iterator	rend() const	{ return const_reverse_iterator(_data); };
+			reverse_iterator		rbegin()		{ return reverse_iterator(end()); };
+			const_reverse_iterator 	rbegin() const	{ return const_reverse_iterator(end()); };
+			reverse_iterator		rend()			{ return reverse_iterator(begin()); };
+			const_reverse_iterator	rend() const	{ return const_reverse_iterator(begin()); };
 
 		/*---     CAPACITY     ---*/
 			size_type	size() const		{ return (_n); };
@@ -193,7 +193,7 @@ namespace ft {
 					_alloc.construct(_data + i, _data[i - 1]);
 					_alloc.destroy(_data + i - 1);
 				}
-				_alloc.construct(position, val);
+				_alloc.construct(&(*position), val);
 				_n ++;
 				return(position);
 			};
