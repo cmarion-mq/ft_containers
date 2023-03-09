@@ -121,8 +121,9 @@ namespace ft {
 
 			template <class InputIterator>
 			void					insert (InputIterator first, InputIterator last) {
-				while (first != last) {		
-					insert(*first);
+				while (first != last) {
+					value_type temp = *first;
+					insert(temp);
 					first ++;
 				}
 			};

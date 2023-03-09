@@ -9,9 +9,11 @@ namespace ft {
 	{
 		public:
 /*-------- TYPES ---------*/
-			typedef T			value_type;
-			typedef Container	container_type;
-			typedef size_t		size_type;
+			typedef T									value_type;
+			typedef Container							container_type;
+			typedef size_t								size_type;
+			typedef	typename Container::reference		reference;
+			typedef	typename Container::const_reference	const_reference;
 
 /*--- CON/DE_STRUCTORS ---*/
 			explicit stack (const container_type& ctnr = container_type()): _c(ctnr)

@@ -3,18 +3,13 @@
 
 #include <iostream>
 #include <sstream>
-// #include "is_integral.hpp"
-// #include "enable_if.hpp"
-// #include "equal.hpp"
-// #include "lexicographical_compare.hpp"
-// #include "iterators_traits.hpp"
-// #include "reverse_iterator.hpp"
 #include "utils/is_integral.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/equal.hpp"
 #include "utils/lexicographical_compare.hpp"
 #include "iterators/iterators_traits.hpp"
 #include "iterators/reverse_iterator.hpp"
+# include "iterators/random_access_iterator.hpp"
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
@@ -28,8 +23,10 @@ namespace ft {
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
-			typedef T*										iterator;
-			typedef const T*								const_iterator;
+			typedef random_access_iterator<pointer>			iterator;
+			typedef random_access_iterator<const_pointer>	const_iterator;
+			// typedef T*										iterator;
+			// typedef const T*								const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef std::ptrdiff_t 							difference_type;
@@ -81,10 +78,10 @@ namespace ft {
 			};
 
 		/*---     ITERATORS    ---*/
-			iterator				begin()			{ return _data;	};
-			const_iterator			begin() const	{ return _data; };
-			iterator 				end()			{ return _data + _n; };
-			const_iterator			end() const		{ return _data + _n; };
+			iterator				begin()			{ return iterator(_data); };
+			const_iterator			begin() const	{ return const_iterator(_data); };
+			iterator 				end()			{ return iterator(_data + _n); };
+			const_iterator			end() const		{ return const_iterator(_data + _n); };
 			reverse_iterator		rbegin()		{ return reverse_iterator(_data + _n); };
 			const_reverse_iterator 	rbegin() const	{ return const_reverse_iterator(_data + _n); };
 			reverse_iterator		rend()			{ return reverse_iterator(_data); };

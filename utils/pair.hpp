@@ -5,19 +5,17 @@
 
 namespace ft {
 	template <class T1, class T2>
-	struct pair{
+	struct pair {
 		typedef	T1	first_type;
 		typedef	T2	second_type;
 
 /*--- CON/DE_STRUCTORS ---*/	
-		pair(): first(first_type()), second(second_type())
-		{};
+		pair(): first(first_type()), second(second_type()) {};
 
-		pair (const first_type &a, const second_type &b): first(a), second(b)
-		{};
+		pair (const first_type &a, const second_type &b): first(a), second(b) {};
 
 		template <class U1, class U2>
-		pair(const pair<U1, U2>& x): first(x.first), second(x.second) {}
+		pair(const pair<U1, U2>& x): first(x.first), second(x.second) {};
 
 /*---   MEMBER FONCTION  ---*/
 		pair &operator =(const pair& pr) {
@@ -26,13 +24,12 @@ namespace ft {
 				second = pr.second;
 			}
 			return (*this);
-		}
+		};
 
 /*---   MEMBER OBJECTS  ---*/
 		first_type	first;
 		second_type	second;
 	};
-
 
 /*############ NON MEMBER FONCTION ############*/
 /*---   MAKE_PAIR   ---*/
