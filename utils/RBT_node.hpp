@@ -11,17 +11,16 @@ namespace ft {
 	struct Node {
 		typedef	typename ValueType::first_type	key;
 
-		ValueType  		_pair;
-		key				_key;
+		ValueType  		_value;
 		color			_color;
 		Node			*_parent;
 		Node			*_left;
 		Node			*_right;
 	
-		Node(): _pair(ValueType()), _key(key()), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
+		Node(): _value(ValueType()), _color(BLACK), _parent(NULL), _left(NULL), _right(NULL)
 		{};
 
-		Node(ValueType pair, color color, Node *parent, Node *left, Node *right): _pair(pair), _key(pair.first), _color(color), _parent(parent), _left(left), _right(right)
+		Node(ValueType pair, color color, Node *parent, Node *left, Node *right): _value(pair), _color(color), _parent(parent), _left(left), _right(right)
 		{};
 
 		bool is_leaf() const {

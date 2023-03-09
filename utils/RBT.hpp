@@ -7,27 +7,47 @@
 #include "iterators/reverse_iterator.hpp"
 
 namespace ft {
-	template < class ValueType, class Compare, class Allocator = std::allocator<ValueType> >
+	template < typename ValueType, typename Compare, typename Allocator >
 	class RBT
 	{
 /* ####################   TYPES   #################### */
 		public :
 			typedef typename Allocator::template rebind<Node<ValueType> >::other	node_allocator;
-			typedef Compare															key_compare;
 			typedef RBT_iterator<ValueType>											iterator;
 			typedef RBT_const_iterator<ValueType>									const_iterator;
 			typedef ft::reverse_iterator<iterator>									reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 			typedef Node<ValueType> *												nodePtr;
 		private:
-			typedef	typename ValueType::first_type									key_type;
-			typedef	typename ValueType::second_type									mapped_type;
+			// typedef	typename ValueType::first_type									key_type;
+			// typedef	typename ValueType::second_type									mapped_type;
 			typedef Node<ValueType> 												node;
 
 /* ####################   PUBLIC  #################### */
 		public:
 		/*--- CON/DE_STRUCTORS ---*/
-			RBT(const key_compare& comp = key_compare(), const Allocator &alloc = Allocator()): _alloc(alloc), _node_alloc(node_allocator()), _comp(comp), _size(0) {
+			// RBT(): _alloc(Allocator()), _node_alloc(node_allocator()), _comp(Compare()), _size(0) {
+			// 	_leaf = _node_alloc.allocate(sizeof(node));
+			// 	_maxleaf = _node_alloc.allocate(sizeof(node));
+			// 	_minleaf = _node_alloc.allocate(sizeof(node));
+			// 	_root = _leaf;
+			// 	_root->_parent = NULL;
+			// 	_root->_color = BLACK;
+			// 	_leaf->_parent = NULL;
+			// 	_leaf->_left = NULL;
+			// 	_leaf->_right = NULL;
+			// 	_leaf->_color = BLACK;
+			// 	_maxleaf->_parent = _root;
+			// 	_maxleaf->_left = NULL;
+			// 	_maxleaf->_right = NULL;
+			// 	_maxleaf->_color = BLACK;
+			// 	_minleaf->_parent = _root;
+			// 	_minleaf->_left = NULL;
+			// 	_minleaf->_right = NULL;
+			// 	_minleaf->_color = BLACK;
+			// };
+
+			RBT(const Compare &comp, const Allocator &alloc = Allocator()): _alloc(alloc), _node_alloc(node_allocator()), _comp(comp), _size(0) {
 				_leaf = _node_alloc.allocate(sizeof(node));
 				_maxleaf = _node_alloc.allocate(sizeof(node));
 				_minleaf = _node_alloc.allocate(sizeof(node));
@@ -48,6 +68,13 @@ namespace ft {
 				_minleaf->_color = BLACK;
 			};
 
+			// RBT(RBT const &x): _alloc(x._alloc), _node_alloc(x._node_alloc), _comp(x._comp) {
+			// 	// _nil = createNil();
+			// 	_root = _leaf;
+			// 	_size = 0;
+			// 	*this = x;
+			// }
+
 			~RBT() {
 				if (_size > 0)
 					clear();
@@ -59,12 +86,11 @@ namespace ft {
 		/*---      INSERT      ---*/
 			iterator	insert(ValueType new_element) {
 				nodePtr		temp = _root;
-				key_type	new_key = new_element.first;
 				_size ++;
 				while (!is_leaf(temp)) {
-					if (!is_leaf(temp->_right) && !_comp(new_key, temp->_key))
+					if (!is_leaf(temp->_right) && !_comp(new_element, temp->_value))
 						temp = temp->_right;
-					else if (!is_leaf(temp->_left) && _comp(new_key, temp->_key))
+					else if (!is_leaf(temp->_left) && _comp(new_element, temp->_value))
 						temp = temp->_left;
 					else
 						break;
@@ -77,7 +103,7 @@ namespace ft {
 					min_max_actu();
 					return(iterator(new_node));
 				}
-				if (!_comp(new_node->_key, temp->_key))
+				if (!_comp(new_element, temp->_value))
 					temp->_right = new_node;
 				else
 					temp->_left = new_node;
@@ -89,8 +115,8 @@ namespace ft {
 			};
 
 		/*---      DELETE      ---*/
-			bool	del(key_type del_key) {
-				nodePtr	del_node = find_node(del_key);
+			bool	del(ValueType del_value) {
+				nodePtr	del_node = find_node(del_value);
 				if (del_node == NULL)
 					return (false);
 				if (del_node->_left == _minleaf)
@@ -163,13 +189,13 @@ namespace ft {
 			};
 
 		/*---      FIND      ---*/
-			nodePtr	find_node(key_type key) const {
+			nodePtr	find_node(ValueType node) const {
 				if (_size > 0) {
 					nodePtr	temp = _root;
 					while (!temp->is_leaf()) {
-						if (temp->_key == key)
+						if (!_comp(node, temp->_value) && !_comp(temp->_value, node))
 							return (temp);
-						if (!_comp(key, temp->_key))
+						if (!_comp(node, temp->_value))
 							temp = temp->_right;
 						else
 							temp = temp->_left;
@@ -220,37 +246,37 @@ namespace ft {
 				std::swap(_size, x._size);
 			};
 
-			iterator 		lower_bound (const key_type& k) {
+			iterator 		lower_bound (const ValueType &k) {
 				iterator i = begin();
 				while (i != end()) {
-					if (!_comp(i->first, k))
+					if (!_comp(*i, k))
 						return i;
 					i ++;
 				}
 				return end();
 			};
 
-			const_iterator lower_bound (const key_type& k) const {
+			const_iterator lower_bound (const ValueType &k) const {
 				const_iterator i = begin();
 				while (i != end()) {
-					if (!_comp(i->first, k))
+					if (!_comp(*i, k))
 						return i;
 					i ++;
 				}
 				return end();
 			};
 
-			iterator 		upper_bound (const key_type& k) {
+			iterator 		upper_bound (const ValueType &k) {
 				iterator i = begin();
 				while (i != end()) {
-					if (_comp(k, i->first ))
+					if (_comp(k, *i))
 						return i;
 					i ++;
 				}
 				return end();
 			};
 
-			const_iterator upper_bound (const key_type& k) const {
+			const_iterator upper_bound (const ValueType &k) const {
 				const_iterator i = begin();
 				while (i != end()) {
 					if (_comp(k, i->first))
@@ -270,7 +296,7 @@ namespace ft {
 			nodePtr 		_leaf;
 			nodePtr 		_minleaf;
 			nodePtr 		_maxleaf;
-			key_compare		_comp;
+			Compare			_comp;
 			size_t			_size;		
 
 		/*--- INSERT HELPERS ---*/
@@ -473,7 +499,7 @@ namespace ft {
 						indent += "|  ";
 					}
 					std::string sColor = node->_color ? "RED" : "BLACK";
-					std::cout << node->_key << " Left[ " << node->_left << " ] " << " Right{ " << node->_right << " } " << "(" << sColor << ")" << std::endl;
+					std::cout << node->_value << " Left[ " << node->_left << " ] " << " Right{ " << node->_right << " } " << "(" << sColor << ")" << std::endl;
 					printHelper(node->_left, indent, false);
 					printHelper(node->_right, indent, true);
 				};

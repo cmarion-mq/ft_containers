@@ -9,10 +9,27 @@
 #include "utils/lexicographical_compare.hpp"
 
 namespace ft {
+template <typename T, typename Compare>
+class map_value_type_compare : public std::binary_function<T, T, bool> {
+	public:
+		map_value_type_compare(): comp_() {}
+
+		map_value_type_compare(const Compare& c) : comp_(c) {}
+
+		bool operator()(const T& x, const T& y) const {
+			return comp_(x.first, y.first);
+		}
+
+	protected:
+		Compare comp_;
+};
+
+
 	template< class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> > >
 	class map {
-/* ####################   TYPES   #################### */
 		public:
+
+/* ####################   TYPES   #################### */
 			typedef Key												key_type;
 			typedef T												mapped_type;
 			typedef pair<const Key, T>								value_type;
@@ -24,13 +41,7 @@ namespace ft {
 			typedef typename Allocator::const_reference				const_reference;
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef	RBT<value_type, key_compare, allocator_type>	rbt;
-			typedef typename rbt::iterator							iterator;
-			typedef typename rbt::const_iterator 					const_iterator;
-			typedef typename rbt::reverse_iterator 					reverse_iterator;
-			typedef typename rbt::const_reverse_iterator	  		const_reverse_iterator;
 
-/* ####################  PUBLIC  #################### */
 			class value_compare : public std::binary_function<value_type, value_type, bool> {
 				friend class map;
 				public:
@@ -43,11 +54,19 @@ namespace ft {
 					value_compare(Compare c) : comp(c) {}
 			};
 
+			typedef map_value_type_compare<value_type, key_compare> vt_compare;
+			typedef	RBT<value_type, vt_compare, allocator_type>		rbt;
+			typedef typename rbt::iterator							iterator;
+			typedef typename rbt::const_iterator 					const_iterator;
+			typedef typename rbt::reverse_iterator 					reverse_iterator;
+			typedef typename rbt::const_reverse_iterator	  		const_reverse_iterator;
+
+/* ####################  PUBLIC  #################### */
 		/*--- CON/DE_STRUCTORS ---*/
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {};
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(rbt(vt_compare(comp), alloc)) {};
 
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(comp, alloc) {
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(rbt(value_compare(comp), alloc)) {
 				insert(first, last);
 			};
 
@@ -81,27 +100,27 @@ namespace ft {
 		/*---  ELEMENT ACCESS  ---*/
 		
 			mapped_type			&operator[] (const key_type& k) {
-				typename rbt::nodePtr f = _rbt.find_node(k);
+				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(k, T()));
 				if (f)
-					return (f->_pair.second);
+					return (f->_value.second);
 				_rbt.insert(value_type(k, mapped_type()));
-				return(_rbt.find_node(k)->_pair.second);
+				return(_rbt.find_node(ft::make_pair(k, T()))->_value.second);
 			};
 
 			mapped_type&		at (const key_type& k) {
-				typename rbt::nodePtr f = _rbt.find_node(k);
+				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(k, T()));
 				if (!f) {
 					throw std::out_of_range("map::at");
 				}
-				return (f->_pair.second);
+				return (f->_value.second);
 			};
 			
 			const mapped_type&	at (const key_type& k) const {
-				typename rbt::nodePtr f = _rbt.find_node(k);
+				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(k, T()));
 				if (!f) {
 					throw std::out_of_range("map::at");
 				}
-				return (f->_pair.second);
+				return (f->_value.second);
 
 			};
 
@@ -129,11 +148,11 @@ namespace ft {
 			};
 
 			void 					erase( iterator pos ) {
-				_rbt.del((*pos).first);
+				_rbt.del(*pos);
 			};
 
 			size_type 				erase( const Key& key ) {
-				if (_rbt.del(key))
+				if (_rbt.del(ft::make_pair(key, T())))
 					return (1);
 				return (0);
 			};
@@ -160,7 +179,7 @@ namespace ft {
 
 		/*---     OPERATIONS    ---*/
 			iterator		find (const key_type &k) {
-				typename rbt::nodePtr f = _rbt.find_node(k);
+				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(k, T()));
 				if (f) {
 					return (iterator(f));
 				}
@@ -168,22 +187,22 @@ namespace ft {
 			};
 			
 			const_iterator	find (const key_type& k) const {
-				typename rbt::nodePtr f = _rbt.find_node(k);
+				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(k, T()));
 				if (f)
 					return (const_iterator(f));
 				return (end());
 			};
 			
 			size_type		count( const key_type &key ) const {
-				if (_rbt.find_node(key))
+				if (_rbt.find_node(ft::make_pair(key, T())))
 					return (1);
 				return (0);
 			};
 
-			iterator 		lower_bound (const key_type& k) 		{ return (_rbt.lower_bound(k)); };
-			const_iterator	lower_bound (const key_type& k) const	{ return (_rbt.lower_bound(k)); };
-			iterator 		upper_bound (const key_type& k) 		{ return (_rbt.upper_bound(k)); };
-			const_iterator 	upper_bound (const key_type& k) const 	{ return (_rbt.upper_bound(k)); };
+			iterator 		lower_bound (const key_type& k) 		{ return (_rbt.lower_bound(ft::make_pair(k, T()))); };
+			const_iterator	lower_bound (const key_type& k) const	{ return (_rbt.lower_bound(ft::make_pair(k, T()))); };
+			iterator 		upper_bound (const key_type& k) 		{ return (_rbt.upper_bound(ft::make_pair(k, T()))); };
+			const_iterator 	upper_bound (const key_type& k) const 	{ return (_rbt.upper_bound(ft::make_pair(k, T()))); };
 
 			pair<iterator,iterator>             equal_range (const key_type& k) {
 				return ft::make_pair(lower_bound(k), upper_bound(k));
