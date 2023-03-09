@@ -192,7 +192,7 @@ namespace ft {
 						reserve(_n * 2);
 					position = begin() + tot_between_begin_position;
 				}
-				for (size_type i = _n; i > tot_between_begin_position; i --) {
+				for (size_type i = _n; i > tot_between_begin_position && i > 0; i --) {
 					_alloc.construct(_data + i, _data[i - 1]);
 					_alloc.destroy(_data + i - 1);
 				}
@@ -212,12 +212,20 @@ namespace ft {
 						else
 							reserve(_n + n);
 					}
-					for (size_type i = _n + n - 1; i > tot_between_begin_position + n - 1; i --) {
-						_alloc.construct(_data + i, _data[i - n]);
-						// _alloc.destroy(_data + i - n);
+					if (_n > 0 && tot_between_begin_position < _n) {
+						for (size_type i = _n + n - 1; i > _n - 1 && i > n + tot_between_begin_position - 1; i --) 
+							_alloc.construct(_data + i, _data[i - n]);
+						for (size_type i = _n - 1; i > tot_between_begin_position + n - 1; i --) {
+							if (i < _n)
+								_alloc.destroy(_data + i);
+							_alloc.construct(_data + i, _data[i - n]);
+						}
 					}
-					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++) 
+					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++) {
+						if (i < _n)
+							_alloc.destroy(_data + i);
 						_alloc.construct(_data + i, val);
+					}
 					_n += n;
 				}
 			};
@@ -231,7 +239,7 @@ namespace ft {
 				if (position + 1 != end()) {
 					size_type tot_between_begin_position = std::distance(begin(), position);
 					for (size_type i = tot_between_begin_position; i < _n - 1; i ++) {
-						// _alloc.destroy(_data + i);
+						_alloc.destroy(_data + i);
 						_alloc.construct(_data + i, _data[i + 1]);
 					}
 				}
@@ -245,7 +253,7 @@ namespace ft {
 					size_type n = std::distance(first, last); //tot erase
 					size_type tot_between_begin_position = std::distance(begin(), first);
 					for (size_type i = tot_between_begin_position; i < _n - n; i ++) {
-						// _alloc.destroy(_data + i);
+						_alloc.destroy(_data + i);
 						_alloc.construct(_data + i, _data[i + n]);
 					}
 					for (size_type i = _n - n; i < _n; i ++)
@@ -292,14 +300,21 @@ namespace ft {
 							reserve(_n * 2);
 						else
 							reserve(_n + n);
-					}		
-					for (size_type i = _n + n - 1; i > tot_between_begin_position + n - 1; i --) {
-						// _alloc.destroy(_data + i);
-						_alloc.construct(_data + i, _data[i - n]);
+					}
+					if (_n > 0 && tot_between_begin_position < _n) {
+						for (size_type i = _n + n - 1; i > _n - 1 && i > n + tot_between_begin_position - 1; i --) 
+							_alloc.construct(_data + i, _data[i - n]);
+						for (size_type i = _n - 1; i > tot_between_begin_position + n - 1; i --) {
+							if (i < _n)
+								_alloc.destroy(_data + i);
+							_alloc.construct(_data + i, _data[i - n]);
+						}
 					}
 					for (size_type i = tot_between_begin_position; i < tot_between_begin_position + n; i ++, first ++) {
-						// _alloc.destroy(_data + i);
-						*(_data + i) = *first;
+						if (i < _n)
+							_alloc.destroy(_data + i);
+						_alloc.construct(_data + i, *first);
+						// *(_data + i) = *first;
 					}
 					_n += n;
 				}

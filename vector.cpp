@@ -40,9 +40,21 @@ static void display(NS::vector<T, Allocator>& vect) {
 	typedef NS::vector<double, std::allocator<double> > doublevector;
 	typedef NS::vector<char, std::allocator<char> > charvector;
 	
-int main() {
+	template <typename ForwardIt, typename T>
+	void iota(ForwardIt first, ForwardIt last, T value = T())
+	{
+		while (first != last) {
+			*first++ = value;
+			++value;
+		}
+	}
+	template <typename T>
+	void PRINT_LINE(std::string msg, T value) {
+        std::cout << msg << " " << (value) << std::endl;
+    }
 
-{
+
+int main() {
  std::size_t s_size = 32;
     std::size_t b_size = 64;                                                                       
     (void)s_size;                                                                                  
@@ -82,28 +94,109 @@ int main() {
         "olIewtUEvXJgs1lB9bCn", "dTsPDS0x2uXtcgOIJHb8", "DYvJ2phLppGNZKboTBrd",                    
         "DjNFMtt9PxkzqvWBHI6j", "1Z3YkeTFlPniKnzFhzgu", "76XqQg6hqMf5IXxKPOEs",                    
         "gzaapTWW7i9EZjjzLeK6"};
-        strvector v1;
-        strvector v2;
 
-        v1 = v2;
+    		int s_int[32];                                                                               \
+			iota(s_int, s_int + 32, (int)rand());
+			int b_int[64];                                                                               \
+			iota(b_int, b_int + 64, (int)rand());
 
-        display(v1);
+    {
+        strvector v(b_string, b_string + b_size);
 
-        v2 = strvector(b_string, b_string + b_size);
+        strvector::reverse_iterator it = v.rbegin();
+        strvector::const_reverse_iterator cit = v.rbegin() + 34;
 
-        display(v2);
+        // PRINT_LINE("It:", *it);
+        // PRINT_LINE("Cit:", *cit);
 
-        v1 = v2;
+        it->clear();
+        // PRINT_LINE("Cstr:", cit->c_str());
 
-        display(v1);
+        display(v);
 
-        v2 = strvector(s_string, s_string + s_size);
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        it++;
+        ++cit;
+        cit++;
 
-        display(v2);
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("It:", *it++);
+        PRINT_LINE("It:", *it);
 
-        v1 = v2;
+        PRINT_LINE("Cit:", *cit);
+        PRINT_LINE("Cit:", *cit++);
+        PRINT_LINE("Cit:", *cit);
 
-        display(v1);
+        --it;
+        it--;
+        it--;
+        --cit;
+        --cit;
+        cit--;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("It:", *it--);
+        PRINT_LINE("It:", *it);
+
+        PRINT_LINE("Cit:", *cit);
+        PRINT_LINE("Cit:", *cit--);
+        PRINT_LINE("Cit:", *cit);
+
+        PRINT_LINE("It:", *(it + 6));
+        PRINT_LINE("It:", *(42 + it));
+        PRINT_LINE("It:", *(42 + it - 3));
+        PRINT_LINE("It:", *(v.rend() - 6));
+        PRINT_LINE("Cit:", *(cit - 6));
+        PRINT_LINE("Cit:", *(cit + 7));
+        PRINT_LINE("Size:", v.rend() - v.rbegin());
+
+        it = v.rbegin() + 25;
+        cit = v.rbegin() + 25;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("Cit:", *cit);
+
+        it += 12;
+        cit += 12;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("Cit:", *cit);
+
+        it += 0;
+        cit += 0;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("Cit:", *cit);
+
+        it += 4;
+        cit += 4;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("Cit:", *cit);
+
+        it -= 0;
+        cit -= 0;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("Cit:", *cit);
+
+        it -= 22;
+        cit -= 22;
+
+        PRINT_LINE("It:", *it);
+        PRINT_LINE("Cit:", *cit);
+        PRINT_LINE("It + 10:", it[10]);
+        PRINT_LINE("Cit + 10:", cit[10]);
     }
 	/*
 	// ################################  CONSTRUCTORS  ##############
