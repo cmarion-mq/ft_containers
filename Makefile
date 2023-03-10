@@ -2,11 +2,13 @@ OBJ_PATH		=	./obj/
 VECTOR_PATH		=	./vector/
 STACK_PATH		=	./stack/
 MAP_PATH		=	./map/
+SET_PATH		=	./set/
 
 SRCS			=	main_42.cpp \
 					vector.cpp \
 					stack.cpp \
-					map.cpp
+					map.cpp \
+					set.cpp \
 
 CXX	 			=	c++
 CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
@@ -50,6 +52,14 @@ map:				all
 					time $(MAP_PATH)std_map > $(MAP_PATH)std.out
 					diff $(MAP_PATH)ft.out $(MAP_PATH)std.out
 
+set:				all
+					@mkdir -p $(SET_PATH) 
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)set_ft.o -o $(SET_PATH)ft_set
+					$(CXX) $(CXXFLAGS) $(OBJ_PATH)set_std.o -o $(SET_PATH)std_set
+					time $(SET_PATH)ft_set > $(SET_PATH)ft.out
+					time $(SET_PATH)std_set > $(SET_PATH)std.out
+					diff $(SET_PATH)ft.out $(SET_PATH)std.out
+
 clean:
 					rm -rf $(OBJ_PATH)
 
@@ -57,6 +67,7 @@ fclean: 			clean
 					rm -rf $(VECTOR_PATH)
 					rm -rf $(STACK_PATH)
 					rm -rf $(MAP_PATH)
+					rm -rf $(SET_PATH)
 
 re: 				fclean 
 					make

@@ -82,7 +82,6 @@ namespace ft {
 			size_type	max_size() const	{ return (_rbt.max_size()); };
 		
 		/*---  ELEMENT ACCESS  ---*/
-		
 			mapped_type			&operator[] (const key_type& k) {
 				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(k, T()));
 				if (f)
@@ -183,16 +182,16 @@ namespace ft {
 				return (0);
 			};
 
-			iterator 		lower_bound (const key_type& k) 		{ return (_rbt.lower_bound(ft::make_pair(k, T()))); };
+			iterator		lower_bound (const key_type& k) 		{ return (_rbt.lower_bound(ft::make_pair(k, T()))); };
 			const_iterator	lower_bound (const key_type& k) const	{ return (_rbt.lower_bound(ft::make_pair(k, T()))); };
-			iterator 		upper_bound (const key_type& k) 		{ return (_rbt.upper_bound(ft::make_pair(k, T()))); };
-			const_iterator 	upper_bound (const key_type& k) const 	{ return (_rbt.upper_bound(ft::make_pair(k, T()))); };
+			iterator		upper_bound (const key_type& k) 		{ return (_rbt.upper_bound(ft::make_pair(k, T()))); };
+			const_iterator	upper_bound (const key_type& k) const 	{ return (_rbt.upper_bound(ft::make_pair(k, T()))); };
 
-			pair<iterator,iterator>             equal_range (const key_type& k) {
+			pair<iterator,iterator> 			equal_range (const key_type& k) {
 				return ft::make_pair(lower_bound(k), upper_bound(k));
 			};
 
-			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+			pair<const_iterator,const_iterator>	equal_range (const key_type& k) const {
 				return ft::make_pair(lower_bound(k), upper_bound(k));
 			};
 

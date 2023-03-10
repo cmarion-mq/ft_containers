@@ -68,13 +68,6 @@ namespace ft {
 				_minleaf->_color = BLACK;
 			};
 
-			RBT(RBT const &x): _alloc(x._alloc), _node_alloc(x._node_alloc), _comp(x._comp) {
-				// _nil = createNil();
-				_root = _leaf;
-				_size = 0;
-				*this = x;
-			}
-
 			~RBT() {
 				if (_size > 0)
 					clear();
@@ -279,7 +272,7 @@ namespace ft {
 			const_iterator upper_bound (const ValueType &k) const {
 				const_iterator i = begin();
 				while (i != end()) {
-					if (_comp(k, i->first))
+					if (_comp(k, *i))
 						return i;
 					i ++;
 				}

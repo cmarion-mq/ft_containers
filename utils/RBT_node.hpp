@@ -9,8 +9,6 @@ namespace ft {
 	
 	template <class ValueType >
 	struct Node {
-		typedef	typename ValueType::first_type	key;
-
 		ValueType  		_value;
 		color			_color;
 		Node			*_parent;
