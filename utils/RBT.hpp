@@ -26,26 +26,26 @@ namespace ft {
 /* ####################   PUBLIC  #################### */
 		public:
 		/*--- CON/DE_STRUCTORS ---*/
-			// RBT(): _alloc(Allocator()), _node_alloc(node_allocator()), _comp(Compare()), _size(0) {
-			// 	_leaf = _node_alloc.allocate(sizeof(node));
-			// 	_maxleaf = _node_alloc.allocate(sizeof(node));
-			// 	_minleaf = _node_alloc.allocate(sizeof(node));
-			// 	_root = _leaf;
-			// 	_root->_parent = NULL;
-			// 	_root->_color = BLACK;
-			// 	_leaf->_parent = NULL;
-			// 	_leaf->_left = NULL;
-			// 	_leaf->_right = NULL;
-			// 	_leaf->_color = BLACK;
-			// 	_maxleaf->_parent = _root;
-			// 	_maxleaf->_left = NULL;
-			// 	_maxleaf->_right = NULL;
-			// 	_maxleaf->_color = BLACK;
-			// 	_minleaf->_parent = _root;
-			// 	_minleaf->_left = NULL;
-			// 	_minleaf->_right = NULL;
-			// 	_minleaf->_color = BLACK;
-			// };
+			RBT(): _alloc(Allocator()), _node_alloc(node_allocator()), _comp(Compare()), _size(0) {
+				_leaf = _node_alloc.allocate(sizeof(node));
+				_maxleaf = _node_alloc.allocate(sizeof(node));
+				_minleaf = _node_alloc.allocate(sizeof(node));
+				_root = _leaf;
+				_root->_parent = NULL;
+				_root->_color = BLACK;
+				_leaf->_parent = NULL;
+				_leaf->_left = NULL;
+				_leaf->_right = NULL;
+				_leaf->_color = BLACK;
+				_maxleaf->_parent = _root;
+				_maxleaf->_left = NULL;
+				_maxleaf->_right = NULL;
+				_maxleaf->_color = BLACK;
+				_minleaf->_parent = _root;
+				_minleaf->_left = NULL;
+				_minleaf->_right = NULL;
+				_minleaf->_color = BLACK;
+			};
 
 			RBT(const Compare &comp, const Allocator &alloc = Allocator()): _alloc(alloc), _node_alloc(node_allocator()), _comp(comp), _size(0) {
 				_leaf = _node_alloc.allocate(sizeof(node));
@@ -68,12 +68,12 @@ namespace ft {
 				_minleaf->_color = BLACK;
 			};
 
-			// RBT(RBT const &x): _alloc(x._alloc), _node_alloc(x._node_alloc), _comp(x._comp) {
-			// 	// _nil = createNil();
-			// 	_root = _leaf;
-			// 	_size = 0;
-			// 	*this = x;
-			// }
+			RBT(RBT const &x): _alloc(x._alloc), _node_alloc(x._node_alloc), _comp(x._comp) {
+				// _nil = createNil();
+				_root = _leaf;
+				_size = 0;
+				*this = x;
+			}
 
 			~RBT() {
 				if (_size > 0)

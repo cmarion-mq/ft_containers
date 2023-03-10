@@ -33,6 +33,7 @@ namespace ft {
 						return comp(x.first, y.first);
 					}
 
+					value_compare() : comp(key_compare()) {}
 				protected:
 					key_compare comp;
 					value_compare(key_compare c) : comp(c) {}
@@ -46,7 +47,7 @@ namespace ft {
 
 /* ####################  PUBLIC  #################### */
 		/*--- CON/DE_STRUCTORS ---*/
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(RBT<value_type, value_compare, allocator_type>(value_compare(comp), alloc)) {};
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(rbt(value_compare(comp), alloc)) {};
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(rbt(value_compare(comp), alloc)) {
@@ -207,7 +208,7 @@ namespace ft {
 /* ####################  PRIVATE  #################### */
 		private :
 	/*--- MEMBER OBJECTS ---*/			
-			RBT<value_type, key_compare, allocator_type>	_rbt;
+			rbt	_rbt;
 	};
 
 	template <class Key, class T, class Compare, class Alloc>
