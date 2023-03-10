@@ -9,22 +9,6 @@
 #include "utils/lexicographical_compare.hpp"
 
 namespace ft {
-template <typename T, typename Compare>
-class map_value_type_compare : public std::binary_function<T, T, bool> {
-	public:
-		map_value_type_compare(): comp_() {}
-
-		map_value_type_compare(const Compare& c) : comp_(c) {}
-
-		bool operator()(const T& x, const T& y) const {
-			return comp_(x.first, y.first);
-		}
-
-	protected:
-		Compare comp_;
-};
-
-
 	template< class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> > >
 	class map {
 		public:
@@ -50,12 +34,11 @@ class map_value_type_compare : public std::binary_function<T, T, bool> {
 					}
 
 				protected:
-					Compare comp;
-					value_compare(Compare c) : comp(c) {}
+					key_compare comp;
+					value_compare(key_compare c) : comp(c) {}
 			};
 
-			typedef map_value_type_compare<value_type, key_compare> vt_compare;
-			typedef	RBT<value_type, vt_compare, allocator_type>		rbt;
+			typedef	RBT<value_type, value_compare, allocator_type>		rbt;
 			typedef typename rbt::iterator							iterator;
 			typedef typename rbt::const_iterator 					const_iterator;
 			typedef typename rbt::reverse_iterator 					reverse_iterator;
@@ -63,7 +46,7 @@ class map_value_type_compare : public std::binary_function<T, T, bool> {
 
 /* ####################  PUBLIC  #################### */
 		/*--- CON/DE_STRUCTORS ---*/
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(rbt(vt_compare(comp), alloc)) {};
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(RBT<value_type, value_compare, allocator_type>(value_compare(comp), alloc)) {};
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(rbt(value_compare(comp), alloc)) {
