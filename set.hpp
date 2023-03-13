@@ -120,7 +120,7 @@ namespace ft {
 			value_compare 	value_comp() 	const	{ return (value_compare(key_comp())); };
 
 		/*---     OPERATIONS    ---*/
-			iterator		find (const value_type &val) {
+			iterator		find (const value_type &val) const {
 				typename rbt::nodePtr f = _rbt.find_node(val);
 				if (f) {
 					return (iterator(f));
@@ -135,11 +135,11 @@ namespace ft {
 			};
 
 			iterator 		lower_bound (const value_type& val) const	{
-				return (const_iterator(_rbt.lower_bound(val)));
+				return (_rbt.lower_bound(val));
 			};
 
 			iterator 		upper_bound (const value_type& val) const	{
-				return (iterator(_rbt.upper_bound(val)));
+				return (_rbt.upper_bound(val));
 			};
 
 			pair<iterator,iterator>	equal_range (const value_type& val) const {

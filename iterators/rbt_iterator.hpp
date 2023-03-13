@@ -134,7 +134,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 
 	template< class ValueType>
-	class RBT_iterator {
+	class RBT_iterator: public ft::iterator<ft::bidirectional_iterator_tag, ValueType> {
 /* ####################   TYPES   #################### */		
 		public:
 			typedef std::bidirectional_iterator_tag		iterator_category;
@@ -153,6 +153,8 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			RBT_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
 
 			RBT_iterator(const RBT_iterator &x): _current(x._current) {};
+
+			RBT_iterator(const RBT_const_iterator<value_type> &x): _current(x.base()) {}; //really not sure about that!!!!!
 
 			RBT_iterator &operator =(const RBT_iterator &x) {
 				if (this == &x) { 
@@ -205,7 +207,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 
 	template< class ValueType>
-	class RBT_const_iterator {
+	class RBT_const_iterator: public ft::iterator<ft::bidirectional_iterator_tag, ValueType> {
 /* ####################   TYPES   #################### */
 		public:
 			typedef std::bidirectional_iterator_tag		iterator_category;
