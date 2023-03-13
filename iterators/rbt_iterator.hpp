@@ -121,8 +121,8 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (_current != other._current);
 			};
 
-			ValueType 	&operator	*()		{ return (_current->_value);		};
-			ValueType 	*operator	->()	{ return (&_current->_value);	};
+			ValueType 	&operator	*()		const	{ return (_current->_value);};
+			ValueType 	*operator	->()	const	{ return (&_current->_value);};
 
 /* ####################   PRIVATE  #################### */
 	/*--- MEMBER OBJECTS ---*/
@@ -188,8 +188,8 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (temp);
 			};
 
-			ValueType 		&operator	*()		{ return (*_current);		};
-			ValueType 		*operator	->()	{ return (&(*_current));	};
+			ValueType 		&operator	*()		const	{ return (*_current);		};
+			ValueType 		*operator	->()	const	{ return (&(*_current));	};
 
 			const RBT_itBase<ValueType>	&base() const {
 				return (_current);
@@ -261,8 +261,8 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				return (temp);
 			};
 
-			ValueType 		&operator	*()		{ return (*_current);		};
-			ValueType 		*operator	->()	{ return (&(*_current));	};
+			ValueType 		&operator	*()		const	{ return (*_current);		};
+			ValueType 		*operator	->()	const	{ return (&(*_current));	};
 
 			const RBT_itBase<ValueType>	&base() const {
 				return (_current);
