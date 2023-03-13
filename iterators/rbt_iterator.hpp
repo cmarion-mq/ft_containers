@@ -152,9 +152,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			RBT_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
 
-			RBT_iterator(const RBT_iterator &x) {
-				_current = x._current;
-			};
+			RBT_iterator(const RBT_iterator &x): _current(x._current) {};
 
 			RBT_iterator &operator =(const RBT_iterator &x) {
 				if (this == &x) { 
@@ -225,13 +223,9 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			RBT_const_iterator(nodePtr current): _current(RBT_itBase<ValueType>(current)) {};
 
-			RBT_const_iterator(const RBT_const_iterator &x) {
-				_current = x._current;
-			};
+			RBT_const_iterator(const RBT_const_iterator &x): _current(x._current) {};
 
-			RBT_const_iterator(const RBT_iterator<ValueType> &x) {
-				_current = x.base();
-			};
+			RBT_const_iterator(const RBT_iterator<ValueType> &x): _current(x.base()) {};
 
 			RBT_const_iterator &operator =(const RBT_const_iterator &x) {
 				if (this == &x) { 

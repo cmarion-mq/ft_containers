@@ -94,7 +94,7 @@ namespace ft {
 			};
 
 			size_type 				erase( const value_type& val ) {
-				if (_rbt.del(ft::make_pair(val, value_type())))
+				if (_rbt.del(val))
 					return (1);
 				return (0);
 			};
@@ -121,7 +121,7 @@ namespace ft {
 
 		/*---     OPERATIONS    ---*/
 			iterator		find (const value_type &val) {
-				typename rbt::nodePtr f = _rbt.find_node(ft::make_pair(val, value_type()));
+				typename rbt::nodePtr f = _rbt.find_node(val);
 				if (f) {
 					return (iterator(f));
 				}
@@ -129,13 +129,18 @@ namespace ft {
 			};
 						
 			size_type		count( const value_type &val ) const {
-				if (_rbt.find_node(ft::make_pair(val, value_type())))
+				if (_rbt.find_node(val))
 					return (1);
 				return (0);
 			};
 
-			iterator 		lower_bound (const value_type& val) const	{ return (_rbt.lower_bound(ft::make_pair(val, value_type()))); };
-			iterator 		upper_bound (const value_type& val) const	{ return (_rbt.upper_bound(ft::make_pair(val, value_type()))); };
+			iterator 		lower_bound (const value_type& val) const	{
+				return (const_iterator(_rbt.lower_bound(val)));
+			};
+
+			iterator 		upper_bound (const value_type& val) const	{
+				return (iterator(_rbt.upper_bound(val)));
+			};
 
 			pair<iterator,iterator>	equal_range (const value_type& val) const {
 				return ft::make_pair(lower_bound(val), upper_bound(val));

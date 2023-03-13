@@ -19,8 +19,6 @@ namespace ft {
 			typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 			typedef Node<ValueType> *												nodePtr;
 		private:
-			// typedef	typename ValueType::first_type									key_type;
-			// typedef	typename ValueType::second_type									mapped_type;
 			typedef Node<ValueType> 												node;
 
 /* ####################   PUBLIC  #################### */
@@ -243,40 +241,40 @@ namespace ft {
 				iterator i = begin();
 				while (i != end()) {
 					if (!_comp(*i, k))
-						return i;
+						return (i);
 					i ++;
 				}
-				return end();
+				return (end());
 			};
 
-			const_iterator lower_bound (const ValueType &k) const {
+			const_iterator	lower_bound (const ValueType &k) const {
 				const_iterator i = begin();
 				while (i != end()) {
 					if (!_comp(*i, k))
-						return i;
+						return (i);
 					i ++;
 				}
-				return end();
+				return (end());
 			};
 
 			iterator 		upper_bound (const ValueType &k) {
 				iterator i = begin();
 				while (i != end()) {
 					if (_comp(k, *i))
-						return i;
+						return (i);
 					i ++;
 				}
-				return end();
+				return (end());
 			};
 
 			const_iterator upper_bound (const ValueType &k) const {
 				const_iterator i = begin();
 				while (i != end()) {
 					if (_comp(k, *i))
-						return i;
+						return (i);
 					i ++;
 				}
-				return end();
+				return (end());
 			};
 
 			Allocator get_allocator() const { return (_alloc); };
